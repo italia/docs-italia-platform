@@ -4,6 +4,7 @@
   "private": true,
   "description": "Nuova piattaforma di Docs Italia: toolkit dei documenti, server, sito, editor, RAG e server MCP",
   "type": "module",
+  "packageManager": "bun@1.4.4",
   "workspaces": [
     "packages/schema",
     "packages/myst",
@@ -17,10 +18,13 @@
     "apps/site",
     "apps/editor"
   ],
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
-    "test": "node --test"
+    "test": "bun test",
+    "typecheck": "tsc --noEmit -p .",
+    "docs-italia": "bun packages/toolkit/bin/docs-italia.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,131 @@
+{
+  "lockfileVersion": 2,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "docs-italia",
+      "devDependencies": {
+        "@types/bun": "^1.4.4",
+        "typescript": "^5.9.3",
+      },
+    },
+    "apps/editor": {
+      "name": "@docs-italia/editor",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/render": "*",
+      },
+    },
+    "apps/mcp": {
+      "name": "@docs-italia/mcp",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/retrieval": "*",
+      },
+    },
+    "apps/server": {
+      "name": "@docs-italia/server",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/forge": "*",
+        "@docs-italia/retrieval": "*",
+        "@docs-italia/schema": "*",
+      },
+    },
+    "apps/site": {
+      "name": "@docs-italia/site",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/render": "*",
+        "@docs-italia/retrieval": "*",
+      },
+    },
+    "packages/export": {
+      "name": "@docs-italia/export",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/render": "*",
+      },
+    },
+    "packages/forge": {
+      "name": "@docs-italia/forge",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/schema": "*",
+      },
+    },
+    "packages/myst": {
+      "name": "@docs-italia/myst",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/schema": "*",
+      },
+    },
+    "packages/render": {
+      "name": "@docs-italia/render",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/schema": "*",
+      },
+    },
+    "packages/retrieval": {
+      "name": "@docs-italia/retrieval",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docs-italia/schema": "*",
+      },
+    },
+    "packages/schema": {
+      "name": "@docs-italia/schema",
+      "version": "0.0.0",
+    },
+    "packages/toolkit": {
+      "name": "@docs-italia/toolkit",
+      "version": "0.0.0",
+      "bin": {
+        "docs-italia": "./bin/docs-italia.ts",
+      },
+      "dependencies": {
+        "@docs-italia/export": "*",
+        "@docs-italia/forge": "*",
+        "@docs-italia/myst": "*",
+        "@docs-italia/render": "*",
+        "@docs-italia/retrieval": "*",
+        "@docs-italia/schema": "*",
+      },
+    },
+  },
+  "packages": {
+    "@docs-italia/editor": ["@docs-italia/editor@workspace:apps/editor"],
+
+    "@docs-italia/export": ["@docs-italia/export@workspace:packages/export"],
+
+    "@docs-italia/forge": ["@docs-italia/forge@workspace:packages/forge"],
+
+    "@docs-italia/mcp": ["@docs-italia/mcp@workspace:apps/mcp"],
+
+    "@docs-italia/myst": ["@docs-italia/myst@workspace:packages/myst"],
+
+    "@docs-italia/render": ["@docs-italia/render@workspace:packages/render"],
+
+    "@docs-italia/retrieval": ["@docs-italia/retrieval@workspace:packages/retrieval"],
+
+    "@docs-italia/schema": ["@docs-italia/schema@workspace:packages/schema"],
+
+    "@docs-italia/server": ["@docs-italia/server@workspace:apps/server"],
+
+    "@docs-italia/site": ["@docs-italia/site@workspace:apps/site"],
+
+    "@docs-italia/toolkit": ["@docs-italia/toolkit@workspace:packages/toolkit"],
+
+    "@types/bun": ["@types/bun@1.4.4", "", { "dependencies": { "bun-types": "1.4.4" } }, "sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ=="],
+
+    "@types/node": ["@types/node@26.6.6", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog=="],
+
+    "bun-types": ["bun-types@1.4.4", "", { "dependencies": { "@types/node": "*", "undici-types": "*" } }, "sha512-yjrJh5oGX7mMPKGd19YXyIjmEuj4G4zNC30bs7PM9Az7NQ3ndF3j6hbeRdvJTRQEhJ/FYQwW0a2moweEi2hMxQ=="],
+
+    "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+
+    "undici-types": ["undici-types@8.9.0", "", {}, "sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg=="],
+  }
+}

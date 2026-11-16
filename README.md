@@ -69,7 +69,7 @@ spec/                specifica pubblica del formato e JSON Schema
 
 | Applicazione | Tecnologie | Cosa fa |
 |---|---|---|
-| [`apps/server`](apps/server) | Node, Hono, PostgreSQL, pg-boss | API; importazione da `italia-conf` e ripopolamento iniziale; coda delle build; ricezione e pubblicazione dei pacchetti; indicizzazione; autenticazione OIDC e ruoli |
+| [`apps/server`](apps/server) | Bun, Hono, PostgreSQL, pg-boss | API; importazione da `italia-conf` e ripopolamento iniziale; coda delle build; ricezione e pubblicazione dei pacchetti; indicizzazione; autenticazione OIDC e ruoli |
 | [`apps/mcp`](apps/mcp) | SDK MCP, Streamable HTTP | Ricerca e lettura dei documenti per assistenti e agenti, sempre con fonte e versione. Restituisce frammenti, non genera risposte |
 | [`apps/site`](apps/site) | Astro con rendering lato server, Italia Tailwind UI | Sito pubblico con gli stessi URL di oggi; versioni archiviate; ricerca; download |
 | [`apps/editor`](apps/editor) | Vite, React, CodeMirror | Studio locale (con SQLite) ed editor ospitato nell'istanza (con PostgreSQL): stesso codice, backend diverso |
@@ -96,9 +96,10 @@ Nell'ossatura la CLI elenca i comandi ma non li esegue ancora.
 
 | Ambito | Strumento | Note |
 |---|---|---|
-| Linguaggio | TypeScript eseguito da Node 24+ senza compilazione | Solo sintassi rimovibile: niente `enum`, `namespace` o proprietà nei parametri del costruttore (`erasableSyntaxOnly` in `tsconfig.json`) |
-| Monorepo | npm workspaces | Le dipendenze tra pacchetti sono `"*"` |
-| Test | `node --test` | Un file `*.test.ts` accanto al pacchetto (`packages/<nome>/test/`) |
+| Runtime e gestore di pacchetti | [Bun](https://bun.sh) (versione in `.bun-version`) | Esegue TypeScript senza compilazione; `bun.lock` è il file di blocco |
+| Monorepo | Workspace di Bun, installazione isolata | Ogni pacchetto vede solo le dipendenze che dichiara: una dipendenza dimenticata fa fallire subito import e test. Le dipendenze tra pacchetti sono `"*"` |
+| Test | `bun test` con `bun:test` | File `*.test.ts` in `packages/<nome>/test/` e `apps/<nome>/test/`; `tests/` alla radice controlla la struttura del monorepo |
+| Controllo dei tipi | TypeScript 5.9 (`bun run typecheck`) | Solo controllo: l'esecuzione è di Bun |
 | Formato dei documenti | `myst-parser`, `myst-directives`, `myst-roles` | Più le estensioni di Docs Italia |
 | RST | Sphinx 8 (Python 3.12+) | Solo in `packages/sphinx`; il `conf.py` dei repository non viene eseguito |
 | Interfaccia | Tailwind CSS 4, daisyUI 5, [Italia Tailwind UI](https://github.com/italia/italia-tailwind-ui) | Solo il tema `italia-original`, per ora |
@@ -106,23 +107,34 @@ Nell'ossatura la CLI elenca i comandi ma non li esegue ancora.
 | Validazione EPUB | `epubcheck` | In CI |
 | Database | PostgreSQL con pgvector e pg-boss | Metadati, coda, ricerca testuale e vettoriale |
 | File | Object storage S3-compatibile, MinIO per le installazioni autonome | Pacchetti immutabili |
-| Studio locale | SQLite (`node:sqlite`) | Solo bozze e registro: il contenuto sta nei file del repository |
+| Studio locale | SQLite (`bun:sqlite`) | Solo bozze e registro: il contenuto sta nei file del repository |
 
 ## Avvio
 
 ```sh
-nvm use          # Node 24 (vedi .nvmrc)
-npm install
-npm test
-node packages/toolkit/bin/docs-italia.ts help
+bun install
+bun test
+bun run typecheck
+bun run docs-italia help
 ```
 
+Serve Bun alla versione indicata in `.bun-version`.
+
 Per `packages/sphinx` serve Python 3.12+: `pip install -e packages/sphinx`.
+
+## Documenti di progetto
+
+| File | Contenuto |
+|---|---|
+| [`todo.md`](todo.md) | Piano di progetto: stato di partenza, formato dei documenti, toolkit, editor, piattaforma, RAG e MCP, riuso, fasi, rischi, decisioni, risultati del PoC |
+| [`inventario/`](inventario) | Fotografia dei 105 documenti e delle 205 versioni pubblicate oggi (dall'API di Docs Italia), e scansione su GitHub dei repository dichiarati in `italia-conf` |
+
+Il PoC del toolkit è fuori da questo repository, in `../italia/_poc`.
 
 ## Convenzioni
 
 - Messaggi per l'utente in italiano: errori, controlli, interfaccia.
-- Ogni pacchetto ha un README con i suoi compiti e le sue dipendenze.
+- Ogni pacchetto ha un README con i suoi compiti e le sue dipendenze; il test di struttura in `tests/` lo verifica.
 - Le modifiche al formato dei documenti passano prima da `spec/`.
 - Le operazioni Git del toolkit e dello studio sono solo locali; la pubblicazione passa da una pull request.
 

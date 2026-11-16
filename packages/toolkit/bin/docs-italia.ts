@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * docs-italia — CLI del toolkit. Ossatura: i comandi arriveranno dal PoC.
  */
