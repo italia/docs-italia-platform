@@ -1,0 +1,5099 @@
+[
+ {
+  "id": 3,
+  "name": "Guida a 18app per gli esercenti",
+  "slug": "18app-esercenti-docs",
+  "description": "Questo documento raccoglie le domande più frequenti e le procedure principali relative al servizio 18app. La documentazione originale può essere trovata all’indirizzo https://18app.italia.it.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/18app-esercenti-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/18app/18app-esercenti-docs/it/bozza/",
+  "tags": [
+   "18app"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "18app",
+   "canonical_url": "https://docs.italia.it/italia/18app"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/18app-esercenti-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/18app-esercenti-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/18app-esercenti-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 19,
+  "name": "Documentazione tecnica",
+  "slug": "anpr",
+  "description": "L’Anagrafe Nazionale della Popolazione Residente (ANPR) è la banca dati nazionale nella quale confluiranno progressivamente le anagrafi comunali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/anpr.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/anpr/anpr/it/stabile/",
+  "tags": [
+   "anpr"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Anagrafe Nazionale della Popolazione Residente",
+   "canonical_url": "https://docs.italia.it/italia/anpr"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "d262df1cd83f9550ef854ff93abcf345f8dbff92",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/anpr/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/anpr/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/anpr/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/anpr/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/anpr/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/anpr/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 169,
+  "name": "Documentazione delle App di valutazione dell’adesione ai modelli",
+  "slug": "app-valutazione-modelli-docs",
+  "description": "Questo documento guida all'installazione e l'uso delle App di valutazione dell’adesione ai modelli di Designers Italia per i Comuni e le scuole.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/app-valutazione-modelli-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-attuale",
+  "default_branch": "versione-attuale",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/app-valutazione-modelli-docs/it/versione-attuale/",
+  "tags": [
+   "comuni",
+   "design",
+   "scuole"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-attuale",
+    "verbose_name": "versione-attuale",
+    "identifier": "origin/versione-attuale",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/pdf/versione-attuale/",
+     "html": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/htmlzip/versione-attuale/",
+     "epub": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/epub/versione-attuale/"
+    }
+   },
+   {
+    "slug": "v2023.1",
+    "verbose_name": "v2023.1",
+    "identifier": "origin/v2023.1",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/pdf/v2023.1/",
+     "html": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/htmlzip/v2023.1/",
+     "epub": "//docs.italia.it/projects/app-valutazione-modelli-docs/downloads/epub/v2023.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 24,
+  "name": "Censimento ICT",
+  "slug": "censimento-ict",
+  "description": "Il Censimento del Patrimonio ICT della PA si propone, con cadenza annuale, di\nrilevare i dati necessari per delineare il quadro informativo/statistico sulle\nprincipali installazioni informatiche a livello nazionale, regionale e locale,\ndeterminando per ogni singola amministrazione l’insieme delle principali\ncomponenti hardware e software in uso.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/censimento-ict.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict/censimento-ict/it/bozza/",
+  "tags": [
+   "piano-triennale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/censimento-ict/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/censimento-ict/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/censimento-ict/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 142,
+  "name": "Manuale di integrazione per servizi basati sul NIS",
+  "slug": "cie-accessi-pinless-manuale-docs",
+  "description": "Protocollo operativo necessario per utilizzare la Carta di Identità Elettronica 3.0 come strumento per la fruizione di servizi fisici di accesso pinless",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-accessi-pinless-manuale-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-accessi-pinless-manuale-docs/it/stabile/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "651b15d41822f46917069e6b49362a42037495c1",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-accessi-pinless-manuale-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/cie-accessi-pinless-manuale-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/cie-accessi-pinless-manuale-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 175,
+  "name": "Regole Tecniche CIE eID SAML",
+  "slug": "cie-eid-saml-docs",
+  "description": "Specifiche tecniche per i fornitori di servizi pubblici e privati che descrivono le modalità di integrazione dello schema di autenticazione \"Entra con CIE\" per l'accesso ai servizi online secondo il protocollo SAML v2. \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-eid-saml-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-eid-saml-docs/it/versione-corrente/",
+  "tags": [
+   "saml_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-eid-saml-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/cie-eid-saml-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/cie-eid-saml-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 176,
+  "name": "Guida all'implementazione del SDK Mobile CIE id",
+  "slug": "cie-eid-sdk-docs",
+  "description": "Guida operativa all'implementazione del SDK Mobile CIE id che consente l'integrazione dello schema di autenticazione \"Entra con CIE\" all'interno di Applicazioni mobile dei fornitori di servizi abilitati. \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-eid-sdk-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-eid-sdk-docs/it/versione-corrente/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-eid-sdk-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/cie-eid-sdk-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/cie-eid-sdk-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 171,
+  "name": "CIE id overview",
+  "slug": "cie-id-overview",
+  "description": "CIE id overview",
+  "language": "en",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-eid-overview-docs/",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/cie-id-overview/en/bozza/",
+  "tags": [
+   "cie_1"
+  ],
+  "publisher": null,
+  "publisher_project": null,
+  "active_versions": []
+ },
+ {
+  "id": 122,
+  "name": "Manuale Operativo per gli erogatori di servizi pubblici e privati",
+  "slug": "cie-manuale-operativo-docs",
+  "description": "Documento che descrive il processo di onboarding finalizzato all'integrazione dello schema di identificazione Entra con CIE per l'accesso ai servizi in rete di PP.AA e Privati.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-manuale-operativo-docs.git",
+  "repo_type": "git",
+  "default_version": "master",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-manuale-operativo-docs/it/master/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/epub/master/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/cie-manuale-operativo-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 123,
+  "name": "Manuale Tecnico per gli erogatori di servizi pubblici e privati",
+  "slug": "cie-manuale-tecnico-docs",
+  "description": "Documento di specifiche tecniche per consentire l'integrazione dello schema di identificazione Entra con CIE per l'accesso ai servizi in rete di PP.AA e Privati.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-manuale-tecnico-docs.git",
+  "repo_type": "git",
+  "default_version": "master",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-manuale-tecnico-docs/it/master/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-manuale-tecnico-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/cie-manuale-tecnico-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/cie-manuale-tecnico-docs/downloads/epub/master/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 43,
+  "name": "CIE 3.0, Manuale utente del middleware CIE",
+  "slug": "cie-middleware-windows-docs",
+  "description": "Questo manuale per l'utente illustra le principali funzionalità messe a\r\ndisposizione dall'applicativo Middleware CIE.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cie-middleware-windows-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cie/cie-middleware-windows-docs/it/bozza/",
+  "tags": [
+   "carta-di-identita-elettronica_1",
+   "cie_1",
+   "docs-italia_1",
+   "manuale",
+   "middleware_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Carta d’identità elettronica",
+   "canonical_url": "https://docs.italia.it/italia/cie"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/epub/master/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/cie-middleware-windows-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "name": "Il modello di Cloud della PA",
+  "slug": "cloud-docs",
+  "description": "Questo repository contiene la documentazione relativa al progetto \"Il Cloud della PA\".\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cloud-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict/cloud-docs/it/stabile/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "dd8cbdb034384382cf1affa3af4f391eb50e622a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cloud-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/cloud-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/cloud-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cloud-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/cloud-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/cloud-docs/downloads/epub/bozza/"
+    }
+   },
+   {
+    "slug": "2020.1",
+    "verbose_name": "2020.1",
+    "identifier": "1d947f2751e2e02373e9eec8e2a6b86e69d50d49",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cloud-docs/downloads/pdf/2020.1/",
+     "html": "//docs.italia.it/projects/cloud-docs/downloads/htmlzip/2020.1/",
+     "epub": "//docs.italia.it/projects/cloud-docs/downloads/epub/2020.1/"
+    }
+   },
+   {
+    "slug": "2019.1",
+    "verbose_name": "2019.1",
+    "identifier": "797d7c216770672c6efc57f6b38c40390539c34c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/cloud-docs/downloads/pdf/2019.1/",
+     "html": "//docs.italia.it/projects/cloud-docs/downloads/htmlzip/2019.1/",
+     "epub": "//docs.italia.it/projects/cloud-docs/downloads/epub/2019.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 31,
+  "name": "Il Cloud della PA",
+  "slug": "clouditaliait",
+  "description": "Le Circolari e i relativi allegati definiscono, in attuazione a quanto previsto\nnel \"Piano Triennale per l’informatica nella Pubblica amministrazione 2017-\n2019\", approvato con DPCM del 31 maggio 2017, i requisiti di qualificazione dei\nservizi SaaS e dei Cloud Service Provider.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/cloud.italia.it.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/clouditaliait/it/bozza/",
+  "tags": [
+   "piano-triennale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 44,
+  "name": "Codice dell'amministrazione digitale",
+  "slug": "codice-amministrazione-digitale-docs",
+  "description": "Lo Stato, le Regioni e le autonomie locali assicurano la disponibilità, la gestione, l’accesso, la trasmissione, la conservazione e la fruibilità dell’informazione in modalità digitale e si organizzano ed agiscono a tale fine utilizzando con le modalità più appropriate e nel modo più adeguato al soddisfacimento degli interessi degli utenti le tecnologie dell’informazione e della comunicazione.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/codice-amministrazione-digitale-docs.git",
+  "repo_type": "git",
+  "default_version": "v2026-04-20",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict/codice-amministrazione-digitale-docs/it/v2026-04-20/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": [
+   {
+    "slug": "v2026-04-20",
+    "verbose_name": "v2026-04-20",
+    "identifier": "11771e8f07ce7ccdbf35a1e2a2a4d7b6a27ad4df",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2026-04-20/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2026-04-20/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2026-04-20/"
+    }
+   },
+   {
+    "slug": "v2021-07-30",
+    "verbose_name": "v2021-07-30",
+    "identifier": "7fad4498689249608de36665eb79607eeaf1476f",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2021-07-30/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2021-07-30/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2021-07-30/"
+    }
+   },
+   {
+    "slug": "v2021-05-31",
+    "verbose_name": "v2021-05-31",
+    "identifier": "961e4feb5ee4429589f9a3d1116ed261f5e93b1d",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2021-05-31/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2021-05-31/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2021-05-31/"
+    }
+   },
+   {
+    "slug": "v2020-09-14",
+    "verbose_name": "v2020-09-14",
+    "identifier": "c253a861b70fe8c1df219557de7433259e98b388",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2020-09-14/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2020-09-14/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2020-09-14/"
+    }
+   },
+   {
+    "slug": "v2018-09-28",
+    "verbose_name": "v2018-09-28",
+    "identifier": "0511d882eb0b2377d0e85c52eab042a0063cc7b9",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2018-09-28/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2018-09-28/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2018-09-28/"
+    }
+   },
+   {
+    "slug": "v2017-12-13",
+    "verbose_name": "v2017-12-13",
+    "identifier": "f565e98229183eaf2131f0e5b31667caedf15482",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2017-12-13/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2017-12-13/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2017-12-13/"
+    }
+   },
+   {
+    "slug": "v2016-08-26",
+    "verbose_name": "v2016-08-26",
+    "identifier": "925dc35db0cd59aafaa72d3908e8cae2947144e7",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2016-08-26/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2016-08-26/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2016-08-26/"
+    }
+   },
+   {
+    "slug": "v2015-07-10",
+    "verbose_name": "v2015-07-10",
+    "identifier": "d4c9c6007e75dd406e6e0b2adf961573398a3d9d",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2015-07-10/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2015-07-10/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2015-07-10/"
+    }
+   },
+   {
+    "slug": "v2015-06-27",
+    "verbose_name": "v2015-06-27",
+    "identifier": "b91100cbd03ace7f00c4126341472a90e3be38dd",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2015-06-27/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2015-06-27/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2015-06-27/"
+    }
+   },
+   {
+    "slug": "v2015-06-19",
+    "verbose_name": "v2015-06-19",
+    "identifier": "9cecc73fa83ea9f9cb38a258239675db19774d4a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2015-06-19/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2015-06-19/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2015-06-19/"
+    }
+   },
+   {
+    "slug": "v2014-12-24",
+    "verbose_name": "v2014-12-24",
+    "identifier": "9a65b9d86ee7219a22e803e8015574c6ebea6855",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2014-12-24/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2014-12-24/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2014-12-24/"
+    }
+   },
+   {
+    "slug": "v2014-06-24",
+    "verbose_name": "v2014-06-24",
+    "identifier": "9372add63967f14c085982672e942c46c74d8368",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2014-06-24/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2014-06-24/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2014-06-24/"
+    }
+   },
+   {
+    "slug": "v2013-12-27",
+    "verbose_name": "v2013-12-27",
+    "identifier": "bbb7ba722e56ba9027bd7507204f12bc853c1f89",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2013-12-27/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2013-12-27/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2013-12-27/"
+    }
+   },
+   {
+    "slug": "v2013-06-21",
+    "verbose_name": "v2013-06-21",
+    "identifier": "1822505527d0f6e08ea73bad44253c97ec9c7fd5",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2013-06-21/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2013-06-21/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2013-06-21/"
+    }
+   },
+   {
+    "slug": "v2013-03-14",
+    "verbose_name": "v2013-03-14",
+    "identifier": "5c3e2761bf28a30826d77e54410585eede810496",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2013-03-14/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2013-03-14/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2013-03-14/"
+    }
+   },
+   {
+    "slug": "v2012-10-18",
+    "verbose_name": "v2012-10-18",
+    "identifier": "0df248e69208ce7bc982e5a5e04b8cc30a85c6c6",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2012-10-18/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2012-10-18/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2012-10-18/"
+    }
+   },
+   {
+    "slug": "v2012-07-06",
+    "verbose_name": "v2012-07-06",
+    "identifier": "4d5d790bb7ae56376f593e3769787adb115430fb",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2012-07-06/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2012-07-06/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2012-07-06/"
+    }
+   },
+   {
+    "slug": "v2012-06-22",
+    "verbose_name": "v2012-06-22",
+    "identifier": "72c3dac73006dd51a82c5740ada5dc38f6dd26aa",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2012-06-22/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2012-06-22/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2012-06-22/"
+    }
+   },
+   {
+    "slug": "v2012-02-09",
+    "verbose_name": "v2012-02-09",
+    "identifier": "4b1b1a71bb273662358ec7ff17b399a4f2faef96",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2012-02-09/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2012-02-09/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2012-02-09/"
+    }
+   },
+   {
+    "slug": "v2011-12-06",
+    "verbose_name": "v2011-12-06",
+    "identifier": "8aea5bf1795abb3eabbc0bd6c43c70a416a9600b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2011-12-06/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2011-12-06/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2011-12-06/"
+    }
+   },
+   {
+    "slug": "v2011-08-13",
+    "verbose_name": "v2011-08-13",
+    "identifier": "8a3b6ddbbbebecb7ea40134a0248451d20f17571",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2011-08-13/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2011-08-13/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2011-08-13/"
+    }
+   },
+   {
+    "slug": "v2010-12-30",
+    "verbose_name": "v2010-12-30",
+    "identifier": "f9c7684c2c33107f83246ae08d8b4706bf345600",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2010-12-30/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2010-12-30/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2010-12-30/"
+    }
+   },
+   {
+    "slug": "v2010-12-29",
+    "verbose_name": "v2010-12-29",
+    "identifier": "7b3b7a9876a6036cebcc71a9a999ad9a79c44533",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2010-12-29/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2010-12-29/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2010-12-29/"
+    }
+   },
+   {
+    "slug": "v2010-07-07",
+    "verbose_name": "v2010-07-07",
+    "identifier": "84949caff7616b2110190b2ef63782ce4368125a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2010-07-07/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2010-07-07/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2010-07-07/"
+    }
+   },
+   {
+    "slug": "v2010-01-27",
+    "verbose_name": "v2010-01-27",
+    "identifier": "814c5e79ca874376bfccaf47f63e4d1d4cd05b4d",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2010-01-27/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2010-01-27/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2010-01-27/"
+    }
+   },
+   {
+    "slug": "v2009-12-30",
+    "verbose_name": "v2009-12-30",
+    "identifier": "ba6e7f4e1ed2ff3b5ccf9b8250f0c1c4da8cde4a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2009-12-30/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2009-12-30/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2009-12-30/"
+    }
+   },
+   {
+    "slug": "v2009-12-23",
+    "verbose_name": "v2009-12-23",
+    "identifier": "119326a0d8c7aef27bdcc21fda177b6a22669821",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2009-12-23/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2009-12-23/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2009-12-23/"
+    }
+   },
+   {
+    "slug": "v2009-07-01",
+    "verbose_name": "v2009-07-01",
+    "identifier": "32ba7f138a15359cf55a060974bd7a8043bbbc99",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2009-07-01/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2009-07-01/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2009-07-01/"
+    }
+   },
+   {
+    "slug": "v2009-06-18",
+    "verbose_name": "v2009-06-18",
+    "identifier": "63c3d4e0a2e608af70e8d7903cb083b5aac9afc4",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2009-06-18/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2009-06-18/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2009-06-18/"
+    }
+   },
+   {
+    "slug": "v2008-12-30",
+    "verbose_name": "v2008-12-30",
+    "identifier": "0cd44f1eb8f2b734ac4d80a1fb5ec7ac108eeea1",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2008-12-30/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2008-12-30/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2008-12-30/"
+    }
+   },
+   {
+    "slug": "v2008-11-29",
+    "verbose_name": "v2008-11-29",
+    "identifier": "5b4840110b281e55eca94649d9a6552e80f8073f",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2008-11-29/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2008-11-29/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2008-11-29/"
+    }
+   },
+   {
+    "slug": "v2007-12-30",
+    "verbose_name": "v2007-12-30",
+    "identifier": "3dbc92879eaf89895ec35f1f65e0d6dd09b05d17",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2007-12-30/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2007-12-30/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2007-12-30/"
+    }
+   },
+   {
+    "slug": "v2007-12-24",
+    "verbose_name": "v2007-12-24",
+    "identifier": "1558dad6910a5b3950a402a52206b5f07caf7131",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2007-12-24/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2007-12-24/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2007-12-24/"
+    }
+   },
+   {
+    "slug": "v2006-04-04",
+    "verbose_name": "v2006-04-04",
+    "identifier": "d487398a44ecd302e07c310b346906a0600c606a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2006-04-04/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2006-04-04/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2006-04-04/"
+    }
+   },
+   {
+    "slug": "v2005-03-07",
+    "verbose_name": "v2005-03-07",
+    "identifier": "caccf053633078f0e49657e34f65c3c66dab01f5",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/v2005-03-07/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/v2005-03-07/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/v2005-03-07/"
+    }
+   },
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "7fad4498689249608de36665eb79607eeaf1476f",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/codice-amministrazione-digitale-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "name": "DAF Dataportal - manuale per l’utente",
+  "slug": "daf-dataportal-it-docs",
+  "description": "Questo manuale per l’utente illustra le principali operazioni che è\npossibile svolgere all'interno dell’area pubblica del Dataportal,\naccessibile a tutti gli utenti del Web, e dell'area privata, a uso\nesclusivo degli utenti registrati.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/daf-dataportal-it-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/daf-dataportal-it-docs/it/bozza/",
+  "tags": [
+   "manuale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/epub/master/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/daf-dataportal-it-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "name": "Developer documentation",
+  "slug": "daf-docs",
+  "description": "The Data & Analytics Framework (DAF, in short) is an open source project\r\ndeveloped in the context of the activities planned by the Italian Three-Year\r\nPlan for ICT in Public Administration 2017 - 2019, approved by the Italian\r\nGovernment in the 2017.",
+  "language": "en",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/daf-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/daf-docs/en/bozza/",
+  "tags": [
+   "daf"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/daf-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/daf-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/daf-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "name": "Piano di sviluppo",
+  "slug": "daf-piano-di-sviluppo",
+  "description": "Questo documento rappresenta il risultato dell’azione “Definizione e realizzazione del piano di sviluppo della fase di sperimentazione del Data & Analytics Framework”, previsto nel capitolo 9 del Piano Triennale per l’Informatica nella PA (2017-2019). Nel documento sono contenute informazioni relative al piano di sviluppo del DAF nella sua fase di sperimentazione.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/daf-piano-di-sviluppo.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/daf-piano-di-sviluppo/it/bozza/",
+  "tags": [
+   "daf"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/daf-piano-di-sviluppo/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/daf-piano-di-sviluppo/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/daf-piano-di-sviluppo/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 181,
+  "name": "Catalogo Nazionale Dati per l'Interoperabilità Semantica",
+  "slug": "dati-semantic-guida-ndc-docs",
+  "description": "Catalogo Nazionale Dati per l'Interoperabilità Semantica",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/teamdigitale/dati-semantic-guida-ndc-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale/dati-semantic-guida-ndc-docs/it/versione-corrente/",
+  "tags": [],
+  "publisher": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale"
+  },
+  "publisher_project": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/dati-semantic-guida-ndc-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/dati-semantic-guida-ndc-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/dati-semantic-guida-ndc-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 177,
+  "name": "Design dei siti web delle ASL",
+  "slug": "design-asl-docs",
+  "description": "Documentazione tecnica e di progetto del modello ASL di Designers Italia",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-asl-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-asl-docs/it/versione-corrente/",
+  "tags": [
+   "design",
+   "salute"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-asl-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-asl-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-asl-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 74,
+  "name": "Design dei siti web dei Comuni italiani",
+  "slug": "design-comuni-docs",
+  "description": "Questo documento descrive il processo di costruzione del modello di siti web\nper i Comuni italiani. Definisce i criteri e le modalità di realizzazione e\ncontiene tutti i riferimenti ai documenti più importanti relativi al\nprogetto.    \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-comuni-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-comuni-docs/it/versione-corrente/",
+  "tags": [
+   "comuni",
+   "design"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/versione-corrente/"
+    }
+   },
+   {
+    "slug": "v2024.1",
+    "verbose_name": "v2024.1",
+    "identifier": "origin/v2024.1",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2024.1/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2024.1/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2024.1/"
+    }
+   },
+   {
+    "slug": "v2023.3",
+    "verbose_name": "v2023.3",
+    "identifier": "origin/v2023.3",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2023.3/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2023.3/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2023.3/"
+    }
+   },
+   {
+    "slug": "v2023.2",
+    "verbose_name": "v2023.2",
+    "identifier": "origin/v2023.2",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2023.2/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2023.2/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2023.2/"
+    }
+   },
+   {
+    "slug": "v2023.1",
+    "verbose_name": "v2023.1",
+    "identifier": "origin/v2023.1",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2023.1/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2023.1/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2023.1/"
+    }
+   },
+   {
+    "slug": "v2022.3",
+    "verbose_name": "v2022.3",
+    "identifier": "origin/v2022.3",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2022.3/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2022.3/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2022.3/"
+    }
+   },
+   {
+    "slug": "v2022.2",
+    "verbose_name": "v2022.2",
+    "identifier": "origin/v2022.2",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2022.2/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2022.2/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2022.2/"
+    }
+   },
+   {
+    "slug": "v2022.1",
+    "verbose_name": "v2022.1",
+    "identifier": "1ff181614bf3519262ac7f5bc703cc40dad39f5e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2022.1/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2022.1/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2022.1/"
+    }
+   },
+   {
+    "slug": "v2019.2",
+    "verbose_name": "v2019.2",
+    "identifier": "7f790d884a00b5ace53d468d21588cfb5ea28a9b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2019.2/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2019.2/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2019.2/"
+    }
+   },
+   {
+    "slug": "v2019.1",
+    "verbose_name": "v2019.1",
+    "identifier": "260098762e412866d24c78b1282bd4dcc34d51d8",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-comuni-docs/downloads/pdf/v2019.1/",
+     "html": "//docs.italia.it/projects/design-comuni-docs/downloads/htmlzip/v2019.1/",
+     "epub": "//docs.italia.it/projects/design-comuni-docs/downloads/epub/v2019.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 45,
+  "name": "Linee guida di design per i servizi web della Pubblica Amministrazione",
+  "slug": "design-linee-guida-docs",
+  "description": "Le Linee guida per il design dei servizi digitali della Pubblica Amministrazione servono ad orientare la progettazione di ambienti digitali fornendo indicazioni relative al service design, alla user research, al content design e alla user interface.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-linee-guida-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-linee-guida-docs/it/stabile/",
+  "tags": [
+   "design",
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "7c87fa19f4aee7e317dcc475545fd7d9583ed981",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/bozza/"
+    }
+   },
+   {
+    "slug": "2020.1",
+    "verbose_name": "2020.1",
+    "identifier": "d0dcbc44306984261f67665696e3cf86f5364f3a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/2020.1/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/2020.1/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/2020.1/"
+    }
+   },
+   {
+    "slug": "2019.2",
+    "verbose_name": "2019.2",
+    "identifier": "a2af6f66c17e74bdebbdb1b6d39519b69b5abb00",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/2019.2/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/2019.2/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/2019.2/"
+    }
+   },
+   {
+    "slug": "2019.1",
+    "verbose_name": "2019.1",
+    "identifier": "d8f7633831b6b29fb5d1b3e46131185c03c7ac51",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/2019.1/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/2019.1/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/2019.1/"
+    }
+   },
+   {
+    "slug": "2018.1",
+    "verbose_name": "2018.1",
+    "identifier": "c1a54ae713b255ee74d4f0573a0cc353a7337002",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/2018.1/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/2018.1/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/2018.1/"
+    }
+   },
+   {
+    "slug": "2017.1",
+    "verbose_name": "2017.1",
+    "identifier": "dc2d9ccf102594541bbf70313ff5e4c6faa7ce2c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-linee-guida-docs/downloads/pdf/2017.1/",
+     "html": "//docs.italia.it/projects/design-linee-guida-docs/downloads/htmlzip/2017.1/",
+     "epub": "//docs.italia.it/projects/design-linee-guida-docs/downloads/epub/2017.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 178,
+  "name": "Design dei siti web dei Musei Civici",
+  "slug": "design-musei-docs",
+  "description": "Documentazione tecnica e di progetto del modello Musei di Designers Italia",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-musei-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-musei-docs/it/versione-corrente/",
+  "tags": [
+   "arte",
+   "cultura",
+   "design"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-musei-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-musei-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-musei-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 168,
+  "name": "Documentazione di progetto per il modello di sito e servizi dei Comuni italiani",
+  "slug": "design-report-ricerca-comuni-docs",
+  "description": "Report della ricerca e del processo di progettazione del modello di sito comunale e dei flussi di servizio disponibile su Designers Italia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-report-ricerca-comuni-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-report-ricerca-comuni-docs/it/versione-corrente/",
+  "tags": [
+   "comuni",
+   "design"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-report-ricerca-comuni-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-report-ricerca-comuni-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-report-ricerca-comuni-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 40,
+  "name": "Progetto siti web delle scuole",
+  "slug": "design-scuole-docs",
+  "description": "Questo documento descrive il processo di costruzione del modello di siti web\nper le scuole italiane. Definisce i criteri e le modalità di realizzazione e\ncontiene tutti i riferimenti ai documenti più importanti relativi al\nprogetto.    \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-scuole-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-scuole-docs/it/versione-corrente/",
+  "tags": [
+   "design",
+   "scuole"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/versione-corrente/"
+    }
+   },
+   {
+    "slug": "v2023.3",
+    "verbose_name": "v2023.3",
+    "identifier": "origin/v2023.3",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2023.3/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2023.3/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2023.3/"
+    }
+   },
+   {
+    "slug": "v2023.2",
+    "verbose_name": "v2023.2",
+    "identifier": "origin/v2023.2",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2023.2/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2023.2/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2023.2/"
+    }
+   },
+   {
+    "slug": "v2023.1",
+    "verbose_name": "v2023.1",
+    "identifier": "origin/v2023.1",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2023.1/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2023.1/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2023.1/"
+    }
+   },
+   {
+    "slug": "v2022.2",
+    "verbose_name": "v2022.2",
+    "identifier": "origin/v2022.2",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2022.2/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2022.2/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2022.2/"
+    }
+   },
+   {
+    "slug": "v2022.1",
+    "verbose_name": "v2022.1",
+    "identifier": "2c77b49b829540c5237953e4aa86954704e7eff4",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2022.1/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2022.1/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2022.1/"
+    }
+   },
+   {
+    "slug": "v2019.1",
+    "verbose_name": "v2019.1",
+    "identifier": "7c2601b00c73093caa18fc9e8713916b0309a604",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-docs/downloads/pdf/v2019.1/",
+     "html": "//docs.italia.it/projects/design-scuole-docs/downloads/htmlzip/v2019.1/",
+     "epub": "//docs.italia.it/projects/design-scuole-docs/downloads/epub/v2019.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 166,
+  "name": "Guida del tema WordPress Design Scuole Italia",
+  "slug": "design-scuole-wordpress-theme-docs",
+  "description": "Questo documento fornisce indicazioni per installare e usare il tema WordPress del modello di siti web\nper le scuole italiane. Definisce lo scopo del tema, il processo di installazione, i vari content type del sito e le opzioni di personalizzazione.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-scuole-wordpress-theme-docs.git",
+  "repo_type": "git",
+  "default_version": "v2022.1",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-scuole-wordpress-theme-docs/it/v2022.1/",
+  "tags": [
+   "design",
+   "scuole"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "v2022.1",
+    "verbose_name": "v2022.1",
+    "identifier": "a42cab71fe84e530ede9c77e140c47f51a3075bb",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-scuole-wordpress-theme-docs/downloads/pdf/v2022.1/",
+     "html": "//docs.italia.it/projects/design-scuole-wordpress-theme-docs/downloads/htmlzip/v2022.1/",
+     "epub": "//docs.italia.it/projects/design-scuole-wordpress-theme-docs/downloads/epub/v2022.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 179,
+  "name": "design-UX-cittadini-once-only-docs",
+  "slug": "design-ux-cittadini-once-only-docs",
+  "description": "",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/design-UX-cittadini-once-only-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/design-ux-cittadini-once-only-docs/it/versione-corrente/",
+  "tags": [
+   "design",
+   "servizi"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/design-ux-cittadini-once-only-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/design-ux-cittadini-once-only-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/design-ux-cittadini-once-only-docs/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "name": "Apertura croccantini",
+  "slug": "docs-content2",
+  "description": "Lorem ipsum dolor sit amet, consectetur\nadipisicing elit, sed do eiusmod tempor\nincididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud\nexercitation ullamco laboris nisi ut\naliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in\nvoluptate velit esse cillum dolore eu\nfugiat nulla pariatur. Excepteur sint\noccaecat cupidatat non proident, sunt in\nculpa qui officia deserunt mollit anim id\nest laborum.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/organizzazione-quattro-gatti/docs-content2.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/docs-content2/it/bozza/",
+  "tags": [],
+  "publisher": null,
+  "publisher_project": null,
+  "active_versions": []
+ },
+ {
+  "id": 27,
+  "name": "Guida a Docs Italia",
+  "slug": "docs-italia-guide",
+  "description": "Guida alla pubblicazione dei documenti della Pubblica Amministrazione su Docs Italia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/docs-italia-guide.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/docs-italia/docs-italia-guide/it/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Docs Italia",
+   "canonical_url": "https://docs.italia.it/italia/docs-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/docs-italia-guide/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/docs-italia-guide/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/docs-italia-guide/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 180,
+  "name": "Inquadramento strategico di Ecomic",
+  "slug": "ecomic-inquadramento-strategico-2-0-docs",
+  "description": "Ecomic è l'ecosistema digitale promosso dall'Istituto centrale per la digitalizzazione del patrimonio culturale – Digital Library per supportare la trasformazione digitale del patrimonio culturale italiano. Il documento descrive la strategia, l'architettura tecnologica e i servizi dell'ecosistema, articolati nei tre sistemi integrati D.PaC, I.PaC e DPaaS, e i servizi digitali rivolti a istituzioni, professionisti e cittadini.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/icdp-digital-library/ecomic-inquadramento-strategico-2-0-docs.git",
+  "repo_type": "git",
+  "default_version": "2.0",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/icdp-digital-library/ecomic/ecomic-inquadramento-strategico-2-0-docs/it/2.0/",
+  "tags": [],
+  "publisher": {
+   "name": "Istituto centrale per la digitalizzazione del patrimonio culturale - DIGITAL LIBRARY, Ministero della Cultura",
+   "canonical_url": "https://docs.italia.it/icdp-digital-library"
+  },
+  "publisher_project": {
+   "name": "Ecomic - Ecosistema digitale per la cultura",
+   "canonical_url": "https://docs.italia.it/icdp-digital-library/ecomic"
+  },
+  "active_versions": [
+   {
+    "slug": "2.0",
+    "verbose_name": "2.0",
+    "identifier": "7dddc243e56596457b541fdfb07f381390970a98",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/ecomic-inquadramento-strategico-2-0-docs/downloads/pdf/2.0/",
+     "html": "//docs.italia.it/projects/ecomic-inquadramento-strategico-2-0-docs/downloads/htmlzip/2.0/",
+     "epub": "//docs.italia.it/projects/ecomic-inquadramento-strategico-2-0-docs/downloads/epub/2.0/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "name": "Accesso civico generalizzato. Norme sull'attuazione, circolare n. 2 del 2017",
+  "slug": "foia-circolare2-docs",
+  "description": "La normativa cosiddetta FOIA (Freedom of Information Act), introdotta con decreto legislativo n. 97 del 2016, è parte integrante del processo di riforma della pubblica amministrazione, definito dalla legge 7 agosto 2015, n. 124 (c.d. legge Madia).",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/foia-circolare2-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/funzione-pubblica/foia-circolare2-docs/it/stabile/",
+  "tags": [
+   "norme"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Dipartimento della Funzione Pubblica",
+   "canonical_url": "https://docs.italia.it/italia/funzione-pubblica"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "2e1e3f075b8db736a89d76795c6bbb540cacb18c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/foia-circolare2-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/foia-circolare2-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/foia-circolare2-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/foia-circolare2-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/foia-circolare2-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/foia-circolare2-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 64,
+  "name": "Guidelines on the acquisition and reuse of software for public administrations",
+  "slug": "gl-acquisition-and-reuse-software-for-pa-docs",
+  "description": "Guidelines on the acquisition and reuse of software for public administrations",
+  "language": "en",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/gl-acquisition-and-reuse-software-for-pa-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/gl-acquisition-and-reuse-software-for-pa-docs/en/stabile/",
+  "tags": [
+   "guidelines",
+   "public-code",
+   "reuse"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "24d0eb5a915b13146c194f582f5a2fdaae2d7bea",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/gl-acquisition-and-reuse-software-for-pa-docs/downloads/epub/master/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 151,
+  "name": "TDH022 – TECHNICAL INTEROPERABILITY GUIDELINES AND API MANAGEMENT",
+  "slug": "gl-tourism-digital-hub-interoperabilita-docs",
+  "description": "These Guidelines define standards \nand technologies that Public \nAdministrations will have to comply\nwith to make their information \nsystems interoperable, in order to\nallow the information and data exchange\nbetween Administrations (central, regional\nand local), Public Entities and Third-Party\nCompanies with the TDH Digital Ecosystem, \nhenceforth \"Ecosystem\" or \"TDH\", through \nthe TDH022.   \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/gl-tourism-digital-hub-interoperabilita-docs.git",
+  "repo_type": "git",
+  "default_version": "main",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mitur/gl-tourism-digital-hub-interoperabilita-docs/it/main/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministero del Turismo",
+   "canonical_url": "https://docs.italia.it/italia/mitur"
+  },
+  "active_versions": [
+   {
+    "slug": "main",
+    "verbose_name": "main",
+    "identifier": "origin/main",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/gl-tourism-digital-hub-interoperabilita-docs/downloads/pdf/main/",
+     "html": "//docs.italia.it/projects/gl-tourism-digital-hub-interoperabilita-docs/downloads/htmlzip/main/",
+     "epub": "//docs.italia.it/projects/gl-tourism-digital-hub-interoperabilita-docs/downloads/epub/main/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 120,
+  "name": "Guida allo sviluppo e gestione di software libero",
+  "slug": "guida-sviluppo-gestione-software-libero",
+  "description": "Guida allo sviluppo e gestione di software libero\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/guida-sviluppo-gestione-software-libero.git",
+  "repo_type": "git",
+  "default_version": "2022-05",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/guida-sviluppo-gestione-software-libero/it/2022-05/",
+  "tags": [
+   "open-source"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "ceb8baa3a3178df81ac8040d295bc33c1a05c44b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "2022-05",
+    "verbose_name": "2022-05",
+    "identifier": "ceb8baa3a3178df81ac8040d295bc33c1a05c44b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/pdf/2022-05/",
+     "html": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/htmlzip/2022-05/",
+     "epub": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/epub/2022-05/"
+    }
+   },
+   {
+    "slug": "2022-03",
+    "verbose_name": "2022-03",
+    "identifier": "440bc1d7dc983103c7183e19b45793a43310ee4d",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/pdf/2022-03/",
+     "html": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/htmlzip/2022-03/",
+     "epub": "//docs.italia.it/projects/guida-sviluppo-gestione-software-libero/downloads/epub/2022-03/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 154,
+  "name": "Linee guida per l’acquisizione, la circolazione e il riuso delle riproduzioni dei beni culturali in ambiente digitale",
+  "slug": "icdp-pnd-circolazione-riuso-docs",
+  "description": "Il PND costituisce la visione strategica con la quale il Ministero della Cultura intende promuovere e organizzare il processo di trasformazione digitale nel quinquennio 2022-2026.\r\nIl piano si rivolge ai musei, agli archivi, alle biblioteche, agli istituti centrali e ai luoghi della cultura statali che conservano, gestiscono e valorizzano i beni culturali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-circolazione-riuso-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.0-giugno-2022",
+  "default_branch": "v1.0-giugno-2022",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-circolazione-riuso-docs/it/v1.0-giugno-2022/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "aac52288338bfba47c439e0c89eaa168a9866b9e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "9beacae0df485a1f0952b8a9d4e467df60b4e971",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-circolazione-riuso-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 158,
+  "name": "Linee guida per la digitalizzazione del patrimonio culturale",
+  "slug": "icdp-pnd-digitalizzazione-docs",
+  "description": "Il PND costituisce la visione strategica con la quale il Ministero della Cultura intende promuovere e organizzare il processo di trasformazione digitale nel quinquennio 2022-2026.\r\nIl piano si rivolge ai musei, agli archivi, alle biblioteche, agli istituti centrali e ai luoghi della cultura statali che conservano, gestiscono e valorizzano i beni culturali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-digitalizzazione-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.0-giugno-2022",
+  "default_branch": "v1.0-giugno-2022",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-digitalizzazione-docs/it/v1.0-giugno-2022/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "04e4efaf09014b20f8fe5513ea01b5c5e266b890",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "d429f466715c2c5718f3ac6cd5eab79621b6dce7",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-digitalizzazione-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 157,
+  "name": "Linee guida per la redazione del piano di gestione dei dati (Data Management Plan)",
+  "slug": "icdp-pnd-dmp-docs",
+  "description": "Il PND costituisce la visione strategica con la quale il Ministero della Cultura intende promuovere e organizzare il processo di trasformazione digitale nel quinquennio 2022-2026.\r\nIl piano si rivolge ai musei, agli archivi, alle biblioteche, agli istituti centrali e ai luoghi della cultura statali che conservano, gestiscono e valorizzano i beni culturali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-dmp-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.0-giugno-2022",
+  "default_branch": "v1.0-giugno-2022",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-dmp-docs/it/v1.0-giugno-2022/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "d5d05469c6dd5b68fd398ed25ce9c5a1cdd5cd60",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "377e470352a76bea597e73aecc401a5625532923",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-dmp-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 152,
+  "name": "Piano nazionale di digitalizzazione del patrimonio culturale",
+  "slug": "icdp-pnd-docs",
+  "description": "Il PND costituisce la visione strategica con la quale il Ministero della Cultura intende promuovere e organizzare il processo di trasformazione digitale nel quinquennio 2022-2026.\r\nIl piano si ri  volge ai musei, agli archivi, alle biblioteche, agli istituti centrali e ai luoghi della cultura statali che conservano, gestiscono e valorizzano i beni culturali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.1-febbraio-2023",
+  "default_branch": "v1.1-febbraio-2023",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-docs/it/v1.1-febbraio-2023/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.1-febbraio-2023",
+    "verbose_name": "v1.1-febbraio-2023",
+    "identifier": "63d28135ae6dd4945e077c1de22d891a3537989b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-docs/downloads/pdf/v1.1-febbraio-2023/",
+     "html": "//docs.italia.it/projects/icdp-pnd-docs/downloads/htmlzip/v1.1-febbraio-2023/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-docs/downloads/epub/v1.1-febbraio-2023/"
+    }
+   },
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "ec8da1e1ced5ed2025aba03bb3adfd746bdb6c1a",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "df496f0fc3358a1e428b349aa506eec820e78e06",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 156,
+  "name": "Introduzione alla metodologia per la valutazione della maturità digitale degli istituti culturali",
+  "slug": "icdp-pnd-maturita-docs",
+  "description": "Il PND costituisce la visione strategica con la quale il Ministero della Cultura intende promuovere e organizzare il processo di trasformazione digitale nel quinquennio 2022-2026.\r\nIl piano si rivolge ai musei, agli archivi, alle biblioteche, agli istituti centrali e ai luoghi della cultura statali che conservano, gestiscono e valorizzano i beni culturali.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-maturita-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.0-giugno-2022",
+  "default_branch": "v1.0-giugno-2022",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-maturita-docs/it/v1.0-giugno-2022/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "0fc83a209f68bd1f6f1ebe9829d70fef486c8aae",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "6a4cc704b7ddac70ad09ce9a42c21116fdb797b6",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-maturita-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 155,
+  "name": "Linee guida per la classificazione di prodotti e servizi digitali, processi e modelli di gestione",
+  "slug": "icdp-pnd-servizi-docs",
+  "description": "Le linee guida 4 individuano e descrivono le diverse tassonomie e mappature di processi e servizi menzionate nel Piano nazionale di digitalizzazione del patrimonio culturale (PND), al fine di ordinare i differenti concetti per tipologie “di senso” e orientare il lettore.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/ICDP-PND-servizi-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.0-giugno-2022",
+  "default_branch": "v1.0-giugno-2022",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/icdp/icdp-pnd-servizi-docs/it/v1.0-giugno-2022/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "ICDP - Piano nazionale di digitalizzazione del patrimonio culturale",
+   "canonical_url": "https://docs.italia.it/italia/icdp"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.0-giugno-2022",
+    "verbose_name": "v1.0-giugno-2022",
+    "identifier": "d01670b6f41ee2130cf61f103cea7c296ee4794c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/pdf/v1.0-giugno-2022/",
+     "html": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/htmlzip/v1.0-giugno-2022/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/epub/v1.0-giugno-2022/"
+    }
+   },
+   {
+    "slug": "consultazione",
+    "verbose_name": "consultazione",
+    "identifier": "88c969b72be4341b68e5132c4c312db1d19e6957",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/pdf/consultazione/",
+     "html": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/htmlzip/consultazione/",
+     "epub": "//docs.italia.it/projects/icdp-pnd-servizi-docs/downloads/epub/consultazione/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 83,
+  "name": "Accesso aperto ai contributi della ricerca dell'INGV",
+  "slug": "ingv-accesso-aperto-ai-contributi-della-ricerca-docs",
+  "description": "Accesso aperto ai contributi della ricerca dell'Istituto Nazionale di Geofisica e Vulcanologia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-accesso-aperto-ai-contributi-della-ricerca-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-accesso-aperto-ai-contributi-della-ricerca-docs/it/bozza/",
+  "tags": [
+   "accesso-aperto",
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadati",
+   "politica-dei-dati",
+   "ricerca-scientifica"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 84,
+  "name": "Attuazione della Politica dei Dati dell'INGV",
+  "slug": "ingv-attuazione-della-politica-dei-dati-docs",
+  "description": "Attuazione della Politica dei Dati dell'Istituto Nazionale di Geofisica e Vulcanologia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-attuazione-della-politica-dei-dati-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-attuazione-della-politica-dei-dati-docs/it/bozza/",
+  "tags": [
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadati",
+   "politica-dei-dati",
+   "ricerca-scientifica"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 91,
+  "name": "Principles of the INGV Data Policy",
+  "slug": "ingv-data-policy-principles-docs",
+  "description": "Principles of the Data Policy of the Istituto Nazionale di Geofisica e Vulcanologia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-data-policy-principles-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-data-policy-principles-docs/it/bozza/",
+  "tags": [
+   "data-policy",
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadata",
+   "scientific-research"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 89,
+  "name": "Document implementing the INGV data policy",
+  "slug": "ingv-implementation-of-the-ingv-data-policy-docs",
+  "description": "Document implementing the data policy of the Istituto Nazionale di Geofisica e Vulcanologia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-implementation-of-the-ingv-data-policy-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-implementation-of-the-ingv-data-policy-docs/it/bozza/",
+  "tags": [
+   "data-policy",
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadata",
+   "scientific-research"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 90,
+  "name": "Open Access policy to the contributions of INGV scientific research",
+  "slug": "ingv-openaccess-to-scientific-contributions-docs",
+  "description": "Open Access policy to the contributions of the Istituto Nazionale di Geofisica e Vulcanologia scientific research.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-openaccess-to-scientific-contributions-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-openaccess-to-scientific-contributions-docs/it/bozza/",
+  "tags": [
+   "contributions",
+   "data-policy",
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadata",
+   "scientific-research"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 81,
+  "name": "Principi della Politica dei Dati dell'INGV",
+  "slug": "ingv-principi-della-politica-dei-dati-docs",
+  "description": "Principi della Politica dei Dati dell'Istituto Nazionale di Geofisica e Vulcanologia.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/INGV/ingv-principi-della-politica-dei-dati-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/ingv-principi-della-politica-dei-dati-docs/it/bozza/",
+  "tags": [
+   "database",
+   "dataset",
+   "fair",
+   "ingv",
+   "metadati",
+   "politica-dei-dati",
+   "ricerca-scientifica"
+  ],
+  "publisher": {
+   "name": "Istituto Nazionale di Geofisica e Vulcanologia",
+   "canonical_url": "https://docs.italia.it/INGV"
+  },
+  "publisher_project": {
+   "name": "Politica dei Dati dell'INGV",
+   "canonical_url": "https://docs.italia.it/INGV/accessoapertocontributi"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 140,
+  "name": "Italian Cloud Strategy",
+  "slug": "italian-cloud-strategy-docs",
+  "description": "Policy Document for Implementation and Control of the Cloud in the Public Administration",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/italian-cloud-strategy-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cloud-italia/italian-cloud-strategy-docs/it/stabile/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Cloud Italia",
+   "canonical_url": "https://docs.italia.it/italia/cloud-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "d073264425653a8c5b9b318436b07a56aeec232e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/italian-cloud-strategy-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/italian-cloud-strategy-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/italian-cloud-strategy-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 73,
+  "name": "Linee guida sull'accessibilità degli strumenti informatici",
+  "slug": "lg-accessibilita-docs",
+  "description": "Linee guida sull'accessibilità degli strumenti informatici",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-accessibilita-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-accessibilita-docs/it/stabile/",
+  "tags": [
+   "accessibilita",
+   "design",
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "b33749edfb45819e48a994e9bbc684b5b7d47a5e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-accessibilita-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-accessibilita-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-accessibilita-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 62,
+  "name": "Linee guida su acquisizione e riuso di software per le pubbliche amministrazioni",
+  "slug": "lg-acquisizione-e-riuso-software-per-pa-docs",
+  "description": "Linee guida in attuazione degli obblighi previsti dagli articoli 68 e 69 del Codice dell’Amministrazione Digitale in materia di acquisizione di software, valutazione comparativa, rilascio in open source, riuso.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-acquisizione-e-riuso-software-per-pa-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/lg-acquisizione-e-riuso-software-per-pa-docs/it/stabile/",
+  "tags": [
+   "gdl-opensource",
+   "linee-guida",
+   "open-source",
+   "riuso"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "44c585d1cb60085ae13678056623e3c758a6de8b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-acquisizione-e-riuso-software-per-pa-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 67,
+  "name": "Linee guida per lo sviluppo e la definizione del modello nazionale di riferimento per i CERT regionali",
+  "slug": "lg-cert-regionali",
+  "description": "Linee guida per lo sviluppo e la definizione del modello nazionale di riferimento per i CERT regionali",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-cert-regionali.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-cert-regionali/it/bozza/",
+  "tags": [
+   "cert",
+   "sicurezza"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-cert-regionali/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-cert-regionali/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-cert-regionali/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 97,
+  "name": "Regole Tecniche e Raccomandazioni afferenti la generazione di certificati elettronici qualificati, firme e sigilli elettronici qualificati e validazioni temporali elettroniche qualificate",
+  "slug": "lg-certificati-qualificati-docs",
+  "description": "Regole Tecniche e Raccomandazioni afferenti la generazione di certificati elettronici qualificati, firme e sigilli elettronici qualificati e validazioni temporali elettroniche qualificate\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-certificati-qualificati-docs.git",
+  "repo_type": "git",
+  "default_version": "1.1",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-certificati-qualificati-docs/it/1.1/",
+  "tags": [],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "3970be79c32bfbe5bd6f11b6edf14711ea941610",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "1.1",
+    "verbose_name": "1.1",
+    "identifier": "3970be79c32bfbe5bd6f11b6edf14711ea941610",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/pdf/1.1/",
+     "html": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/htmlzip/1.1/",
+     "epub": "//docs.italia.it/projects/lg-certificati-qualificati-docs/downloads/epub/1.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 32,
+  "name": "Competenze digitali",
+  "slug": "lg-competenzedigitali-docs",
+  "description": "Competenze digitali",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-competenzedigitali-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/lg-competenzedigitali-docs/it/stabile/",
+  "tags": [
+   "competenze",
+   "competenze-digitali"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "060aa5e03ec2dbf67c665fbfab15a30e3489d7e4",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-competenzedigitali-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-competenzedigitali-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-competenzedigitali-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "name": "Linee guida per la promozione dei servizi digitali",
+  "slug": "lg-comunicazione-docs",
+  "description": "Linee Guida Comunicazione",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-comunicazione-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/lg-comunicazione-docs/it/stabile/",
+  "tags": [
+   "comunicazione",
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "df506a31f6634ab5fce5a6c8b5e634169a43a571",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-comunicazione-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-comunicazione-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-comunicazione-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 96,
+  "name": "Linee Guida sul piano di cessazione conservatori",
+  "slug": "lg-conservazione-cessazione-docs",
+  "description": "Linee Guida per la stesura del piano di cessazione del servizio di conservazione dei documenti digitali",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-conservazione-cessazione-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-conservazione-cessazione-docs/it/bozza/",
+  "tags": [
+   "cessazione",
+   "conservazione",
+   "conservazione-sostitutiva",
+   "eidas"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "39fed249de9dc97c022fbc93cb82f7da21a08e35",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-conservazione-cessazione-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-conservazione-cessazione-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-conservazione-cessazione-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 134,
+  "name": "Linee guida di design per i siti internet e i servizi digitali della PA",
+  "slug": "lg-design-servizi-web",
+  "description": "Linee guida di design per i siti internet e i servizi digitali della PA",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-design-servizi-web.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/design/lg-design-servizi-web/it/versione-corrente/",
+  "tags": [
+   "design",
+   "linee-guida_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Design",
+   "canonical_url": "https://docs.italia.it/italia/design"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-design-servizi-web/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/lg-design-servizi-web/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/lg-design-servizi-web/downloads/epub/versione-corrente/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "5276444dc94d07e6df79b3f1afcdba794234abdf",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-design-servizi-web/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-design-servizi-web/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-design-servizi-web/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 98,
+  "name": "Allegato 2: Formati di file e riversamento",
+  "slug": "lg-doc-informatico-allegato-2-formati-file-riversamento",
+  "description": "Allegato 2 delle LL.GG. sul documento informatico - Formati di file e Riversamento",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-doc-informatico-allegato-2-formati-file-riversamento.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-doc-informatico-allegato-2-formati-file-riversamento/it/bozza/",
+  "tags": [
+   "busta",
+   "container",
+   "pacchetto-di-file",
+   "qseal",
+   "tag5",
+   "wrapper"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 82,
+  "name": "Linee guida sulla formazione, gestione e conservazione dei documenti informatici",
+  "slug": "lg-documenti-informatici-docs",
+  "description": "Linee guida sulla formazione, gestione e conservazione dei documenti informatici",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-documenti-informatici-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-documenti-informatici-docs/it/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-documenti-informatici-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-documenti-informatici-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-documenti-informatici-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 106,
+  "name": "Linee Guida Indice nazionale dei domicili digitali delle persone fisiche",
+  "slug": "lg-domiciliodigitalecittadino-docs",
+  "description": "Linee Guida Indice nazionale dei domicili digitali delle persone fisiche",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-domiciliodigitalecittadino-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-domiciliodigitalecittadino-docs/it/bozza/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Domicilio Digitale",
+   "canonical_url": "https://docs.italia.it/AgID/domicilio-digitale"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 131,
+  "name": "Linee guida per accesso telematico ai servizi della Pubblica Amministrazione",
+  "slug": "lg-io-docs",
+  "description": "Linee guida per accesso telematico ai servizi della Pubblica Amministrazione",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-io-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-io-docs/it/bozza/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 18,
+  "name": "Linee guida per il sistema di misurazione e valutazione della performance",
+  "slug": "lg-misuraperformance-docs",
+  "description": "Queste linee guida sono redatte ai sensi del d.lgs. 150/2009 e dell'articolo 3, comma 1, del dPR n. 105 del 2016 che attribuiscono al Dipartimento della Funzione Pubblica (DFP) le funzioni di indirizzo, coordinamento e monitoraggio in materia di ciclo della performance, avvalendosi del supporto tecnico e metodologico della Commissione Tecnica per la Performance (CTP) di cui all'articolo 4 del citato dPR.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-misuraperformance-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/funzione-pubblica/lg-misuraperformance-docs/it/bozza/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Dipartimento della Funzione Pubblica",
+   "canonical_url": "https://docs.italia.it/italia/funzione-pubblica"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-misuraperformance-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-misuraperformance-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-misuraperformance-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 70,
+  "name": "Linee Guida per la realizzazione di un modello di R.A.O. pubblico",
+  "slug": "lg-modello-rao-docs",
+  "description": "Linee Guida per la realizzazione di un modello di R.A.O. pubblico",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-modello-rao-docs.git",
+  "repo_type": "git",
+  "default_version": "master",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-modello-rao-docs/it/master/",
+  "tags": [
+   "spid"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-modello-rao-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-modello-rao-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-modello-rao-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 33,
+  "name": "Linee Guida sull'interoperabilità tecnica",
+  "slug": "lg-modellointeroperabilita-docs",
+  "description": "Linee Guida sull'interoperabilità tecnica delle Pubbliche Amministrazioni",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-modellointeroperabilita-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-modellointeroperabilita-docs/it/bozza/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 159,
+  "name": "Linee Guida Open Data",
+  "slug": "lg-opendata-docs",
+  "description": "Linee Guida recanti regole tecniche per l’attuazione del decreto legislativo 24 gennaio 2006, n. 36 e s.m.i. relativo all’apertura dei dati e al riutilizzo dell’informazione del settore pubblico.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-opendata-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-opendata-docs/it/bozza/",
+  "tags": [
+   "linee-guida",
+   "open-data"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-opendata-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-opendata-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-opendata-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 72,
+  "name": "Linee Guida OpenID Connect in SPID",
+  "slug": "lg-openidconnect-spid-docs",
+  "description": "Linee Guida per l'utilizzo di OpenID Connect in SPID",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-openidconnect-spid-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-openidconnect-spid-docs/it/bozza/",
+  "tags": [
+   "spid"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-openidconnect-spid-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-openidconnect-spid-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-openidconnect-spid-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "name": "Linee guida pagamenti elettronici a favore delle pubbliche amministrazioni e dei gestori di pubblici servizi",
+  "slug": "lg-pagopa-docs",
+  "description": "Linee Guida per l'Effettuazione dei Pagamenti Elettronici a favore delle Pubbliche Amministrazioni e dei Gestori di Pubblici Servizi di pagoPA versione 1.2. Le presenti Linee guida sono emanate - ai sensi dell’articolo 71 del Decreto legislativo 7 marzo 2005, n. 82 e successive modificazioni.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-pagopa-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-pagopa-docs/it/stabile/",
+  "tags": [
+   "linee-guida",
+   "pagopa",
+   "sanp"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 20,
+  "name": "Linee guida nazionali per la valorizzazione del patrimonio informativo pubblico",
+  "slug": "lg-patrimonio-pubblico",
+  "description": "Questo documento rappresenta le linee guida per la valorizzazione del\r\npatrimonio informativo pubblico per l’anno 2017 pubblicate dall’Agenzia\r\nper l’Italia Digitale.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-patrimonio-pubblico.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/lg-patrimonio-pubblico/it/stabile/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "4049c20e7d621faacab1983f671f4d3d9d4b7424",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-patrimonio-pubblico/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 143,
+  "name": "Linee Guida PDND per interoperabilità",
+  "slug": "lg-pdnd-docs",
+  "description": "Linee Guida sull’infrastruttura tecnologica della Piattaforma Digitale Nazionale Dati per l’interoperabilità dei sistemi informativi e delle basi di dati",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-pdnd-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-pdnd-docs/it/bozza/",
+  "tags": [
+   "linee-guida_1"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 65,
+  "name": "Linee guida sicurezza nel procurement ICT",
+  "slug": "lg-procurement-ict",
+  "description": "Linee guida sicurezza nel procurement ICT",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-procurement-ict.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-procurement-ict/it/bozza/",
+  "tags": [
+   "ict",
+   "procurement",
+   "sicurezza"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-procurement-ict/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-procurement-ict/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-procurement-ict/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 58,
+  "name": "Linee guida per l'erogazione del servizio pubblico wi-fi free",
+  "slug": "lg-pubblicowififree",
+  "description": "Linee guida per l'erogazione del servizio pubblico wi-fi free",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-pubblicowififree.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-pubblicowififree/it/bozza/",
+  "tags": [
+   "free-wi-fi_1",
+   "wi-fi"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-pubblicowififree/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-pubblicowififree/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-pubblicowififree/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 92,
+  "name": "Linee guida per la normalizzazione delle statistiche erogate da gestori PEC, conservatori, prestatori di servizi fiduciari qualificati",
+  "slug": "lg-qtsp-pec-statistiche-docs",
+  "description": "Linee Guida per la normalizzazione dei dati statistici dei servizi erogati dai Gestori PEC, dai Conservatori e dai Prestatori di servizi fiduciari qualificati",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-qtsp-pec-statistiche-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-qtsp-pec-statistiche-docs/it/bozza/",
+  "tags": [
+   "conservazione",
+   "eidas",
+   "gdpr",
+   "pec",
+   "servizi-fiduciari-elettronici",
+   "spid_2",
+   "statistiche"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "174f4bfaf81b92cb2750b6d5c27db20ab3c4f528",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-qtsp-pec-statistiche-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-qtsp-pec-statistiche-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-qtsp-pec-statistiche-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 125,
+  "name": "Linee Guida Tecnologie e standard per assicurare la sicurezza dell'interoperabilità tramite API dei sistemi informatici",
+  "slug": "lg-sicurezza-interoperabilita-docs",
+  "description": "Linee Guida Tecnologie e standard per assicurare la sicurezza dell'interoperabilità tramite API dei sistemi informatici",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-sicurezza-interoperabilita-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-sicurezza-interoperabilita-docs/it/bozza/",
+  "tags": [
+   "linee-guida",
+   "sicurezza"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 93,
+  "name": "Regole Tecniche per la sottoscrizione elettronica di documenti ai sensi dell’art. 20 del CAD",
+  "slug": "lg-spid-firma-docs",
+  "description": "Linee Guida contenenti le Regole Tecniche per la sottoscrizione elettronica di documenti ai sensi dell’art. 20 del CAD\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-spid-firma-docs.git",
+  "repo_type": "git",
+  "default_version": "1.1",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-spid-firma-docs/it/1.1/",
+  "tags": [],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "cade9880d9270c479028c8bad2756a3a994f5c30",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "2.0",
+    "verbose_name": "2.0",
+    "identifier": "cade9880d9270c479028c8bad2756a3a994f5c30",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/pdf/2.0/",
+     "html": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/htmlzip/2.0/",
+     "epub": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/epub/2.0/"
+    }
+   },
+   {
+    "slug": "1.1",
+    "verbose_name": "1.1",
+    "identifier": "4aaee1f7ae97e8e42f9adf4852ca8685118197f3",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/pdf/1.1/",
+     "html": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/htmlzip/1.1/",
+     "epub": "//docs.italia.it/projects/lg-spid-firma-docs/downloads/epub/1.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 135,
+  "name": "Linee guida operative per la fruizione dei servizi SPID da parte dei minori",
+  "slug": "lg-spid-minori-docs",
+  "description": "Linee guida operative per la fruizione dei servizi SPID da parte dei minori",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-spid-minori-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-spid-minori-docs/it/bozza/",
+  "tags": [
+   "linee-guida",
+   "spid"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-minori-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-spid-minori-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-spid-minori-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 111,
+  "name": "Statistiche SPID",
+  "slug": "lg-spid-statistiche-docs",
+  "description": "Linee Guida contenenti le Regole Tecniche per le Statistiche SPID\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-spid-statistiche-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/lg-spid-statistiche-docs/it/bozza/",
+  "tags": [
+   "eidas_1",
+   "spid"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "public-consultation",
+    "verbose_name": "public-consultation",
+    "identifier": "185a28d66c64ce2856f85796b77e7f8316d26d2c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-statistiche-docs/downloads/pdf/public-consultation/",
+     "html": "//docs.italia.it/projects/lg-spid-statistiche-docs/downloads/htmlzip/public-consultation/",
+     "epub": "//docs.italia.it/projects/lg-spid-statistiche-docs/downloads/epub/public-consultation/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 94,
+  "name": "Linee guida per il rilascio dell’identità digitale per uso professionale",
+  "slug": "lg-spid-uso-professionale-docs",
+  "description": "Linee guida per il rilascio dell’identità digitale SPID ad uso professionale",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/lg-spid-uso-professionale-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione/lg-spid-uso-professionale-docs/it/stabile/",
+  "tags": [
+   "cad",
+   "idp",
+   "piva",
+   "saml",
+   "sp",
+   "spid_2"
+  ],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Documenti in consultazione",
+   "canonical_url": "https://docs.italia.it/AgID/documenti-in-consultazione"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "102e739b55dc3dfd0ebc34aea08fe17eff330953",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-spid-uso-professionale-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/lg-spid-uso-professionale-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/lg-spid-uso-professionale-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 145,
+  "name": "Tourism Digital Hub - Linee Guida sull'Interoperabilità",
+  "slug": "lg-tourism-digital-hub-interoperabilita-docs",
+  "description": "Questo documento si pone come base di riferimento per l’Interoperabilità che il Ministero del Turismo intende adottare nei confronti di Operatori Istituzionali e Privati, per lo scambio di informazioni, dati e servizi con il Tourism Digital Hub (TDH), iniziativa collegata al PNRR che ha come fine la promozione dell’offerta turistica verso il mercato interno e internazionale.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/lg-tourism-digital-hub-interoperabilita-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mitur/lg-tourism-digital-hub-interoperabilita-docs/it/bozza/",
+  "tags": [
+   "turismo"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministero del Turismo",
+   "canonical_url": "https://docs.italia.it/italia/mitur"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "main",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/lg-tourism-digital-hub-interoperabilita-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/lg-tourism-digital-hub-interoperabilita-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/lg-tourism-digital-hub-interoperabilita-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "name": "Linee guida per i cataloghi dati",
+  "slug": "linee-guida-cataloghi-dati-dcat-ap-it",
+  "description": "Questo progetto rappresenta le linee guida per l’alimentazione e gestione\r\ndi cataloghi dati secondo il profilo nazionale di metadatazione\r\nDCAT-AP_IT, così come raccomandato nelle linee guida per la valorizzazione\r\ndel patrimonio informativo pubblico (anno 2016).",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/linee-guida-cataloghi-dati-dcat-ap-it.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/linee-guida-cataloghi-dati-dcat-ap-it/it/stabile/",
+  "tags": [
+   "linee-guida"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "8c5814009437cff9c76b75716045752a6b1f71fa",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/linee-guida-cataloghi-dati-dcat-ap-it/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 69,
+  "name": "Manuale di abilitazione al cloud",
+  "slug": "manuale-di-abilitazione-al-cloud-docs",
+  "description": "Questa documentazione rientra nell’ambito del Cloud Enablement Kit, insieme di metodi, strumenti e buone pratiche che le pubbliche amministrazioni possono utilizzare per la migrazione al cloud di infrastrutture e servizi.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/manuale-di-abilitazione-al-cloud-docs.git",
+  "repo_type": "git",
+  "default_version": "v1.4",
+  "default_branch": "v1.4",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/manuale-di-abilitazione-al-cloud/manuale-di-abilitazione-al-cloud-docs/it/v1.4/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Manuale di abilitazione al cloud",
+   "canonical_url": "https://docs.italia.it/italia/manuale-di-abilitazione-al-cloud"
+  },
+  "active_versions": [
+   {
+    "slug": "v1.4",
+    "verbose_name": "v1.4",
+    "identifier": "ebfbb175f4e1a4419835c05db1fd9da03e639aa0",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/v1.4/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/v1.4/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/v1.4/"
+    }
+   },
+   {
+    "slug": "v1.3",
+    "verbose_name": "v1.3",
+    "identifier": "4e036fc49aeeb91e05a86e31a6308f701395c009",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/v1.3/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/v1.3/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/v1.3/"
+    }
+   },
+   {
+    "slug": "v1.2",
+    "verbose_name": "v1.2",
+    "identifier": "dcb4988e6d4f136bcb80371ba8cb20ffd07d3359",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/v1.2/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/v1.2/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/v1.2/"
+    }
+   },
+   {
+    "slug": "v1.1",
+    "verbose_name": "v1.1",
+    "identifier": "9816dcae007044498d78893d67e8d9e589c4798c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/v1.1/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/v1.1/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/v1.1/"
+    }
+   },
+   {
+    "slug": "v1.0",
+    "verbose_name": "v1.0",
+    "identifier": "04c8ec9e1fb5740776a7a4335791ccebdb2f0a68",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/v1.0/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/v1.0/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/v1.0/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "v1.4",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/manuale-di-abilitazione-al-cloud-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 167,
+  "name": "Manuale operativo di design",
+  "slug": "manuale-operativo-design-docs",
+  "description": "Il manuale è uno strumento di lavoro per la Pubblica Amministrazione e serve ad orientare la progettazione di ambienti digitali fornendo indicazioni relative al service design, alla user research, al content design e alla user interface.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/manuale-operativo-design-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/manuale-operativo-design-docs/it/versione-corrente/",
+  "tags": [
+   "design"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/epub/versione-corrente/"
+    }
+   },
+   {
+    "slug": "2022.1",
+    "verbose_name": "2022.1",
+    "identifier": "origin/2022.1",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/pdf/2022.1/",
+     "html": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/htmlzip/2022.1/",
+     "epub": "//docs.italia.it/projects/manuale-operativo-design-docs/downloads/epub/2022.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 41,
+  "name": "pagoPA, Guida Tecnica Avviso Analogico",
+  "slug": "pagopa-avvisoanalogico-docs",
+  "description": "Guida Tecnica Avviso Analogico di pagoPA versione 2.1\nLo scopo del documento è quello di fornire indicazioni per la produzione\ndell’avviso analogico di pagamento pagoPA.\nIl documento è di riferimento per gli Enti Creditori ed i Prestatori di\nServizi di Pagamento.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pagopa-avvisoanalogico-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/pagopa/pagopa-avvisoanalogico-docs/it/bozza/",
+  "tags": [
+   "agid",
+   "pagopa",
+   "saci",
+   "sanp"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-avvisoanalogico-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/pagopa-avvisoanalogico-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/pagopa-avvisoanalogico-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 144,
+  "name": "Specifiche attuative dei codici identificativi di versamento, riversamento e rendicontazione",
+  "slug": "pagopa-codici-docs",
+  "description": "Allegato A alle «Linee guida per l’effettuazione dei pagamenti elettronici a favore delle pubbliche amministrazioni e dei gestori di pubblici servizi».",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/pagopa/pagopa-codici-docs.git",
+  "repo_type": "git",
+  "default_version": "v2.5.1",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/pagopa/pagopa_docs/pagopa-codici-docs/it/v2.5.1/",
+  "tags": [],
+  "publisher": {
+   "name": "PagoPA S.p.A.",
+   "canonical_url": "https://docs.italia.it/pagopa"
+  },
+  "publisher_project": {
+   "name": "Linee guida e regole tecniche",
+   "canonical_url": "https://docs.italia.it/pagopa/pagopa_docs"
+  },
+  "active_versions": [
+   {
+    "slug": "v2.5.1",
+    "verbose_name": "v2.5.1",
+    "identifier": "b99973cd128add5ec9c1aa4a7115f0ed1b784189",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-codici-docs/downloads/pdf/v2.5.1/",
+     "html": "//docs.italia.it/projects/pagopa-codici-docs/downloads/htmlzip/v2.5.1/",
+     "epub": "//docs.italia.it/projects/pagopa-codici-docs/downloads/epub/v2.5.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "name": "Domande frequenti",
+  "slug": "pagopa-docs-faq",
+  "description": "Le domande più comuni di enti pubblici e PSP sul Sistema PagoPA.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pagopa-docs-faq.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/pagopa/pagopa-docs-faq/it/stabile/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "5e08dddf727af480b8e744fe5f912c5df88aaeda",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-docs-faq/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/pagopa-docs-faq/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/pagopa-docs-faq/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 50,
+  "name": "PagoPA Overview",
+  "slug": "pagopa-docs-overview",
+  "description": "Lo scopo del documento è quello di fornire ai soggetti aderenti all’iniziativa tutte le indicazioni utili e le regole da attuare per implementare i pagamenti elettronici verso la PA.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pagopa-docs-overview.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/pagopa-docs-overview/it/bozza/",
+  "tags": [
+   "pagopa"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 61,
+  "name": "pagoPA, PdA ManualeUtente",
+  "slug": "pagopa-portaledelleadesioni-docs",
+  "description": "Lo scopo di questo documento è quello di descrivere le funzionalità che\r\nil “Portale delle Adesioni”, predisposto da AgID al fine di supportare\r\ngli Enti Creditori nel processo di adesione a pagoPA, mette a\r\ndisposizione dei soggetti che, con diversi ruoli, intervengono in tale\r\nprocesso: i soggetti incaricati dagli Enti Creditori, le figure tecniche\r\ndei soggetti direttamente connessi al Nodo, gli operatori del Nodo dei\r\nPagamenti-SPC e dell’Agenzia per l’Italia Digitale",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pagopa-portaledelleadesioni-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/pagopa-portaledelleadesioni-docs/it/bozza/",
+  "tags": [
+   "agid_1",
+   "pa_1",
+   "pagopa_1",
+   "sanp_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 12,
+  "name": "Specifiche attuative del nodo dei pagamenti SPC",
+  "slug": "pagopa-specifichepagamenti-docs",
+  "description": "Il presente documento rappresenta l’Allegato B alle «Linee guida per l'effettuazione dei pagamenti a favore delle pubbliche amministrazioni e dei gestori di pubblici servizi» e deve essere utilizzato in combinazione con il documento «Specifiche attuative dei codici identificativi di versamento, riversamento e rendicontazione» (Allegato A), nonché con le stesse Linee guida.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pagopa-specifichepagamenti-docs.git",
+  "repo_type": "git",
+  "default_version": "v3.0.0",
+  "default_branch": "v3.0.0",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/pagopa/pagopa-specifichepagamenti-docs/it/v3.0.0/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "PagoPA",
+   "canonical_url": "https://docs.italia.it/italia/pagopa"
+  },
+  "active_versions": [
+   {
+    "slug": "v3.0.0",
+    "verbose_name": "v3.0.0",
+    "identifier": "c096237cfd2641245a375c9d9a1abf2a4e81f27e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/pdf/v3.0.0/",
+     "html": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/htmlzip/v3.0.0/",
+     "epub": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/epub/v3.0.0/"
+    }
+   },
+   {
+    "slug": "v2.5.1",
+    "verbose_name": "v2.5.1",
+    "identifier": "af0e65dd2d0985119228a92bbd8c75da84238705",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/pdf/v2.5.1/",
+     "html": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/htmlzip/v2.5.1/",
+     "epub": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/epub/v2.5.1/"
+    }
+   },
+   {
+    "slug": "v2.5.0",
+    "verbose_name": "v2.5.0",
+    "identifier": "9718dd3567451b1eef8dda336f8e8e35dba3747c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/pdf/v2.5.0/",
+     "html": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/htmlzip/v2.5.0/",
+     "epub": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/epub/v2.5.0/"
+    }
+   },
+   {
+    "slug": "v2.4.3",
+    "verbose_name": "v2.4.3",
+    "identifier": "212a521c33bcdc105a744c71831b0ffb0f2e8dc3",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/pdf/v2.4.3/",
+     "html": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/htmlzip/v2.4.3/",
+     "epub": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/epub/v2.4.3/"
+    }
+   },
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/pagopa-specifichepagamenti-docs/downloads/epub/master/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 182,
+  "name": "PDND - Guida Nomenclatura eservice",
+  "slug": "pdnd-guida-nomenclatura-eservice",
+  "description": "PDND - Guida Nomenclatura eservice",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pdnd-guida-nomenclatura-eservice.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/pdnd-guida-nomenclatura-eservice/it/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pdnd-guida-nomenclatura-eservice/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/pdnd-guida-nomenclatura-eservice/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/pdnd-guida-nomenclatura-eservice/downloads/epub/versione-corrente/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 103,
+  "name": "Piano nazionale innovazione 2025",
+  "slug": "piano-nazionale-innovazione-2025-docs",
+  "description": "Strategia per l’innovazione tecnologica e la digitalizzazione del Paese 2025\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/piano-nazionale-innovazione-2025-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mid/piano-nazionale-innovazione-2025-docs/it/stabile/",
+  "tags": [
+   "investimenti",
+   "progetti",
+   "servizi",
+   "transizione-digitale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministro per l’innovazione tecnologica e la digitalizzazione",
+   "canonical_url": "https://docs.italia.it/italia/mid"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "d18dad8bd74474fa354a15afb268a479327beaea",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/piano-nazionale-innovazione-2025-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/piano-nazionale-innovazione-2025-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/piano-nazionale-innovazione-2025-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 124,
+  "name": "Piano di transizione al digitale della Presidenza del Consiglio dei Ministri",
+  "slug": "piano-transizione-digitale-pcm-docs",
+  "description": "Il piano definisce la strategia per il passaggio al digitale della PCM.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/piano-transizione-digitale-pcm-docs.git",
+  "repo_type": "git",
+  "default_version": "master",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/pcm/piano-transizione-digitale-pcm-docs/it/master/",
+  "tags": [
+   "ict",
+   "progetti",
+   "transizione-digitale_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Presidenza del Consiglio dei Ministri",
+   "canonical_url": "https://docs.italia.it/italia/pcm"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/epub/master/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/piano-transizione-digitale-pcm-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 29,
+  "name": "Elenco basi di dati chiave",
+  "slug": "pianotri-elencobasidatichiave",
+  "description": "Questo documento rappresenta il risultato dell’azione “Individuazione\r\ndelle basi di dati chiave” definita nell’ambito degli Open Data del Piano\r\nTriennale per l’Informatica nella PA (2017-2019).",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pianotri-elencobasidatichiave.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/pianotri-elencobasidatichiave/it/stabile/",
+  "tags": [
+   "pianotriennale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "23d5073bc561d273b48e0bee9c667ec2c6d6e301",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/pianotri-elencobasidatichiave/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 28,
+  "name": "Schede informative basi di dati di interesse nazionale",
+  "slug": "pianotri-schede-bdin",
+  "description": "Questo documento rappresenta il risultato dell’azione “Pubblicazione\r\nelenco basi di dati di interesse nazionale” definita nell’ambito delle\r\nBasi di dati di interesse nazionale del Piano Triennale per l’Informatica\r\nnella PA (2017-2019).",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pianotri-schede-bdin.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/daf/pianotri-schede-bdin/it/stabile/",
+  "tags": [
+   "pianotriennale"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Data & Analytics Framework",
+   "canonical_url": "https://docs.italia.it/italia/daf"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "e142f043a2651e774c74d3efb3a62f82d9445dd7",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/pianotri-schede-bdin/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "name": "Piano triennale ICT",
+  "slug": "pianotriennale-ict-doc",
+  "description": "Il Piano triennale è costruito sulla base di un Modello strategico di evoluzione del sistema informativo della Pubblica amministrazione e indirizza il piano delle gare, il piano dei finanziamenti e i piani triennali delle singole PA.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/pianotriennale-ict-doc.git",
+  "repo_type": "git",
+  "default_version": "2024-2026-agg-2026",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2024-2026-agg-2026/",
+  "tags": [
+   "piano-triennale_1"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Piano Triennale per l'informatica nella Pubblica Amministrazione",
+   "canonical_url": "https://docs.italia.it/italia/piano-triennale-ict"
+  },
+  "active_versions": [
+   {
+    "slug": "2024-2026-agg-2026",
+    "verbose_name": "2024-2026-agg-2026",
+    "identifier": "origin/2024-2026-agg-2026",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/pdf/2024-2026-agg-2026/",
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2024-2026-agg-2026/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2024-2026-agg-2026/"
+    }
+   },
+   {
+    "slug": "2024-2026-agg-2025",
+    "verbose_name": "2024-2026-agg-2025",
+    "identifier": "origin/2024-2026-agg-2025",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/pdf/2024-2026-agg-2025/",
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2024-2026-agg-2025/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2024-2026-agg-2025/"
+    }
+   },
+   {
+    "slug": "2024-2026",
+    "verbose_name": "2024-2026",
+    "identifier": "origin/2024-2026",
+    "type": "branch",
+    "downloads": {
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2024-2026/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2024-2026/"
+    }
+   },
+   {
+    "slug": "2020-2022",
+    "verbose_name": "2020-2022",
+    "identifier": "origin/2020-2022",
+    "type": "branch",
+    "downloads": {
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2020-2022/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2020-2022/"
+    }
+   },
+   {
+    "slug": "2019-2021",
+    "verbose_name": "2019-2021",
+    "identifier": "origin/2019-2021",
+    "type": "branch",
+    "downloads": {
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2019-2021/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2019-2021/"
+    }
+   },
+   {
+    "slug": "2017-2019",
+    "verbose_name": "2017-2019",
+    "identifier": "a86596be6f8a1b74bbdc0663872097fcabdcf986",
+    "type": "tag",
+    "downloads": {
+     "html": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/htmlzip/2017-2019/",
+     "epub": "//docs.italia.it/projects/pianotriennale-ict-doc/downloads/epub/2017-2019/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 85,
+  "name": "Policy catalogo del software open source di Developers Italia",
+  "slug": "policy-inserimento-catalogo-docs",
+  "description": "Politica usata per valutare il software candidato ad entrare nel catalogo\ndi Developers Italia per il riuso",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/policy-inserimento-catalogo-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/policy-inserimento-catalogo-docs/it/stabile/",
+  "tags": [
+   "catalogo",
+   "policy",
+   "riuso",
+   "software"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "8a2008700009516c1cd1dbe9c044b11eeb2fd27d",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/policy-inserimento-catalogo-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/policy-inserimento-catalogo-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/policy-inserimento-catalogo-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 54,
+  "name": "I primi due anni del Team per la Trasformazione Digitale",
+  "slug": "primi-due-anni-docs",
+  "description": "Il presente documento contiene un resoconto dell’attività svolta dal Team per la Trasformazione Digitale dal 16 settembre 2016 al 30 settembre 2018, l’evoluzione della strategia per la trasformazione digitale della PA tracciata dal Piano Triennale, nonché il ripensamento dei servizi pubblici digitali per i cittadini e le imprese.\r\n**Il documento include inoltre raccomandazioni dirette al Governo per la creazione di un modello permanente di governance del digitale - inclusa una revisione delle responsabilità e dei compiti assegnati ad AgID (Agenzia per l'Italia Digitale).**",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/teamdigitale/primi-due-anni-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale/primi-due-anni-docs/it/stabile/",
+  "tags": [
+   "pubblica-amministrazione",
+   "team",
+   "trasformazione-digitale"
+  ],
+  "publisher": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale"
+  },
+  "publisher_project": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "70752f65cee998f00316405a0b01e7006a0ef2be",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/primi-due-anni-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/primi-due-anni-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/primi-due-anni-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 147,
+  "name": "Programma strategico nazionale per l'intelligenza artificiale",
+  "slug": "programma-strategico-nazionale-per-intelligenza-artificiale-docs",
+  "description": "Descrizione",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/programma-strategico-nazionale-per-intelligenza-artificiale-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mid/programma-strategico-nazionale-per-intelligenza-artificiale-docs/it/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministro per l’innovazione tecnologica e la digitalizzazione",
+   "canonical_url": "https://docs.italia.it/italia/mid"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "main",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 150,
+  "name": "National Strategic Programme on Artificial Intelligence",
+  "slug": "programma-strategico-nazionale-per-intelligenza-artificiale-en-docs",
+  "description": "Strategic Programme on Artificial Intelligence 2022 - 2024",
+  "language": "en",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/programma-strategico-nazionale-per-intelligenza-artificiale-en-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "main",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mid/programma-strategico-nazionale-per-intelligenza-artificiale-en-docs/en/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministro per l’innovazione tecnologica e la digitalizzazione",
+   "canonical_url": "https://docs.italia.it/italia/mid"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "main",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-en-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-en-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/programma-strategico-nazionale-per-intelligenza-artificiale-en-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 56,
+  "name": "Protocollo d'intesa per la promozione e la verifica della trasformazione digitale della Pubblica Amministrazione",
+  "slug": "protocollo-intesa-corte-dei-conti-docs",
+  "description": "Protocollo d'intesa per la promozione e la verifica della trasformazione digitale della Pubblica Amministrazione",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/teamdigitale/protocollo-intesa-corte-dei-conti-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale/protocollo-intesa-corte-dei-conti-docs/it/stabile/",
+  "tags": [
+   "corte-dei-conti",
+   "protocollo-dintesa",
+   "team-digitale"
+  ],
+  "publisher": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale"
+  },
+  "publisher_project": {
+   "name": "Team per la Trasformazione Digitale",
+   "canonical_url": "https://docs.italia.it/teamdigitale/team-per-la-trasformazione-digitale"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "b70fe5ff0caf2ef63cb1ddaf63bd73f75e6981b5",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/protocollo-intesa-corte-dei-conti-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/protocollo-intesa-corte-dei-conti-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/protocollo-intesa-corte-dei-conti-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 59,
+  "name": "Lo Standard publiccode.yml",
+  "slug": "publiccodeyml",
+  "description": "publiccode.yml è lo standard di metadatazione del software pubblico, richiesto dalle Linee Guida per l'Acquisizione e il Riuso del Software per la Pubblica Amministrazione.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/publiccode.yml.git",
+  "repo_type": "git",
+  "default_version": "0.2.1",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/publiccodeyml/it/0.2.1/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/publiccodeyml/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/publiccodeyml/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/publiccodeyml/downloads/epub/master/"
+    }
+   },
+   {
+    "slug": "0.2.1",
+    "verbose_name": "0.2.1",
+    "identifier": "d433a5299779e04276f3c9c032303bc8cd2b7c6e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/publiccodeyml/downloads/pdf/0.2.1/",
+     "html": "//docs.italia.it/projects/publiccodeyml/downloads/htmlzip/0.2.1/",
+     "epub": "//docs.italia.it/projects/publiccodeyml/downloads/epub/0.2.1/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 60,
+  "name": "Publiccode.yml Standard",
+  "slug": "publiccodeyml-en",
+  "description": "This documentation is about `publiccode.yml` standard.",
+  "language": "en",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/publiccode.yml.git",
+  "repo_type": "git",
+  "default_version": "master",
+  "default_branch": "",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/developers-italia/publiccodeyml-en/en/master/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Developers Italia",
+   "canonical_url": "https://docs.italia.it/italia/developers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "master",
+    "verbose_name": "master",
+    "identifier": "origin/master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/publiccodeyml-en/downloads/pdf/master/",
+     "html": "//docs.italia.it/projects/publiccodeyml-en/downloads/htmlzip/master/",
+     "epub": "//docs.italia.it/projects/publiccodeyml-en/downloads/epub/master/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 25,
+  "name": "Relazione della commissione parlamentare d'inchiesta sulla digitalizzazione e l'innovazione della PA",
+  "slug": "relazionecommissionedigitale-docs",
+  "description": "Commissione parlamentare di inchiesta sul livello di digitalizzazione e innovazione delle Pubbliche Amministrazioni e sugli investimenti complessivi riguardanti il settore delle tecnologie e della comunicazione - Istituita con deliberazione della Camera dei deputati del 14 giugno 2016.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/relazionecommissionedigitale-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/relazioni-commissioni-parlamentari/relazionecommissionedigitale-docs/it/bozza/",
+  "tags": [
+   "digitalizzazione"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Relazioni commissioni parlamentari",
+   "canonical_url": "https://docs.italia.it/italia/relazioni-commissioni-parlamentari"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "master",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/relazionecommissionedigitale-docs/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/relazionecommissionedigitale-docs/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/relazionecommissionedigitale-docs/downloads/epub/bozza/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 170,
+  "name": "Framework per le competenze digitali della Commissione Europea (DigComp)",
+  "slug": "repubblica-digitale-digcomp-docs",
+  "description": "Traduzione in italiano su Docs Italia del framework per le competenze digitali della Commissione Europea (DigComp) \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/repubblica-digitale-digcomp-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/repubblica-digitale-digcomp-docs/it/versione-corrente/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Repubblica Digitale",
+   "canonical_url": "https://docs.italia.it/italia/repubblica-digitale"
+  },
+  "active_versions": []
+ },
+ {
+  "id": 160,
+  "name": "SPID/CIE OIDC Regole tecniche",
+  "slug": "spid-cie-oidc-docs",
+  "description": "Regole tecniche OIDC per i sistemi nazionali di Identità Digitale.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/spid-cie-oidc-docs.git",
+  "repo_type": "git",
+  "default_version": "versione-corrente",
+  "default_branch": "versione-corrente",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/spid/spid-cie-oidc-docs/it/versione-corrente/",
+  "tags": [
+   "spid"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Sistema Pubblico di Identità Digitale",
+   "canonical_url": "https://docs.italia.it/italia/spid"
+  },
+  "active_versions": [
+   {
+    "slug": "versione-corrente",
+    "verbose_name": "versione-corrente",
+    "identifier": "origin/versione-corrente",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/versione-corrente/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/versione-corrente/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/versione-corrente/"
+    }
+   },
+   {
+    "slug": "1.2.1",
+    "verbose_name": "1.2.1",
+    "identifier": "a65aa1a6ccc2bf03d8c18dd8df2ee22ec2613316",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.2.1/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.2.1/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.2.1/"
+    }
+   },
+   {
+    "slug": "1.1.5",
+    "verbose_name": "1.1.5",
+    "identifier": "a9aebe6eb88f4818bcc207db0afbd47f20bef11e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.5/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.5/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.5/"
+    }
+   },
+   {
+    "slug": "1.1.4",
+    "verbose_name": "1.1.4",
+    "identifier": "b087acaf14befadd9d8e707eeab8cca073b7278b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.4/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.4/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.4/"
+    }
+   },
+   {
+    "slug": "1.1.3-1",
+    "verbose_name": "1.1.3-1",
+    "identifier": "1b7049ae13b706df0f3c2e453700d228304ae0e5",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.3-1/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.3-1/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.3-1/"
+    }
+   },
+   {
+    "slug": "1.1.2",
+    "verbose_name": "1.1.2",
+    "identifier": "d5667517aee84b2fa84a15761440ce1ea2f24fee",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.2/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.2/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.2/"
+    }
+   },
+   {
+    "slug": "1.1.1",
+    "verbose_name": "1.1.1",
+    "identifier": "7850265c6ec735fb77b26f0d1e9bedb01ac2767b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.1/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.1/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.1/"
+    }
+   },
+   {
+    "slug": "1.1.0",
+    "verbose_name": "1.1.0",
+    "identifier": "04e3ef2c23b1be36bac2f30cfcf311c2d0e14b5e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/pdf/1.1.0/",
+     "html": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/htmlzip/1.1.0/",
+     "epub": "//docs.italia.it/projects/spid-cie-oidc-docs/downloads/epub/1.1.0/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 30,
+  "name": "Regole tecniche",
+  "slug": "spid-regole-tecniche",
+  "description": "SPID, il Sistema Pubblico di Identità Digitale, è la soluzione che ti\npermette di accedere a tutti i servizi online della Pubblica\nAmministrazione con un’unica Identità Digitale (username e password)\nutilizzabile da computer, tablet e smartphone.\n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/spid-regole-tecniche.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": "master",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/spid/spid-regole-tecniche/it/stabile/",
+  "tags": [
+   "spid"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Sistema Pubblico di Identità Digitale",
+   "canonical_url": "https://docs.italia.it/italia/spid"
+  },
+  "active_versions": [
+   {
+    "slug": "v34.1.14",
+    "verbose_name": "v34.1.14",
+    "identifier": "002bf87a6f7f89b84349fcadfe59d29aff30b98e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/v34.1.14/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/v34.1.14/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/v34.1.14/"
+    }
+   },
+   {
+    "slug": "v34.1.13",
+    "verbose_name": "v34.1.13",
+    "identifier": "c1657e0be238164df72cab3388772230631d0963",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/v34.1.13/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/v34.1.13/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/v34.1.13/"
+    }
+   },
+   {
+    "slug": "v34.1.12",
+    "verbose_name": "v34.1.12",
+    "identifier": "e3c734c6002b53ff35c80f5a2ed611b637ff3cb0",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/v34.1.12/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/v34.1.12/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/v34.1.12/"
+    }
+   },
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "002bf87a6f7f89b84349fcadfe59d29aff30b98e",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/stabile/"
+    }
+   },
+   {
+    "slug": "34.1.9",
+    "verbose_name": "34.1.9",
+    "identifier": "c768f38527330d6dcbdbfa1c1caf47e763cead7c",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.9/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.9/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.9/"
+    }
+   },
+   {
+    "slug": "34.1.8",
+    "verbose_name": "34.1.8",
+    "identifier": "bb59e3dc3057fd489cea2ae25a54cc5783e88559",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.8/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.8/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.8/"
+    }
+   },
+   {
+    "slug": "34.1.7",
+    "verbose_name": "34.1.7",
+    "identifier": "14c00573f546969110c59f2b663cf3a2c76ebcdf",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.7/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.7/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.7/"
+    }
+   },
+   {
+    "slug": "34.1.6",
+    "verbose_name": "34.1.6",
+    "identifier": "a1e10a5e5cf24b79765e3c82ddcfb6fec27b1bbf",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.6/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.6/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.6/"
+    }
+   },
+   {
+    "slug": "34.1.5",
+    "verbose_name": "34.1.5",
+    "identifier": "b36c00fbd345e6114b3f1e5983e1eaf5c7e31b9b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.5/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.5/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.5/"
+    }
+   },
+   {
+    "slug": "34.1.2",
+    "verbose_name": "34.1.2",
+    "identifier": "766fbdc069686e9e6e182ca62a6e5e7672c5b512",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.2/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.2/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.2/"
+    }
+   },
+   {
+    "slug": "34.1.11",
+    "verbose_name": "34.1.11",
+    "identifier": "96287a228c8dbf817a4b0b1c41e234d4e231a830",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.11/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.11/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.11/"
+    }
+   },
+   {
+    "slug": "34.1.10",
+    "verbose_name": "34.1.10",
+    "identifier": "a6079e77ba251666bb88895b2bde2ac3b7f75a56",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/spid-regole-tecniche/downloads/pdf/34.1.10/",
+     "html": "//docs.italia.it/projects/spid-regole-tecniche/downloads/htmlzip/34.1.10/",
+     "epub": "//docs.italia.it/projects/spid-regole-tecniche/downloads/epub/34.1.10/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 139,
+  "name": "Strategia Cloud Italia",
+  "slug": "strategia-cloud-italia-docs",
+  "description": "Documento sintetico di indirizzo strategico per l’implementazione e il controllo del Cloud della PA",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/strategia-cloud-italia-docs.git",
+  "repo_type": "git",
+  "default_version": "stabile",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/cloud-italia/strategia-cloud-italia-docs/it/stabile/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Cloud Italia",
+   "canonical_url": "https://docs.italia.it/italia/cloud-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "eed73768c27e3d3f294b2f1d88be9ebe3bfefbda",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/strategia-cloud-italia-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/strategia-cloud-italia-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/strategia-cloud-italia-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 121,
+  "name": "Strategia nazionale per le competenze digitali",
+  "slug": "strategia-nazionale-competenze-digitali-docs",
+  "description": "Strategia nazionale per le competenze digitali \n",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/strategia-nazionale-competenze-digitali-docs.git",
+  "repo_type": "git",
+  "default_version": "1.0",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/mid/strategia-nazionale-competenze-digitali-docs/it/1.0/",
+  "tags": [],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Ministro per l’innovazione tecnologica e la digitalizzazione",
+   "canonical_url": "https://docs.italia.it/italia/mid"
+  },
+  "active_versions": [
+   {
+    "slug": "1.0",
+    "verbose_name": "1.0",
+    "identifier": "4b34a7f4128a3cb7d26df2642b0d4349cf568995",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/strategia-nazionale-competenze-digitali-docs/downloads/pdf/1.0/",
+     "html": "//docs.italia.it/projects/strategia-nazionale-competenze-digitali-docs/downloads/htmlzip/1.0/",
+     "epub": "//docs.italia.it/projects/strategia-nazionale-competenze-digitali-docs/downloads/epub/1.0/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 100,
+  "name": "Guida utente di Web Analytics Italia",
+  "slug": "wai-user-guide-docs",
+  "description": "La guida utente di Web Analytics Italia spiega le principali procedure di utilizzo della piattaforma.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/AgID/wai-user-guide-docs.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": null,
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/docs/wai-user-guide-docs/it/bozza/",
+  "tags": [],
+  "publisher": {
+   "name": "Agenzia per l'Italia Digitale",
+   "canonical_url": "https://docs.italia.it/AgID"
+  },
+  "publisher_project": {
+   "name": "Web Analytics Italia",
+   "canonical_url": "https://docs.italia.it/AgID/wai"
+  },
+  "active_versions": [
+   {
+    "slug": "stabile",
+    "verbose_name": "stabile",
+    "identifier": "a72b11ab8fe22455c412627a0a65d0e9065ca91b",
+    "type": "tag",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/wai-user-guide-docs/downloads/pdf/stabile/",
+     "html": "//docs.italia.it/projects/wai-user-guide-docs/downloads/htmlzip/stabile/",
+     "epub": "//docs.italia.it/projects/wai-user-guide-docs/downloads/epub/stabile/"
+    }
+   }
+  ]
+ },
+ {
+  "id": 104,
+  "name": "Guida alle parole della Pubblica Amministrazione",
+  "slug": "writing-toolkit",
+  "description": "La guida alle parole della Pubblica Amministrazione è glossario di termini ricorrenti che spesso generano dubbi di ortografia. Questa guida è parte delle risorse di Designers Italia dedicate alla progettazione di servizi pubblici digitali semplici, inclusivi e accessibili.",
+  "language": "it",
+  "programming_language": "words",
+  "repo": "https://github.com/italia/writing-toolkit.git",
+  "repo_type": "git",
+  "default_version": "bozza",
+  "default_branch": "release",
+  "documentation_type": "sphinx",
+  "canonical_url": "https://docs.italia.it/italia/designers-italia/writing-toolkit/it/bozza/",
+  "tags": [
+   "design"
+  ],
+  "publisher": {
+   "name": "Italia",
+   "canonical_url": "https://docs.italia.it/italia"
+  },
+  "publisher_project": {
+   "name": "Designers Italia",
+   "canonical_url": "https://docs.italia.it/italia/designers-italia"
+  },
+  "active_versions": [
+   {
+    "slug": "bozza",
+    "verbose_name": "bozza",
+    "identifier": "release",
+    "type": "branch",
+    "downloads": {
+     "pdf": "//docs.italia.it/projects/writing-toolkit/downloads/pdf/bozza/",
+     "html": "//docs.italia.it/projects/writing-toolkit/downloads/htmlzip/bozza/",
+     "epub": "//docs.italia.it/projects/writing-toolkit/downloads/epub/bozza/"
+    }
+   }
+  ]
+ }
+]
