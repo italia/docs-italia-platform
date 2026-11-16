@@ -10,4 +10,4 @@ Schemi di document_settings.yml, toc.json e del pacchetto di build, con JSON Sch
 
 Piano di progetto: sezioni 3.4, 3.5, 4.2.
 
-Punto di partenza: `poc/packages/schema` nel PoC.
+Punto di partenza: `_poc/packages/schema` nel PoC.

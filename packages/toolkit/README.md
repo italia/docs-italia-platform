@@ -10,7 +10,7 @@ CLI docs-italia: init, check, build, dev, studio, publish, mcp.
 
 Piano di progetto: sezioni 4.1, 4.2, 5, 7.4.
 
-Punto di partenza: `poc/packages/toolkit` nel PoC.
+Punto di partenza: `_poc/packages/toolkit` nel PoC.
 
 ## Dipende da
 

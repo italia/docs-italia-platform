@@ -6,6 +6,6 @@
  * - Controlli con file e riga: link e ancore, immagini, testo alternativo, struttura dei titoli.
  * - Serializzazione a blocchi per l'editor (conserva le opzioni delle direttive).
  *
- * Ossatura: il codice arriverà dal PoC (poc/packages/toolkit/src/myst.ts, resolve.ts).
+ * Ossatura: il codice arriverà dal PoC (_poc/packages/toolkit/src/myst.ts, resolve.ts).
  */
 export {};

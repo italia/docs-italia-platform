@@ -11,7 +11,7 @@ Lettura MyST con le estensioni di Docs Italia e risoluzione dell'AST.
 
 Piano di progetto: sezioni 3.3, 3.6, 5.3.
 
-Punto di partenza: `poc/packages/toolkit/src/myst.ts, resolve.ts` nel PoC.
+Punto di partenza: `_poc/packages/toolkit/src/myst.ts, resolve.ts` nel PoC.
 
 ## Dipende da
 

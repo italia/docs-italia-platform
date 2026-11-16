@@ -10,7 +10,7 @@ PDF, EPUB e HTML compresso a partire dall'AST.
 
 Piano di progetto: sezioni 4.5.
 
-Punto di partenza: `poc/packages/toolkit/src/pdf.ts, epub.ts` nel PoC.
+Punto di partenza: `_poc/packages/toolkit/src/pdf.ts, epub.ts` nel PoC.
 
 ## Dipende da
 

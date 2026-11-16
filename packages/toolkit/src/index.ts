@@ -5,6 +5,6 @@
  * - Build del pacchetto, anteprima locale con ricaricamento automatico, server dello studio con SQLite.
  * - Invio del pacchetto a un'istanza; server MCP locale sul repository.
  *
- * Ossatura: il codice arriverà dal PoC (poc/packages/toolkit).
+ * Ossatura: il codice arriverà dal PoC (_poc/packages/toolkit).
  */
 export {};

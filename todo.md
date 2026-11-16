@@ -300,6 +300,34 @@ Le 108 direttive `only` con `format_latex` / `latex` indicano che alcuni editori
 
 **Risultati del PoC** (Chrome headless, senza Paged.js): PDF *tagged* e accessibile, segnalibri, copertina, capitoli su pagine nuove, intestazione delle tabelle ripetuta, indirizzi dei link stampati; circa 1–2 secondi per un documento di 8 pagine. Mancano i numeri di pagina nell'indice e la possibilità di togliere il numero dalla copertina, e nei segnalibri si perde lo spazio dove il titolo va a capo: per questo serve Paged.js. L'EPUB è XML ben formato con struttura corretta, ma non è ancora stato validato con `epubcheck`, che va messo nella CI.
 
+### 4.6 Ciclo di pubblicazione
+
+Pubblicare un documento **non modifica il repository di Docs Italia**, che contiene solo il codice della piattaforma. I contenuti restano nei repository dei documenti; ciò che l'istanza pubblica finisce nel suo database e nel suo object storage, non in Git. La piattaforma non scrive mai nei repository dei documenti, tranne quando un utente salva dall'editor ospitato (5.6).
+
+Esempio: pubblicazione della versione `2026.2` di un documento.
+
+1. **Repository del documento**: chi lo cura crea il tag o la release `2026.2`.
+2. **Costruzione del pacchetto**, in uno dei due modi:
+   - la GitHub Action del repository lo costruisce con il toolkit e lo invia all'istanza, autenticandosi con il token OIDC di GitHub Actions;
+   - se il repository non ha l'Action, la GitHub App avvisa l'istanza con un webhook e il worker costruisce il pacchetto con la stessa immagine del toolkit.
+3. **Verifica**: il server controlla che il repository sia elencato nel `projects_settings.yml` del publisher in `italia-conf`, valida il pacchetto contro lo schema e sanifica gli eventuali nodi HTML.
+4. **Archiviazione**: il pacchetto viene salvato nell'object storage sotto un percorso immutabile (ad esempio `…/2026.2/<id-build>/`).
+5. **Registrazione in PostgreSQL**: righe della build e della versione; se è la versione predefinita, il puntatore `stabile` passa alla nuova versione. Pubblicare è spostare il puntatore; tornare indietro è rimetterlo dov'era.
+6. **Effetti**:
+   - cache del sito invalidata;
+   - indice di ricerca aggiornato;
+   - calcolo degli embedding accodato, solo per i frammenti con un hash nuovo (7.3).
+7. **Sito**: la nuova versione è servita al suo URL, ad esempio `/italia/designers-italia/<documento>/it/2026.2/`.
+
+| Evento nel repository del documento | Cosa fa l'istanza |
+|---|---|
+| Tag o release | Pubblica una nuova versione numerata; sposta `stabile` se è la predefinita |
+| Push sul branch della bozza | Aggiorna la versione `bozza` |
+| Pull request aperta o aggiornata | Costruisce un'anteprima a un URL temporaneo e lo segnala nella PR; la cancella alla chiusura |
+| Push su `italia-conf` del publisher | Rilegge publisher e progetti; importa i documenti nuovi, disattiva quelli tolti |
+
+Aggiungere un documento richiede una sola modifica in Git, fuori da questo repository: una riga in `projects_settings.yml` di `italia-conf`.
+
 ---
 
 ## 5. Editor nel repository
@@ -471,6 +499,21 @@ deploy/
   toolkit/       Dockerfile dell'immagine del toolkit
 spec/            specifica del formato e del pacchetto, scritta in MyST
 ```
+
+**Accesso a GitHub: Octokit.** Il pacchetto `forge` definisce un'interfaccia comune (leggere file, elencare branch e tag, verificare webhook, creare commit, aprire pull request). Per GitHub la implementa Octokit; per GitLab, previsto per il riuso (8), una libreria equivalente con la stessa interfaccia. Il resto del codice non sa con quale fornitore sta parlando.
+
+| Dove | Con Octokit |
+|---|---|
+| Server dell'istanza | Autenticazione come GitHub App (`@octokit/app`), ricezione e verifica dei webhook (`@octokit/webhooks`), lettura di `italia-conf`, branch, tag e release, stato delle build sui commit, commento con il link all'anteprima nelle pull request |
+| Editor ospitato | Salvataggio senza un clone locale: commit di più file in una volta con la mutation GraphQL `createCommitOnBranch` (commit firmati dalla GitHub App), creazione del branch, apertura della pull request |
+| Toolkit (`publish`) | Creazione del tag o della release dalla CLI |
+
+Octokit chiama l'API di GitHub, non esegue Git. Quindi non si usa:
+
+- nello **studio locale**, che lavora su un clone: stato, diff, branch e commit restano affidati al comando `git`;
+- per scaricare la sorgente nel **worker di build**: un clone superficiale (`git clone --depth 1 --branch <ref>`) è più efficiente che leggere i file uno alla volta, e l'archivio di un ref scaricabile via API non contiene i submodule (`publiccode.yml-docs` ne usa uno).
+
+Per restare nei limiti di frequenza dell'API: webhook invece di interrogazioni periodiche, richieste condizionali (ETag), token di installazione della GitHub App invece di token personali.
 
 ---
 

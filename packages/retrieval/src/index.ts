@@ -6,6 +6,6 @@
  * - Normalizzazione del testo (apostrofi) prima di ricerca ed embedding.
  * - Ricerca ibrida (full-text + vettoriale con Reciprocal Rank Fusion), condivisa da server, sito e MCP.
  *
- * Ossatura: il codice arriverà dal PoC (poc/packages/toolkit/src/text.ts).
+ * Ossatura: il codice arriverà dal PoC (_poc/packages/toolkit/src/text.ts).
  */
 export {};

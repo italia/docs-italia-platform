@@ -5,6 +5,6 @@
  * - Layout: sito a capitoli, pagina singola, stampa per il PDF, capitoli EPUB, frammento per l'anteprima dell'editor.
  * - Fogli di stile: Italia Tailwind UI con il solo tema italia-original (file generato), tipografia dei documenti.
  *
- * Ossatura: il codice arriverà dal PoC (poc/packages/render).
+ * Ossatura: il codice arriverà dal PoC (_poc/packages/render).
  */
 export {};

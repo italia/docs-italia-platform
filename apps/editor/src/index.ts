@@ -5,6 +5,6 @@
  * - Schede Problemi, Git, Metadati, Genera; poi editor visuale (ProseMirror o Tiptap).
  * - Lo stesso codice gira nello studio locale (SQLite) e nell'istanza (PostgreSQL).
  *
- * Ossatura: il codice arriverà dal PoC (poc/apps/editor).
+ * Ossatura: il codice arriverà dal PoC (_poc/apps/editor).
  */
 export {};

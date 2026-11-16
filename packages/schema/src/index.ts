@@ -5,6 +5,6 @@
  * - Tipi e schema del pacchetto di build: manifest, pagine, inventario, record di ricerca, frammenti.
  * - Generazione dei JSON Schema pubblicati in spec/.
  *
- * Ossatura: il codice arriverà dal PoC (poc/packages/schema).
+ * Ossatura: il codice arriverà dal PoC (_poc/packages/schema).
  */
 export {};

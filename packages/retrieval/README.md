@@ -11,7 +11,7 @@ Testo, sezioni e frammenti per ricerca e RAG; ricerca ibrida.
 
 Piano di progetto: sezioni 7.2, 7.3.
 
-Punto di partenza: `poc/packages/toolkit/src/text.ts` nel PoC.
+Punto di partenza: `_poc/packages/toolkit/src/text.ts` nel PoC.
 
 ## Dipende da
 

@@ -62,7 +62,7 @@ spec/                specifica pubblica del formato e JSON Schema
 | [`@docs-italia/render`](packages/render) | Trasforma l'AST in HTML (sempre XHTML valido, con escape di tutto il testo). Layout per sito, pagina singola, stampa, EPUB e anteprima. Usa Italia Tailwind UI con il solo tema `italia-original` | export, sito, editor |
 | [`@docs-italia/export`](packages/export) | PDF con Chromium (poi Paged.js), EPUB 3, archivio HTML | toolkit |
 | [`@docs-italia/retrieval`](packages/retrieval) | Prepara i record per la ricerca e i frammenti per il RAG, con il percorso dei titoli in testa e un hash per contenuto. Normalizza il testo. Fa la ricerca ibrida (full-text + vettoriale) | toolkit, server, sito, MCP |
-| [`@docs-italia/forge`](packages/forge) | Legge `italia-conf` e i repository; gestisce webhook, GitHub App e token OIDC. Esegue le operazioni Git locali dello studio (mai push) | server, toolkit |
+| [`@docs-italia/forge`](packages/forge) | Interfaccia comune verso il fornitore Git. Per GitHub usa Octokit: GitHub App, webhook, lettura di `italia-conf` e dei repository, commit dall'editor ospitato, commenti nelle pull request. Verifica i token OIDC. Le operazioni locali dello studio usano invece il comando `git` (mai push) | server, toolkit, editor |
 | [`@docs-italia/toolkit`](packages/toolkit) | La CLI `docs-italia` (vedi sotto) | repository dei documenti, CI, worker |
 
 ## Applicazioni
@@ -107,6 +107,7 @@ Nell'ossatura la CLI elenca i comandi ma non li esegue ancora.
 | Validazione EPUB | `epubcheck` | In CI |
 | Database | PostgreSQL con pgvector e pg-boss | Metadati, coda, ricerca testuale e vettoriale |
 | File | Object storage S3-compatibile, MinIO per le installazioni autonome | Pacchetti immutabili |
+| GitHub | Octokit (`@octokit/app`, `@octokit/webhooks`, REST e GraphQL) | Solo per l'API di GitHub; Git locale e clone di build con il comando `git` |
 | Studio locale | SQLite (`bun:sqlite`) | Solo bozze e registro: il contenuto sta nei file del repository |
 
 ## Avvio
