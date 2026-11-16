@@ -1,5 +1,5 @@
 {
-  "name": "docs-italia",
+  "name": "docs-italia-platform",
   "version": "0.0.0",
   "private": true,
   "description": "Nuova piattaforma di Docs Italia: toolkit dei documenti, server, sito, editor, RAG e server MCP",

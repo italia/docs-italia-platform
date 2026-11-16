@@ -1,6 +1,8 @@
-# Docs Italia
+# Docs Italia Platform
 
 Nuova piattaforma di [Docs Italia](https://docs.italia.it), che sostituisce l'attuale fork di Read the Docs.
+
+Il nome distingue il software dalle sue installazioni. `docs-italia-platform` è la piattaforma riusabile. Docs Italia (`docs.italia.it`) è l'istanza nazionale, e altre PA possono installarne una propria. Il nome evita anche la confusione con gli strumenti `docs-italia-*` della piattaforma attuale (`docs-italia-theme`, `docs-italia-starter-kit`, `docs-italia-template`…).
 
 Usa gli stessi repository GitHub e gli stessi file di configurazione di oggi (`italia-conf`, `publisher_settings.yml`, `projects_settings.yml`, `document_settings.yml`). Aggiunge:
 
@@ -131,6 +133,15 @@ Per `packages/sphinx` serve Python 3.12+: `pip install -e packages/sphinx`.
 | [`inventario/`](inventario) | Fotografia dei 105 documenti e delle 205 versioni pubblicate oggi (dall'API di Docs Italia), e scansione su GitHub dei repository dichiarati in `italia-conf` |
 
 Il PoC del toolkit è fuori da questo repository, in `../italia/_poc`.
+
+## Nomi
+
+| Cosa | Nome |
+|---|---|
+| Progetto e repository | `docs-italia-platform` |
+| Pacchetti | scope `@docs-italia/*` (`@docs-italia/schema`, `@docs-italia/render`…) |
+| CLI | `docs-italia` (`docs-italia build`, `docs-italia dev`, `docs-italia studio`…) |
+| Istanza nazionale | Docs Italia, `docs.italia.it` |
 
 ## Convenzioni
 

@@ -302,7 +302,7 @@ Le 108 direttive `only` con `format_latex` / `latex` indicano che alcuni editori
 
 ### 4.6 Ciclo di pubblicazione
 
-Pubblicare un documento **non modifica il repository di Docs Italia**, che contiene solo il codice della piattaforma. I contenuti restano nei repository dei documenti; ciò che l'istanza pubblica finisce nel suo database e nel suo object storage, non in Git. La piattaforma non scrive mai nei repository dei documenti, tranne quando un utente salva dall'editor ospitato (5.6).
+Pubblicare un documento **non modifica il repository della piattaforma** (`docs-italia-platform`), che contiene solo il codice. I contenuti restano nei repository dei documenti; ciò che l'istanza pubblica finisce nel suo database e nel suo object storage, non in Git. La piattaforma non scrive mai nei repository dei documenti, tranne quando un utente salva dall'editor ospitato (5.6).
 
 Esempio: pubblicazione della versione `2026.2` di un documento.
 
@@ -480,7 +480,9 @@ Stessa gerarchia di oggi. Lo schema si scrive da zero: non c'è migrazione di ta
 
 ### 6.5 Organizzazione del codice
 
-Un monorepo TypeScript con i workspace di Bun (installazione isolata: ogni pacchetto vede solo le dipendenze che dichiara). È questo repository: l'ossatura c'è, con un README per ogni pacchetto.
+Un monorepo TypeScript con i workspace di Bun (installazione isolata: ogni pacchetto vede solo le dipendenze che dichiara). È questo repository, **`docs-italia-platform`**: l'ossatura c'è, con un README per ogni pacchetto.
+
+Il nome distingue il software riusabile dall'istanza nazionale Docs Italia (`docs.italia.it`) e dagli strumenti `docs-italia-*` della piattaforma attuale. I pacchetti restano nello scope `@docs-italia/*` e la CLI si chiama `docs-italia`.
 
 ```
 packages/
