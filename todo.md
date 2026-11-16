@@ -1,6 +1,6 @@
 # Nuovo Docs Italia — piano
 
-Versione 4 · 16 novembre 2026 — adottato MyST; aggiunti RAG e server MCP; aggiunti i risultati del PoC del toolkit (sezione 12)
+Versione 5 · 16 novembre 2026 — adottato MyST; aggiunti RAG e server MCP; risultati del PoC del toolkit (sezione 12); dashboard di amministrazione (6.6)
 
 ## Sintesi
 
@@ -326,6 +326,8 @@ Esempio: pubblicazione della versione `2026.2` di un documento.
 | Pull request aperta o aggiornata | Costruisce un'anteprima a un URL temporaneo e lo segnala nella PR; la cancella alla chiusura |
 | Push su `italia-conf` del publisher | Rilegge publisher e progetti; importa i documenti nuovi, disattiva quelli tolti |
 
+Una versione ritirata o promossa dalla dashboard (6.6) resta così anche se nel repository arrivano nuovi eventi, finché un amministratore non annulla l'intervento.
+
 Aggiungere un documento richiede una sola modifica in Git, fuori da questo repository: una riga in `projects_settings.yml` di `italia-conf`.
 
 ---
@@ -438,6 +440,7 @@ In una fase successiva la stessa applicazione React gira anche dentro l'istanza,
 | Build | Container effimeri con l'immagine del toolkit (Docker in compose, Job in Kubernetes) | Senza rete dopo il clone, con limiti di CPU, memoria e tempo |
 | Sito | Astro con adapter Node, rendering lato server | Una build statica di 205 versioni a ogni pubblicazione non è sostenibile; con SSR si mette in cache ogni pagina per pacchetto, e la cache si invalida alla pubblicazione |
 | Editor | Vite + React | Stesso codice dello studio locale |
+| Dashboard | Vite + React + Italia Tailwind UI (tema `italia-original`), servita dal server su un indirizzo separato | Amministrazione dell'istanza; accesso con magic link per le sole email autorizzate (6.6) |
 | Interfaccia | [Italia Tailwind UI](https://github.com/italia/italia-tailwind-ui): `@italia-tailwind/css` e `@italia-tailwind/recipes`, su Tailwind CSS 4 e daisyUI 5, licenza BSD-3-Clause | Solo CSS: niente Bootstrap né web component. Le stesse classi `ita-*` valgono per sito, anteprima, studio, editor e PDF. Per ora si usa **solo il tema predefinito `italia-original`** (decisione in 11); i temi si cambiano con `data-theme`, utile per il riuso (sezione 8) |
 
 ### 6.2 Responsabilità del server
@@ -448,10 +451,11 @@ In una fase successiva la stessa applicazione React gira anche dentro l'istanza,
 - **Autenticazione**: OIDC generico. GitHub come primo fornitore; per il riuso, qualsiasi fornitore OIDC (ad esempio Keycloak, o un proxy SPID/CIE).
 - **Autorizzazione**, con quattro ruoli: amministratore dell'istanza, amministratore di un publisher, redattore di un documento, revisore. I ruoli si possono derivare dai permessi su GitHub (organizzazione, team, repository) o assegnare a mano.
 - **API** per il sito, lo studio e l'editor ospitato.
+- **API di amministrazione** per la dashboard, separate dalle altre: accesso con magic link, ogni azione registrata (6.6).
 
 ### 6.3 Modello dati, in breve
 
-`publisher` → `project` → `document` → `version` → `build`; più `document_language` (traduzioni), `tag`, `redirect`, `search_section`, `chunk` e `embedding` (sezione 7), `user`, `role_assignment`, `api_client` (accessi al server MCP), `preview` (anteprime delle PR), `instance_settings`.
+`publisher` → `project` → `document` → `version` → `build`; più `document_language` (traduzioni), `tag`, `redirect`, `search_section`, `chunk` e `embedding` (sezione 7), `user`, `role_assignment`, `api_client` (accessi al server MCP), `preview` (anteprime delle PR), `instance_settings`; per la dashboard `magic_link` (token monouso, salvati come hash), `admin_session`, `version_override` (ritiri e promozioni che prevalgono sul repository) e `audit_log` (registro delle azioni di amministrazione).
 
 Stessa gerarchia di oggi. Lo schema si scrive da zero: non c'è migrazione di tabelle da Read the Docs, perché il ripopolamento parte da GitHub e dall'inventario.
 
@@ -493,6 +497,7 @@ apps/
   mcp/           server MCP
   site/          Astro
   editor/        Vite + React (studio locale ed editor ospitato)
+  dashboard/     Vite + React + Italia Tailwind UI: amministrazione dell'istanza
 deploy/
   compose/       istanza completa con Docker Compose
   helm/          istanza su Kubernetes
@@ -513,9 +518,103 @@ Octokit chiama l'API di GitHub, non esegue Git. Quindi non si usa:
 - nello **studio locale**, che lavora su un clone: stato, diff, branch e commit restano affidati al comando `git`;
 - per scaricare la sorgente nel **worker di build**: un clone superficiale (`git clone --depth 1 --branch <ref>`) è più efficiente che leggere i file uno alla volta, e l'archivio di un ref scaricabile via API non contiene i submodule (`publiccode.yml-docs` ne usa uno).
 
-Per restare nei limiti di frequenza dell'API: webhook invece di interrogazioni periodiche, richieste condizionali (ETag), token di installazione della GitHub App invece di token personali.
+**Due modalità di accesso a GitHub**, scelte con le variabili d'ambiente dell'istanza:
+
+| | GitHub App (consigliata) | Token |
+|---|---|---|
+| Configurazione | `GITHUB_APP_ID`, la chiave privata (`GITHUB_APP_PRIVATE_KEY`, o `GITHUB_APP_PRIVATE_KEY_FILE` con il percorso di un file di segreti), `GITHUB_WEBHOOK_SECRET`; l'App si installa su ogni organizzazione | `GITHUB_TOKEN` (token *fine-grained* con accesso in lettura ai repository delle organizzazioni), `GITHUB_WEBHOOK_SECRET` |
+| Permessi | Dichiarati dall'App e accettati da ogni organizzazione all'installazione | Quelli della persona che ha creato il token |
+| Webhook | Uno solo, configurato nell'App, per tutte le organizzazioni | Da configurare a mano su ogni organizzazione o repository |
+| Limiti dell'API | Per installazione, crescono con il numero di repository | 5.000 richieste l'ora per il titolare del token |
+| Commit dall'editor ospitato | Firmati dall'App, a nome dell'utente | A nome del titolare del token: adatto solo alla lettura |
+| Scadenza | Token di installazione rinnovati da soli ogni ora | Scadenza fissata alla creazione: va rinnovato a mano |
+| Quando usarla | Istanza nazionale, più organizzazioni | Prove, installazioni piccole, prime fasi del riuso |
+
+Con il token l'editor ospitato è disattivato: si può solo leggere e pubblicare.
+
+Per restare nei limiti di frequenza dell'API: webhook invece di interrogazioni periodiche, richieste condizionali (ETag) e, dove possibile, GitHub App invece del token.
 
 ---
+
+### 6.6 Dashboard di amministrazione
+
+Un'applicazione per chi gestisce l'istanza, in **Vite + React + Italia Tailwind UI** (solo tema `italia-original`, come il resto della piattaforma). Dà una visione completa di organizzazioni, progetti e documenti. Il suo compito principale è **risolvere i problemi** e **ritirare o promuovere le versioni pubblicate** senza dover intervenire nei repository.
+
+**Accesso**
+
+- Possono entrare solo le email elencate in una variabile d'ambiente. Il confronto ignora maiuscole e spazi; un'email tolta dall'elenco perde l'accesso alla richiesta successiva, anche con una sessione aperta.
+- Si accede con un **magic link**:
+  1. si inserisce l'email;
+  2. se è autorizzata, arriva un link che vale **una volta sola** e per **15 minuti**;
+  3. il link apre una sessione in un cookie `HttpOnly`, `Secure`, `SameSite=Strict`, che scade dopo 8 ore.
+- La risposta alla richiesta del link è la stessa per email autorizzate e non: non si può scoprire chi ha accesso.
+- I token sono salvati solo come hash. Le richieste di link hanno un limite di frequenza per email e per indirizzo IP.
+- La dashboard è separata dal sistema di ruoli basato su GitHub (6.2): serve agli amministratori dell'istanza, non ai redattori.
+
+```sh
+DASHBOARD_ADMIN_EMAILS=nome.cognome@agid.gov.it,altra.persona@example.gov.it
+DASHBOARD_URL=https://admin.docs.italia.it
+SMTP_URL=smtps://utente:password@smtp.example.gov.it:465
+SMTP_FROM="Docs Italia <noreply@docs.italia.it>"
+MAGIC_LINK_TTL_MINUTES=15
+ADMIN_SESSION_TTL_HOURS=8
+
+# accesso a GitHub: GitHub App (consigliata) oppure token (6.5)
+GITHUB_APP_ID=123456
+GITHUB_APP_PRIVATE_KEY_FILE=/run/secrets/github-app.pem
+GITHUB_WEBHOOK_SECRET=…
+# GITHUB_TOKEN=github_pat_…   in alternativa all'App
+```
+
+**Visione d'insieme**
+
+- Organizzazioni, progetti e documenti, con lo stato di sincronizzazione di ogni `italia-conf`.
+- Per ogni documento: versioni pubblicate, versione predefinita, ultima build, problemi dei controlli, anteprime aperte.
+- Elenchi filtrabili di ciò che richiede attenzione: build fallite, documenti con errori, versioni archiviate, documenti elencati in `italia-conf` ma non importati, repository archiviati su GitHub.
+
+**Risolvere i problemi**
+
+- Log delle build e dei webhook ricevuti, con la possibilità di rilanciare una build o una sincronizzazione.
+- Problemi dei controlli (`docs-italia check`) con file, riga e link al file su GitHub.
+- Ricostruzione dell'indice di ricerca e degli embedding di un documento.
+
+**Stato dei collegamenti**
+
+Una pagina mostra se l'istanza riesce a parlare con tutto ciò da cui dipende. I controlli girano a intervalli regolari e su richiesta, con il pulsante "Verifica ora"; un controllo che fallisce compare in cima alla home della dashboard.
+
+| Collegamento | Cosa si verifica |
+|---|---|
+| GitHub: modalità di accesso | Quale modalità è attiva (GitHub App o token, 6.5) e se la configurazione è completa |
+| GitHub App | La chiave privata produce un JWT valido; elenco delle installazioni, una per organizzazione; organizzazioni configurate in Docs Italia senza l'App installata; permessi concessi rispetto a quelli richiesti; permessi nuovi in attesa di approvazione |
+| Token GitHub | Il token è valido; a chi appartiene; permessi e repository raggiungibili; data di scadenza, con avviso 30 e 7 giorni prima |
+| Limiti dell'API GitHub | Richieste rimaste e ora del prossimo azzeramento |
+| Webhook | Ultima consegna ricevuta per ogni organizzazione; consegne fallite (per la GitHub App si leggono dall'API delle consegne e si possono rinviare); firma con `GITHUB_WEBHOOK_SECRET` corretta |
+| `italia-conf` | Ogni repository di configurazione è leggibile e i suoi file sono validi |
+| PostgreSQL | Connessione, versione, estensione `pgvector`, coda dei job (lavori in attesa e falliti) |
+| Object storage | Lettura e scrittura di un file di prova |
+| Worker di build | Ultimo contatto, versione dell'immagine del toolkit, Chromium disponibile |
+| Email (SMTP) | Connessione e autenticazione; invio di un'email di prova a chi è collegato alla dashboard |
+| Servizio di embedding | Risponde, e il modello caricato è quello configurato |
+| Server MCP | Risponde a una ricerca di prova |
+
+La dashboard non mostra mai i segreti: della chiave dell'App e del token si vedono solo l'impronta (ultimi caratteri) e la scadenza.
+
+**Ritirare e promuovere versioni**
+
+| Azione | Effetto |
+|---|---|
+| Ritira | La versione scompare dal sito, dalla ricerca e dal server MCP; il suo URL risponde con una pagina "versione ritirata" e il link alla versione predefinita |
+| Ripristina | Annulla un ritiro |
+| Promuovi a predefinita | Il puntatore `stabile` passa a questa versione, anche contro `versions.default` di `document_settings.yml` |
+| Torna alla regola del repository | Annulla una promozione: vale di nuovo `document_settings.yml` |
+| Archivia | La versione resta consultabile come versione archiviata (2.3), fuori dalla ricerca |
+
+Ogni intervento:
+
+- è un'operazione sul database (spostamento di puntatori, `version_override`), mai una scrittura nei repository;
+- prevale sugli eventi successivi del repository finché non viene annullato (4.6);
+- è visibile nella dashboard come forzato, con chi l'ha fatto, quando e perché;
+- richiede una motivazione e finisce in `audit_log`.
 
 ## 7. Ricerca semantica, RAG e server MCP
 
@@ -629,7 +728,7 @@ Va previsto dall'inizio, non aggiunto alla fine:
 | 1. Specifica e AST | Schema di `toc.json`, pacchetto, `document_settings.yml` esteso; lettura MyST con plugin Docs Italia; estensione Sphinx con conversione doctree → AST; **banco di prova** che costruisce tutte le 205 versioni e produce un rapporto di compatibilità |
 | 2. Toolkit | CLI (`check`, `build`, `dev`), renderer, PDF ed EPUB, frammentazione (`chunks.jsonl`), immagine Docker, GitHub Action riusabile. **PoC fatto per il formato MyST** (sezione 12); mancano immagine Docker, GitHub Action, Paged.js ed `epubcheck` |
 | 3. Server | Modello dati, importazione, GitHub App, coda delle build, ricezione dei pacchetti con OIDC, autenticazione e ruoli, anteprime delle PR |
-| 4. Sito | Astro, URL compatibili, versioni archiviate, ricerca, download, pagine istituzionali |
+| 4. Sito | Astro, URL compatibili, versioni archiviate, ricerca, download, pagine istituzionali; dashboard di amministrazione con magic link (6.6), necessaria già al passaggio per gestire le versioni |
 | 5. Passaggio | Ripopolamento completo, revisione con alcuni editori, confronto visivo con il sito attuale, cambio del DNS, guida "come pubblicare" aggiornata |
 | 6. RAG e MCP | Insieme di prova e scelta del modello di embedding, servizio di embedding, indicizzazione incrementale, ricerca ibrida, server MCP con strumenti e risorse, limiti di accesso, MCP locale nel toolkit |
 | 7. Studio locale | `compose.yml`, server locale, SQLite, editor di sorgente con anteprima, struttura, operazioni Git, collegamento all'istanza. **Prima bozza nel PoC** (sezione 12); mancano `compose.yml` e collegamento all'istanza |
@@ -664,6 +763,9 @@ La fase 0 non dipende da nessuna decisione e conviene avviarla subito.
 | Domande degli utenti con dati personali | Problemi di protezione dei dati | Modello di embedding locale; registro minimo con conservazione limitata; informativa |
 | Costo di calcolo degli embedding | Infrastruttura più costosa per chi riusa | Embedding per contenuto e non per versione; CPU per l'incrementale; RAG disattivabile |
 | Abuso del server MCP pubblico | Carico eccessivo sul database | Limiti di frequenza; cache delle ricerche; quote più alte solo con chiave |
+| Token GitHub scaduto o App disinstallata da un'organizzazione | Sincronizzazioni e build ferme senza che nessuno se ne accorga | Controlli periodici dei collegamenti nella dashboard, avvisi prima della scadenza del token, segnalazione in cima alla home |
+| Magic link intercettato o casella email compromessa | Accesso non autorizzato alla dashboard | Link monouso valido 15 minuti, sessioni brevi, elenco di email ristretto, registro di ogni azione, motivazione obbligatoria; in seguito un secondo fattore |
+| Interventi dalla dashboard in contrasto con il repository | Il sito non riflette quello che chi cura il documento si aspetta | Interventi visibili come forzati, con motivazione; annullabili; segnalati a chi cura il documento (commento sulla release o issue, da decidere) |
 
 ---
 
@@ -684,6 +786,7 @@ Da prendere:
 5. **Redirect personalizzati**: verificare se ne esistono nel database attuale.
 6. **Modello di embedding e dove calcolarlo**: modello aperto su infrastruttura propria (raccomandato) o fornitore esterno. Si decide con le misure della 7.5, ma va deciso subito se è disponibile una GPU.
 7. **Accesso al server MCP**: completamente pubblico con limiti, o con registrazione obbligatoria.
+8. **Invio delle email della dashboard**: quale servizio SMTP usare, e se avvisare chi cura un documento quando una sua versione viene ritirata o promossa.
 
 ## 12. Sperimentazioni: PoC del toolkit
 
