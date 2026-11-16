@@ -1,0 +1,13 @@
+{
+  "name": "@docs-italia/render",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AST → HTML con Italia Tailwind UI: sito, pagina singola, stampa, EPUB, anteprima",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@docs-italia/schema": "*"
+  }
+}

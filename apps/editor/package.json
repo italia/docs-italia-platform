@@ -1,0 +1,13 @@
+{
+  "name": "@docs-italia/editor",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Interfaccia dell'editor (Vite + React): studio locale ed editor ospitato",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@docs-italia/render": "*"
+  }
+}

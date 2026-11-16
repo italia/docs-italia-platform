@@ -1,0 +1,13 @@
+{
+  "name": "@docs-italia/retrieval",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Testo, sezioni e frammenti per ricerca e RAG; ricerca ibrida",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@docs-italia/schema": "*"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@docs-italia/toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CLI docs-italia: init, check, build, dev, studio, publish, mcp",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "docs-italia": "./bin/docs-italia.ts"
+  },
+  "dependencies": {
+    "@docs-italia/schema": "*",
+    "@docs-italia/myst": "*",
+    "@docs-italia/render": "*",
+    "@docs-italia/export": "*",
+    "@docs-italia/retrieval": "*",
+    "@docs-italia/forge": "*"
+  }
+}

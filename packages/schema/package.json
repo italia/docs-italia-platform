@@ -1,0 +1,10 @@
+{
+  "name": "@docs-italia/schema",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Schemi di document_settings.yml, toc.json e del pacchetto di build, con JSON Schema generati",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

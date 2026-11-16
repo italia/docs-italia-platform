@@ -1,0 +1,15 @@
+{
+  "name": "@docs-italia/server",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Server dell'istanza: API, importazione, build, autenticazione",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@docs-italia/schema": "*",
+    "@docs-italia/forge": "*",
+    "@docs-italia/retrieval": "*"
+  }
+}

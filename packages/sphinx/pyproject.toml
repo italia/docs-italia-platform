@@ -1,0 +1,13 @@
+[project]
+name = "docs-italia-sphinx"
+version = "0.0.0"
+description = "Estensione Sphinx di Docs Italia: legge l'RST e produce il pacchetto con l'AST MyST"
+requires-python = ">=3.12"
+dependencies = ["sphinx>=8"]
+
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,26 @@
+{
+  "name": "docs-italia",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nuova piattaforma di Docs Italia: toolkit dei documenti, server, sito, editor, RAG e server MCP",
+  "type": "module",
+  "workspaces": [
+    "packages/schema",
+    "packages/myst",
+    "packages/render",
+    "packages/export",
+    "packages/retrieval",
+    "packages/forge",
+    "packages/toolkit",
+    "apps/server",
+    "apps/mcp",
+    "apps/site",
+    "apps/editor"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

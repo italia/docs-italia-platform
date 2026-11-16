@@ -1,0 +1,13 @@
+{
+  "name": "@docs-italia/export",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PDF, EPUB e HTML compresso a partire dall'AST",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@docs-italia/render": "*"
+  }
+}

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.docs-italia/
+.astro/
+*.sqlite
+.env
+.env.*
+!.env.example
+.DS_Store
+__pycache__/
+*.egg-info/
+.venv/
