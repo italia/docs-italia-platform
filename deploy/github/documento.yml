@@ -1,0 +1,15 @@
+# Da copiare in .github/workflows/docs-italia.yml nel repository di un documento.
+# A ogni push e pull request controlla e costruisce il documento; il pacchetto
+# e il sito restano come artefatti della run. L'invio all'istanza (token OIDC)
+# arriverà con il server.
+name: docs-italia
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  documento:
+    uses: italia/docs-italia-platform/.github/workflows/documento.yml@main
+    with:
+      source: .

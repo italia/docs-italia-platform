@@ -1,0 +1,57 @@
+# Workflow riusabile: controlla e costruisce un documento Docs Italia.
+# Si richiama dai repository dei documenti (modello in deploy/github/documento.yml).
+# NON ANCORA PROVATO su GitHub: va verificato al primo repository di prova.
+name: documento
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: Cartella della sorgente nel repository del documento
+        type: string
+        default: .
+      platform-ref:
+        description: Versione di docs-italia-platform da usare
+        type: string
+        default: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository del documento
+        uses: actions/checkout@v4
+        with:
+          path: documento
+      - name: docs-italia-platform
+        uses: actions/checkout@v4
+        with:
+          repository: italia/docs-italia-platform
+          ref: ${{ inputs.platform-ref }}
+          path: platform
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: platform/.bun-version
+      - name: Dipendenze
+        working-directory: platform
+        run: bun install --frozen-lockfile
+      - name: Sphinx (solo documenti RST)
+        if: hashFiles('documento/index.rst') != ''
+        run: |
+          python3 -m venv platform/packages/sphinx/.venv
+          platform/packages/sphinx/.venv/bin/pip install ./platform/packages/sphinx
+      - name: Controlli
+        run: bun platform/packages/toolkit/bin/docs-italia.ts check --dir documento/${{ inputs.source }}
+      - name: Build (sito, PDF, EPUB, pacchetto)
+        # sui runner di GitHub Chrome è già installato: Playwright lo usa con channel "chrome"
+        run: bun platform/packages/toolkit/bin/docs-italia.ts build --dir documento/${{ inputs.source }}
+      - name: Pacchetto
+        uses: actions/upload-artifact@v4
+        with:
+          name: pacchetto-docs-italia
+          path: documento/${{ inputs.source }}/dist/bundle
+      - name: Sito
+        uses: actions/upload-artifact@v4
+        with:
+          name: sito-docs-italia
+          path: documento/${{ inputs.source }}/dist/html
