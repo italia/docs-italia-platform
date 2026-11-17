@@ -1,8 +1,11 @@
 /**
  * @docs-italia/forge — accesso ai fornitori Git.
  *
- * Per ora: operazioni Git locali per lo studio e il toolkit (mai push).
- * In arrivo: interfaccia comune verso il fornitore, implementazione GitHub con
- * Octokit (GitHub App o token), controlli dei collegamenti per la dashboard.
+ * - Interfaccia comune (Forge) con due implementazioni: LocalForge (clone
+ *   locali, per sviluppo e test) e GitHubForge (Octokit, GitHub App o token).
+ * - Operazioni Git locali per lo studio e il toolkit (mai push).
  */
+export * from './forge.ts';
+export { LocalForge } from './local.ts';
+export { GitHubForge, type GitHubAuth } from './github.ts';
 export * from './git.ts';

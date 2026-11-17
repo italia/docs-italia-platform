@@ -46,6 +46,71 @@ export const DocumentSettingsSchema = z.object({
 export type DocumentSettings = z.infer<typeof DocumentSettingsSchema>;
 
 // ---------------------------------------------------------------------------
+// italia-conf: publisher_settings.yml e projects_settings.yml
+// (regole di readthedocs/docsitalia/metadata.py)
+// ---------------------------------------------------------------------------
+
+/** slugify di Django: lo slug dei progetti nella piattaforma attuale, e quindi negli URL. */
+export function djangoSlugify(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[^\x00-\x7F]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[-\s]+/g, '-');
+}
+
+export const PublisherSettingsSchema = z.object({
+  publisher: z
+    .object({
+      name: z.string({ error: 'il campo "name" è obbligatorio' }).trim().min(1, 'il campo "name" è obbligatorio'),
+      description: z.string({ error: 'il campo "description" è obbligatorio' }).trim().min(1, 'il campo "description" è obbligatorio'),
+      short_name: z.string().optional(),
+      logo: z.string().optional(),
+      website: z.string().optional(),
+      tags: z.array(z.string()).optional(),
+    })
+    .passthrough(),
+});
+export type PublisherSettings = z.infer<typeof PublisherSettingsSchema>;
+
+export const ProjectsSettingsSchema = z.object({
+  projects: z.array(
+    z
+      .object({
+        name: z.string({ error: 'il campo "name" è obbligatorio' }).trim().min(1, 'il campo "name" è obbligatorio'),
+        description: z.string({ error: 'il campo "description" è obbligatorio' }).trim().min(1, 'il campo "description" è obbligatorio'),
+        // i nomi dei repository; YAML trasforma in null le voci vuote
+        documents: z.array(z.string().nullable(), { error: 'il campo "documents" è obbligatorio' }).min(1, 'serve almeno un documento'),
+        short_name: z.string().optional(),
+        website: z.string().nullable().optional(),
+        logo: z.string().nullable().optional(),
+        tags: z.array(z.string()).nullable().optional(),
+        start_date: z.unknown().optional(),
+        end_date: z.unknown().optional(),
+      })
+      .passthrough()
+      .transform((p) => ({ ...p, documents: p.documents.filter((d): d is string => Boolean(d)), slug: djangoSlugify(p.short_name || p.name) })),
+  ),
+});
+export type ProjectsSettings = z.infer<typeof ProjectsSettingsSchema>;
+
+function parseYamlWith<T>(schema: z.ZodType<T>, text: string, file: string): Parsed<T> {
+  let data: unknown;
+  try {
+    data = parseYaml(text);
+  } catch (e) {
+    return { ok: false, problems: [{ level: 'errore', file, code: 'yaml', message: `YAML non valido: ${(e as Error).message}` }] };
+  }
+  const r = schema.safeParse(data);
+  return r.success ? { ok: true, value: r.data, problems: [] } : { ok: false, problems: zodProblems(file, r.error) };
+}
+
+export const parsePublisherSettings = (text: string, file = 'publisher_settings.yml') => parseYamlWith(PublisherSettingsSchema, text, file);
+export const parseProjectsSettings = (text: string, file = 'projects_settings.yml') => parseYamlWith(ProjectsSettingsSchema, text, file);
+
+// ---------------------------------------------------------------------------
 // toc.json
 // ---------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ Usa gli stessi repository GitHub e gli stessi file di configurazione di oggi (`i
 - ricerca semantica e un server MCP per gli assistenti;
 - la possibilità per altre PA di installare la propria istanza.
 
-> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Server, sito, server MCP e dashboard sono ancora ossatura.
+> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Il server importa da `italia-conf`, costruisce e pubblica i pacchetti e offre API e ricerca (`apps/server`). Sito, server MCP e dashboard sono ancora ossatura.
 
 ## Provare
 
@@ -122,7 +122,7 @@ Funzionano `init`, `check`, `build`, `dev`, `studio` e `convert`; `publish` e `m
 | Interfaccia | Tailwind CSS 4, daisyUI 5, [Italia Tailwind UI](https://github.com/italia/italia-tailwind-ui) | Solo il tema `italia-original`, per ora |
 | PDF | Chromium headless con Paged.js 0.4 (indice con numeri di pagina, margini con contenuto); Chrome da solo con `--pdf-engine chrome` | Paged.js non regge i selettori di Tailwind: il CSS del sito è escluso dalla sua analisi e le regole di impaginazione stanno in `paged.css` |
 | Validazione EPUB | `epubcheck` | In CI |
-| Database | PostgreSQL con pgvector e pg-boss | Metadati, coda, ricerca testuale e vettoriale |
+| Database | PostgreSQL con pg_trgm (poi pgvector), driver integrato di Bun (`Bun.sql`) | Metadati, coda dei lavori (`FOR UPDATE SKIP LOCKED`), ricerca full-text in italiano; poi vettoriale |
 | File | Object storage S3-compatibile, MinIO per le installazioni autonome | Pacchetti immutabili |
 | GitHub | Octokit (`@octokit/app`, `@octokit/webhooks`, REST e GraphQL) | Solo per l'API di GitHub; Git locale e clone di build con il comando `git` |
 | Studio locale | SQLite (`bun:sqlite`) | Solo bozze e registro: il contenuto sta nei file del repository |

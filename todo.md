@@ -443,7 +443,7 @@ In una fase successiva la stessa applicazione React gira anche dentro l'istanza,
 | Componente | Scelta | Note |
 |---|---|---|
 | Server | Bun, TypeScript, Hono | Leggero, tipizzato, adatto ad API e webhook; Bun è runtime, gestore di pacchetti e test runner di tutto il monorepo |
-| Database | PostgreSQL con pgvector | Anche coda dei job (pg-boss), ricerca testuale e vettoriale: niente Redis, Elasticsearch o database vettoriale separato |
+| Database | PostgreSQL con pgvector | Anche coda dei job (tabella con `FOR UPDATE SKIP LOCKED`, al posto di pg-boss: più semplice e senza dipendenze), ricerca testuale e vettoriale: niente Redis, Elasticsearch o database vettoriale separato |
 | Embedding | Servizio dedicato, modello configurabile | Vedi 7.3 |
 | Server MCP | TypeScript, SDK MCP ufficiale, trasporto Streamable HTTP | Vedi 7.4 |
 | File | Object storage S3-compatibile; MinIO per le installazioni autonome | Pacchetti immutabili: ogni build ha il suo prefisso, pubblicare è spostare un puntatore |
@@ -891,6 +891,7 @@ Dopo il PoC il codice è passato nei pacchetti di `docs-italia-platform` e gira 
 | Segnalazioni a Italia Tailwind UI | Testi pronti, da aprire a mano | `docs/segnalazioni/italia-tailwind-ui.md` |
 | Banco di prova della conversione | Prima versione sui 41 repository presenti in locale (branch attuale): 40 convertiti, 1.008 pagine, tutte le build HTML riuscite, **25 senza errori al controllo**. Errori scesi da 1.163 a 245, quasi tutti in `eid-wallet-it-docs` | `packages/toolkit/scripts/banco.ts`, `inventario/banco-di-prova.md` |
 | Segnalibri del PDF con Paged.js | Corretto: in stampa il numero dei titoli è testo semplice | `packages/render/src/content.ts` |
+| Server (fase 3) | Prima versione: modello dati, sincronizzazione da `italia-conf` (regole del fork), versioni dall'inventario, coda in PostgreSQL, worker con conversione RST, pubblicazione con verifica del manifest, ricezione dei pacchetti con OIDC, webhook firmati, API e ricerca in italiano. Forge comune con `LocalForge` (clone locali) e `GitHubForge` (Octokit). Su dati reali: 3 publisher, 33 bozze e 98 versioni dell'inventario pubblicate (le altre versioni sono di repository non clonati in locale). 10 test di integrazione su PostgreSQL | `apps/server`, `packages/forge` |
 
 Criticità emerse dopo il PoC:
 
@@ -922,4 +923,5 @@ Dal banco di prova:
 5. Confronto del PDF di Paged.js con il LaTeX attuale sui documenti con più `only:: format_latex` (51 blocchi scartati nella conversione).
 6. Editor visuale (fase 8) sopra `sourceBlocks` e `replaceBlocks`.
 7. Aprire le segnalazioni a Italia Tailwind UI.
-8. Iniziare il server (fase 3): modello dati, importazione da `italia-conf`, ricezione dei pacchetti.
+8. Server (fase 3), da completare: anteprime delle pull request, versioni archiviate, prova di `GitHubForge` su GitHub e di una GitHub Action vera che invia il pacchetto, istanza completa in `deploy/compose`.
+9. Sito Astro (fase 4) sopra le API del server, e dashboard (6.6) con utenti, ruoli e magic link.

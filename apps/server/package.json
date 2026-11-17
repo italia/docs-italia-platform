@@ -8,8 +8,18 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@docs-italia/schema": "*",
     "@docs-italia/forge": "*",
-    "@docs-italia/retrieval": "*"
+    "@docs-italia/myst": "*",
+    "@docs-italia/retrieval": "*",
+    "@docs-italia/schema": "*",
+    "@docs-italia/toolkit": "*",
+    "fflate": "^0.8.3",
+    "hono": "^4.13.19",
+    "jose": "^6.2.17",
+    "yaml": "^2.9.1"
+  },
+  "scripts": {
+    "start": "bun src/main.ts",
+    "migrate": "bun src/main.ts migrate"
   }
 }
