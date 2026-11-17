@@ -66,12 +66,22 @@ function siteContext(doc: DocView, page: PageView, mode: RenderMode = 'site'): R
   };
 }
 
+/**
+ * Id della pagina singola e della stampa: tutte le pagine stanno nello stesso
+ * documento, quindi gli id portano il nome della pagina. Devono essere validi
+ * anche come selettori CSS (Paged.js li usa con querySelector): "00_premessa"
+ * o "capitoli/introduzione" non lo sono.
+ */
+const cssSafe = (s: string) => s.replace(/[^A-Za-z0-9_-]/g, '-');
+export const pageId = (slug: string) => `p-${cssSafe(slug)}`;
+const anchorId = (slug: string, anchor: string) => `${pageId(slug)}--${cssSafe(anchor)}`;
+
 function singleContext(doc: DocView, page: PageView, mode: 'single' | 'print'): RenderContext {
   return {
     mode,
     page: page.slug,
-    hrefFor: (p, a) => `#${a ? `${p}--${a}` : p}`,
-    idFor: (p, a) => `${p}--${a}`,
+    hrefFor: (p, a) => `#${a ? anchorId(p, a) : pageId(p)}`,
+    idFor: (p, a) => anchorId(p, a),
     assetHref: (path) => path,
     headingOffset: page === doc.pages[0] ? 0 : 1,
   };
@@ -267,7 +277,7 @@ function allChapters(doc: DocView, mode: 'single' | 'print'): string {
       const nodes = i === 0 ? p.tree.children?.filter((n) => !(n.type === 'heading' && n.depth === 1)) : p.tree.children;
       // data-title: titolo del capitolo per l'intestazione delle pagine stampate (string-set in paged.css)
       const title = `${p.number ? p.number + ' ' : ''}${p.title}`;
-      return `<section id="${escapeAttr(p.slug)}" class="${i === 0 ? 'di-intro' : 'di-chapter'}" data-title="${escapeAttr(title)}">
+      return `<section id="${escapeAttr(pageId(p.slug))}" class="${i === 0 ? 'di-intro' : 'di-chapter'}" data-title="${escapeAttr(title)}">
 ${renderNodes(nodes, ctx)}
 ${renderFootnotes(p.footnotes, ctx)}
 </section>`;
@@ -277,7 +287,7 @@ ${renderFootnotes(p.footnotes, ctx)}
 
 export function renderSinglePage(doc: DocView, opts: SiteOptions): { file: string; html: string } {
   const file = 'pagina-singola.html';
-  const toc = docToc(doc, null, (slug) => `#${slug}`);
+  const toc = docToc(doc, null, (slug) => `#${pageId(slug)}`);
   const html = `${head(doc, `${doc.name} — pagina singola`, opts.css)}<body>
 ${skiplinks({ links: [{ label: 'Vai al contenuto', href: '#main' }] })}
 ${siteHeader(doc, 'index.html')}
@@ -323,7 +333,7 @@ export function renderPrint(doc: DocView, opts: { css: string; date: string; ext
 <h2>${escapeHtml(doc.caption ?? 'Indice dei contenuti')}</h2>
 <ol>${doc.pages
     .slice(1)
-    .map((p) => `<li><a href="#${escapeAttr(p.slug)}">${p.number ? `<span class="di-number">${escapeHtml(p.number)}</span> ` : ''}${escapeHtml(p.title)}</a></li>`)
+    .map((p) => `<li><a href="#${escapeAttr(pageId(p.slug))}">${p.number ? `<span class="di-number">${escapeHtml(p.number)}</span> ` : ''}${escapeHtml(p.title)}</a></li>`)
     .join('')}</ol>
 </nav>
 <main class="di-prose">

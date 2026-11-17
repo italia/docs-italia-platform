@@ -35,6 +35,8 @@ export interface BuildOptions {
   /** HTML aggiunto in fondo a ogni pagina (anteprima: ricaricamento automatico) */
   bodyEnd?: string;
   minifyCss?: boolean;
+  /** nome del documento nei file scaricabili; predefinito: dal repository o dalla cartella */
+  slug?: string;
   /** motore del PDF: pagedjs (predefinito) o chrome */
   pdfEngine?: PdfEngine;
   /** se false, il CSS non viene ricompilato quando esiste già */
@@ -118,7 +120,7 @@ export async function build(root: string, opts: BuildOptions = {}): Promise<Buil
   const project = await t('caricamento', () => loadProject(root));
   const git = await t('git', () => gitInfo(root));
   const doc = await t('parsing e risoluzione', () => resolveProject(project, opts.read ?? diskReader(project)));
-  const slug = documentSlug(root, project.settings.repository);
+  const slug = opts.slug ?? documentSlug(root, project.settings.repository);
   const outDir = opts.outDir ?? join(root, 'dist');
   const htmlDir = join(outDir, 'html');
   const dlDir = join(outDir, 'downloads');

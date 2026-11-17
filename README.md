@@ -123,7 +123,7 @@ Funzionano `init`, `check`, `build`, `dev`, `studio` e `convert`; `publish` e `m
 | PDF | Chromium headless con Paged.js 0.4 (indice con numeri di pagina, margini con contenuto); Chrome da solo con `--pdf-engine chrome` | Paged.js non regge i selettori di Tailwind: il CSS del sito è escluso dalla sua analisi e le regole di impaginazione stanno in `paged.css` |
 | Validazione EPUB | `epubcheck` | In CI |
 | Database | PostgreSQL con pg_trgm (poi pgvector), driver integrato di Bun (`Bun.sql`) | Metadati, coda dei lavori (`FOR UPDATE SKIP LOCKED`), ricerca full-text in italiano; poi vettoriale |
-| File | Object storage S3-compatibile, MinIO per le installazioni autonome | Pacchetti immutabili |
+| File | Object storage S3-compatibile (client S3 di Bun); SeaweedFS per le installazioni autonome | Pacchetti immutabili. MinIO non distribuisce più immagini della versione comunitaria |
 | GitHub | Octokit (`@octokit/app`, `@octokit/webhooks`, REST e GraphQL) | Solo per l'API di GitHub; Git locale e clone di build con il comando `git` |
 | Studio locale | SQLite (`bun:sqlite`) | Solo bozze e registro: il contenuto sta nei file del repository |
 

@@ -58,6 +58,7 @@ export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
     }
     const out = join(tmp, 'dist');
     const result = await build(docDir, {
+      slug: v.repo_name.toLowerCase(),
       outDir: out,
       html: config.buildPdf,
       pdf: config.buildPdf,

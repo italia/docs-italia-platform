@@ -1,0 +1,89 @@
+# Istanza Docs Italia completa con Docker Compose (todo.md, 8).
+#
+#   cp .env.example .env    # e modificare i valori
+#   docker build -f ../toolkit/Dockerfile -t docs-italia-toolkit:dev ../..
+#   docker compose up -d
+#   docker compose exec server bun /opt/docs-italia/apps/server/src/main.ts sync <organizzazione>
+#
+# Il server usa l'immagine del toolkit: contiene il monorepo, Sphinx e Chromium,
+# quindi il worker costruisce anche i PDF.
+name: docs-italia
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17
+    environment:
+      POSTGRES_DB: docs_italia
+      POSTGRES_USER: docs_italia
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?imposta POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docs_italia -d docs_italia"]
+      interval: 5s
+      retries: 20
+
+  # Object storage S3-compatibile. Non MinIO: dal 2025 MinIO non distribuisce
+  # più immagini della versione comunitaria. SeaweedFS è Apache-2.0.
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.54
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        printf '{"identities":[{"name":"docs-italia","credentials":[{"accessKey":"%s","secretKey":"%s"}],"actions":["Admin","Read","Write","List","Tagging"]}]}' "$$S3_ACCESS_KEY_ID" "$$S3_SECRET_ACCESS_KEY" > /tmp/s3.json
+        exec weed server -dir=/data -s3 -s3.port=8333 -s3.config=/tmp/s3.json
+    environment:
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?imposta S3_ACCESS_KEY_ID in .env}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?imposta S3_SECRET_ACCESS_KEY in .env}
+    volumes:
+      - seaweedfs:/data
+
+  # crea il bucket al primo avvio
+  bucket:
+    image: chrislusf/seaweedfs:4.54
+    depends_on: [seaweedfs]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        for i in $$(seq 1 60); do
+          out=$$(echo "s3.bucket.create -name docs-italia" | weed shell -master=seaweedfs:9333 2>&1)
+          echo "$$out" | grep -qi "already exist" && exit 0   # riavvio: il bucket c'è già
+          echo "$$out" | grep -qiE "error|failed|refused" || exit 0
+          sleep 2
+        done
+        echo "$$out"
+        exit 1
+
+  server:
+    image: docs-italia-toolkit:dev
+    entrypoint: ["bun", "/opt/docs-italia/apps/server/src/main.ts"]
+    command: []
+    depends_on:
+      postgres: { condition: service_healthy }
+      bucket: { condition: service_completed_successfully }
+    environment:
+      DATABASE_URL: postgres://docs_italia:${POSTGRES_PASSWORD}@postgres:5432/docs_italia
+      HOST: 0.0.0.0
+      PORT: 8080
+      PUBLIC_URL: ${PUBLIC_URL:-http://127.0.0.1:8080}
+      ORGANIZATIONS: ${ORGANIZATIONS:-}
+      S3_BUCKET: docs-italia
+      S3_ENDPOINT: http://seaweedfs:8333
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_APP_ID: ${GITHUB_APP_ID:-}
+      GITHUB_APP_PRIVATE_KEY: ${GITHUB_APP_PRIVATE_KEY:-}
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?imposta ADMIN_TOKEN in .env}
+    ports:
+      - "127.0.0.1:8080:8080"   # davanti va un proxy HTTPS
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/health"]
+      interval: 10s
+      retries: 10
+
+volumes:
+  postgres:
+  seaweedfs:

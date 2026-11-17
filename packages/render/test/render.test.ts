@@ -51,3 +51,16 @@ test('elenco compatto: niente <p> nelle voci; elenco distanziato: <p> conservati
   assert.equal(renderNodes([{ type: 'list', spread: false, children: [item('a'), item('b')] }], ctx), '<ul><li>a</li>\n<li>b</li>\n</ul>\n');
   assert.match(renderNodes([{ type: 'list', spread: true, children: [item('a')] }], ctx), /<li><p>a<\/p>/);
 });
+
+test('pagina singola e stampa: id validi come selettori CSS (Paged.js usa querySelector)', async () => {
+  const { renderPrint } = await import('../src/index.ts');
+  const page = (slug: string, title: string) => ({ slug, title, depth: 1, tree: { type: 'root', children: [{ type: 'heading', depth: 1, anchor: '1-intro', children: [t(title)] }] }, sections: [], footnotes: [] });
+  const html = renderPrint(
+    { name: 'D', description: 'd', tags: [], language: 'it', version: { name: 'x' }, pages: [page('index', 'D'), page('00_premessa', 'Premessa'), page('capitoli/a', 'A')], downloads: {} },
+    { css: 'x.css', date: 'oggi' },
+  );
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]!);
+  const hrefs = [...html.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]!);
+  for (const id of [...ids, ...hrefs]) assert.match(id, /^[A-Za-z][A-Za-z0-9_-]*$/, id);
+  for (const h of hrefs) assert.ok(ids.includes(h), `link senza destinazione: #${h}`);
+});

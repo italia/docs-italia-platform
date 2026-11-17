@@ -446,7 +446,7 @@ In una fase successiva la stessa applicazione React gira anche dentro l'istanza,
 | Database | PostgreSQL con pgvector | Anche coda dei job (tabella con `FOR UPDATE SKIP LOCKED`, al posto di pg-boss: più semplice e senza dipendenze), ricerca testuale e vettoriale: niente Redis, Elasticsearch o database vettoriale separato |
 | Embedding | Servizio dedicato, modello configurabile | Vedi 7.3 |
 | Server MCP | TypeScript, SDK MCP ufficiale, trasporto Streamable HTTP | Vedi 7.4 |
-| File | Object storage S3-compatibile; MinIO per le installazioni autonome | Pacchetti immutabili: ogni build ha il suo prefisso, pubblicare è spostare un puntatore |
+| File | Object storage S3-compatibile; SeaweedFS (Apache-2.0) per le installazioni autonome: MinIO dal 2025 non distribuisce più immagini della versione comunitaria | Pacchetti immutabili: ogni build ha il suo prefisso, pubblicare è spostare un puntatore |
 | Build | Container effimeri con l'immagine del toolkit (Docker in compose, Job in Kubernetes) | Senza rete dopo il clone, con limiti di CPU, memoria e tempo |
 | Sito | Astro con adapter Node, rendering lato server | Una build statica di 205 versioni a ogni pubblicazione non è sostenibile; con SSR si mette in cache ogni pagina per pacchetto, e la cache si invalida alla pubblicazione |
 | Editor | Vite + React | Stesso codice dello studio locale |
@@ -726,7 +726,7 @@ Va previsto dall'inizio, non aggiunto alla fine:
 - **Nessun valore cablato**. Un file `instance.yml` definisce nome, dominio, logo, tema grafico (uno dei temi di Italia Tailwind UI o un tema daisyUI proprio, senza toccare il codice), pagine istituzionali (scritte come documenti MyST), elenco dei publisher, nome del repository di configurazione (`italia-conf` come predefinito), vocabolario dei tag, fornitori di autenticazione.
 - **RAG e MCP facoltativi**: un'istanza può disattivarli, o scegliere in `instance.yml` il modello di embedding (locale o esterno) e le regole di accesso al server MCP.
 - **Fornitori Git intercambiabili**: GitHub per primo; GitLab come secondo fornitore, perché molte PA lo usano in casa. Il pacchetto `forge` isola le differenze.
-- **Due modalità di installazione**: Docker Compose (server, sito, server MCP, PostgreSQL con pgvector, MinIO, worker, servizio di embedding) per un'amministrazione piccola, Helm per un cluster.
+- **Due modalità di installazione**: Docker Compose (server, sito, server MCP, PostgreSQL con pgvector, SeaweedFS, worker, servizio di embedding) per un'amministrazione piccola, Helm per un cluster.
 - **Specifica separata dal codice**: formato del documento, `toc.json`, pacchetto, estensioni di `document_settings.yml`, tutto versionato con JSON Schema in un repository proprio, come per `publiccode.yml`. Così il toolkit può essere usato anche senza un'istanza, e altri possono scrivere strumenti compatibili.
 - **Requisiti delle Linee guida sul riuso**: licenza aperta, `publiccode.yml` in ogni repository, pubblicazione nel catalogo di Developers Italia, documentazione di installazione scritta nel formato stesso.
 
@@ -886,7 +886,7 @@ Dopo il PoC il codice è passato nei pacchetti di `docs-italia-platform` e gira 
 | Serializzatore a blocchi | Fatto (5.3) | `packages/myst/src/serialize.ts`, `bun run fidelity` |
 | Paged.js per il PDF | Fatto, motore predefinito (4.5) | `packages/export`, `packages/render/src/paged.css` |
 | RST con Sphinx e conversione in MyST | Prima versione: builder `docsitalia-ast` ed estensione `docs_italia_sphinx`, comando `docs-italia convert`. Su `agid/lg-accessibilita-docs`: 11 pagine, nessun nodo perso, controllo senza problemi, 96,6% delle parole dell'uscita testuale di Sphinx (la differenza sono i numeri delle sezioni) | `packages/sphinx`, `packages/toolkit/src/convert.ts` |
-| Immagine Docker, compose, GitHub Action | Scritti, **non ancora provati**: il demone Docker non era attivo, e l'Action va provata su un repository vero | `deploy/toolkit/Dockerfile`, `examples/esempio-myst/compose.yml`, `.github/workflows/documento.yml`, `deploy/github/` |
+| Immagine Docker, compose, GitHub Action | Immagine del toolkit **provata** (build con PDF ed EPUB validato da `epubcheck`); compose dell'istanza **provato** con `teamdigitale` sincronizzato da GitHub e pacchetti su SeaweedFS; l'Action va ancora provata su un repository vero | `deploy/toolkit/Dockerfile`, `examples/esempio-myst/compose.yml`, `.github/workflows/documento.yml`, `deploy/github/` |
 | Specifica | Bozza 0, scritta in MyST e costruita con il toolkit | `spec/` |
 | Segnalazioni a Italia Tailwind UI | Testi pronti, da aprire a mano | `docs/segnalazioni/italia-tailwind-ui.md` |
 | Banco di prova della conversione | Prima versione sui 41 repository presenti in locale (branch attuale): 40 convertiti, 1.008 pagine, tutte le build HTML riuscite, **25 senza errori al controllo**. Errori scesi da 1.163 a 245, quasi tutti in `eid-wallet-it-docs` | `packages/toolkit/scripts/banco.ts`, `inventario/banco-di-prova.md` |
@@ -912,12 +912,13 @@ Dal banco di prova:
 - **Link scritti come URL HTML** verso altre pagine (`../pagina.html`, `../pagina`) diventano link ai file `.md`; URN e altri schemi non ammessi (`urn:oasis:…`, `about:blank`) diventano testo.
 - La stessa pagina in più `toctree` (uno nascosto e uno visibile) compare una sola volta in `toc.json`.
 - Con Paged.js, Chrome perde nei segnalibri del PDF un numero di titolo scritto in un `<span>` separato.
+- Nell'istanza in container: gli id della stampa devono essere validi anche come selettori CSS (Paged.js li usa con `querySelector`: `#00_premessa` non lo è); il nome dei file scaricabili va passato dal worker (la cartella di lavoro non è il repository); il servizio che crea il bucket deve tollerare il riavvio.
 - Restano da capire i riferimenti di `eid-wallet-it-docs` nella forma `pagina:slug-del-titolo` (188): non sono etichette di `autosectionlabel` e potrebbero dipendere da estensioni del suo `conf.py` o essere rotti anche nell'originale.
 
 ## 13. Prossimi passi
 
-1. Costruire l'immagine Docker del toolkit (serve il demone Docker attivo) e provarla con `compose.yml` e con `epubcheck`.
-2. Provare la GitHub Action su un repository di prova.
+1. Provare la GitHub Action su un repository di prova, con l'invio del pacchetto all'istanza (token OIDC).
+2. Provare `GitHubForge` con una GitHub App installata su un'organizzazione di prova.
 3. Banco di prova esteso: clonare tutti i 102 repository dell'inventario e convertire tutte le 205 versioni pubblicate, non solo il branch attuale dei 41 locali.
 4. Chiarire i riferimenti rimasti in `eid-wallet-it-docs` e le celle unite delle tabelle (11 tabelle, unione persa nella conversione).
 5. Confronto del PDF di Paged.js con il LaTeX attuale sui documenti con più `only:: format_latex` (51 blocchi scartati nella conversione).

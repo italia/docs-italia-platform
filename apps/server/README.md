@@ -17,13 +17,13 @@ Funzionante:
 - webhook GitHub firmati (push sul branch della bozza, tag, `italia-conf`);
 - API di lettura e ricerca full-text in italiano.
 
-Provato su dati reali: i tre publisher dai clone locali, 33 bozze e 98 versioni dall'inventario costruite e pubblicate.
+Provato su dati reali: i tre publisher dai clone locali, 33 bozze e 98 versioni dall'inventario costruite e pubblicate. Provato anche come istanza completa (`deploy/compose`): `teamdigitale` sincronizzato da GitHub (accesso anonimo), tre documenti costruiti nel container con PDF ed EPUB validato e pubblicati su SeaweedFS.
 
 Da fare:
 
 - anteprime delle pull request;
 - utenti e ruoli (arrivano con la dashboard, todo.md 6.6); per ora l'amministrazione usa un token;
-- prova di `GitHubForge` su GitHub e della ricezione con un'Action vera;
+- prova della ricezione con un'Action vera e di `GitHubForge` con GitHub App;
 - versioni archiviate (todo.md 2.3).
 
 ## Avvio
@@ -53,7 +53,7 @@ bun src/main.ts                  # API + worker su http://127.0.0.1:8080
 | `GITHUB_TOKEN` | In alternativa all'App, token in lettura |
 | `GITHUB_WEBHOOK_SECRET` | Verifica dei webhook |
 | `STORAGE_DIR` | Storage su file system (predefinito `./.docs-italia/storage`) |
-| `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` | Object storage S3/MinIO |
+| `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` | Object storage S3-compatibile (SeaweedFS nel compose dell'istanza) |
 | `OIDC_AUDIENCE` | Audience attesa nei token delle Actions (predefinita: `PUBLIC_URL`) |
 | `ADMIN_TOKEN` | Operazioni di amministrazione, finché non c'è la dashboard |
 | `BUILD_PDF=0` | Build senza PDF (sviluppo, test) |
