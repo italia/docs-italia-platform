@@ -25,15 +25,10 @@ export interface AppDeps {
 const ALIASES: Record<string, 'default' | 'draft'> = { stabile: 'default', stable: 'default', bozza: 'draft', draft: 'draft' };
 
 /** Versione predefinita: quella indicata, altrimenti l'ultima release pubblicata, altrimenti la bozza. */
-async function defaultVersion(sql: Db, documentId: number, declared: string | null) {
-  const rows = await sql`
-    select id, slug, kind, published_build_id from version
-    where document_id = ${documentId} and active and published_build_id is not null`;
-  const pick =
-    rows.find((v: any) => v.slug === declared) ??
-    rows.filter((v: any) => v.kind === 'release').sort((a: any, b: any) => b.slug.localeCompare(a.slug, 'it', { numeric: true }))[0] ??
-    rows.find((v: any) => v.kind !== 'release');
-  return pick ?? null;
+/** Versione predefinita: la regola sta nel database (default_version_id, migrazione 002). */
+async function defaultVersion(sql: Db, documentId: number) {
+  const [v] = await sql`select id, slug, kind, published_build_id from version where id = default_version_id(${documentId})`;
+  return v ?? null;
 }
 
 async function findDocument(sql: Db, pub: string, proj: string, doc: string) {
@@ -84,7 +79,7 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       select v.slug, v.kind, v.ref, v.commit, b.id as build, b.finished_at as published_at
       from version v join build b on b.id = v.published_build_id
       where v.document_id = ${d.id} and v.active order by v.kind, v.slug`;
-    const def = await defaultVersion(sql, d.id, d.default_version);
+    const def = await defaultVersion(sql, d.id);
     return c.json({
       slug: d.slug,
       name: d.name,
@@ -113,7 +108,7 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     const slug = c.req.param('version');
     const alias = ALIASES[slug];
     let v: any;
-    if (alias === 'default') v = await defaultVersion(sql, d.id, d.default_version);
+    if (alias === 'default') v = await defaultVersion(sql, d.id);
     else [v] = await sql`select id, slug, published_build_id from version where document_id = ${d.id} and slug = ${alias === 'draft' ? 'bozza' : slug} and active`;
     if (!v?.published_build_id) return c.json({ error: 'versione non pubblicata' }, 404);
     const [b] = await sql`select bundle_prefix from build where id = ${v.published_build_id}`;

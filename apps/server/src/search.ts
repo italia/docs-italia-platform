@@ -1,7 +1,7 @@
 /**
  * Ricerca del sito: full-text di PostgreSQL in italiano sulle sezioni delle
  * build pubblicate (todo.md, 6.4). Per impostazione predefinita solo la
- * versione predefinita di ogni documento.
+ * versione predefinita di ogni documento (default_version_id, migrazione 002).
  */
 import type { Db } from './db.ts';
 
@@ -35,9 +35,7 @@ export async function search(sql: Db, q: string, opts: { publisher?: string; doc
     where s.tsv @@ websearch_to_tsquery('italian', ${query})
       and (${opts.publisher ?? null}::text is null or p.slug = ${opts.publisher ?? null})
       and (${opts.document ?? null}::text is null or d.slug = ${opts.document ?? null})
-      and v.slug = coalesce(d.default_version, (
-        select v2.slug from version v2 where v2.document_id = d.id and v2.active and v2.published_build_id is not null
-        order by (v2.kind = 'release') desc, v2.created_at desc limit 1))
+      and v.id = default_version_id(d.id)
     order by rank desc
     limit ${Math.min(opts.limit ?? 20, 100)}`;
 }

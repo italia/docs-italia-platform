@@ -220,6 +220,22 @@ describe.skipIf(!available)('server', () => {
     });
   });
 
+  test('versione predefinita dichiarata con il nome del branch: API e ricerca usano quella versione', async () => {
+    await sql`update document set default_version = 'main' where repo_name = 'documento-prova'`;
+    try {
+      const doc = await (await app.request('/api/documents/esempio/prova/documento-prova')).json();
+      expect(doc.defaultVersion).toBe('bozza');
+      expect(doc.declaredDefault).toBe('bozza');
+      const hits = await (await app.request('/api/search?q=' + encodeURIComponent('flusso pacchetto'))).json();
+      expect(hits.length).toBeGreaterThan(0);
+      expect(hits.every((h: any) => h.document !== 'documento-prova' || h.version === 'bozza')).toBe(true);
+    } finally {
+      await sql`update document set default_version = null where repo_name = 'documento-prova'`;
+    }
+    // senza dichiarazione: l'ultima release in ordine di versione
+    expect((await (await app.request('/api/documents/esempio/prova/documento-prova')).json()).defaultVersion).toBe('2.0');
+  });
+
   test('documento tolto da italia-conf: disattivato', async () => {
     const conf = join(root, 'esempio', 'italia-conf');
     writeFileSync(join(conf, 'projects_settings.yml'), 'projects:\n  - name: Progetto di prova\n    short_name: Prova\n    description: Progetto\n    documents:\n      - documento-prova\n');
