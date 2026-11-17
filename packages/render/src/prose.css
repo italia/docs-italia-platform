@@ -1,0 +1,369 @@
+/*
+ * Tipografia dei documenti e layout di Docs Italia, scritti con i token del
+ * tema daisyUI di Italia Tailwind UI. Il preflight di Tailwind azzera margini
+ * ed elenchi, e la libreria definisce solo i titoli: il resto è qui.
+ * Va importato dopo "tailwindcss" e "@italia-tailwind/css".
+ */
+@layer components {
+  /* ---------- struttura della pagina ---------- */
+  .di-shell {
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  .di-shell > .ita-breadcrumbs {
+    margin-block: 1.5rem 0.5rem;
+  }
+  .di-layout {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: 1rem 4rem;
+  }
+  @media (min-width: 64rem) {
+    .di-layout {
+      grid-template-columns: 16rem minmax(0, 1fr);
+    }
+  }
+  @media (min-width: 80rem) {
+    .di-layout {
+      grid-template-columns: 16rem minmax(0, 1fr) 15rem;
+    }
+    .di-layout-single {
+      grid-template-columns: 16rem minmax(0, 1fr);
+    }
+  }
+  .di-sidebar {
+    font-size: 0.95rem;
+  }
+  /* su schermi stretti il contenuto viene prima; l'indice resta raggiungibile dal link "Vai all'indice" */
+  @media (max-width: 63.99rem) {
+    .di-sidebar {
+      order: 2;
+      border-top: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
+      padding-top: 1.5rem;
+    }
+  }
+  .di-shell > .ita-breadcrumbs ol {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+  @media (min-width: 64rem) {
+    .di-sidebar,
+    .di-aside > nav {
+      position: sticky;
+      top: 1rem;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+    }
+  }
+  .di-aside {
+    display: none;
+  }
+  @media (min-width: 80rem) {
+    .di-aside {
+      display: block;
+    }
+  }
+  .di-main {
+    min-width: 0;
+    max-width: 52rem;
+  }
+
+  .di-banner {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: color-mix(in oklab, var(--color-warning) 18%, var(--color-base-100));
+    border-bottom: 1px solid color-mix(in oklab, var(--color-warning) 50%, transparent);
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  /* ---------- indice del documento ---------- */
+  .di-toc-caption {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+    margin-bottom: 0.5rem;
+  }
+  .di-toc {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    border-left: 1px solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+  }
+  .di-toc a {
+    display: block;
+    padding: 0.35rem 0.75rem;
+    color: var(--color-base-content);
+    text-decoration: none;
+    margin-left: -1px;
+    border-left: 3px solid transparent;
+  }
+  .di-toc a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .di-toc a[aria-current='page'] {
+    border-left-color: var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .di-toc-depth-2 a {
+    padding-left: 1.75rem;
+  }
+  .di-number {
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in oklab, var(--color-base-content) 65%, transparent);
+    margin-right: 0.25rem;
+  }
+  .di-single-link,
+  .di-downloads {
+    margin-bottom: 1.5rem;
+  }
+  .di-downloads ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .di-downloads a,
+  .di-single-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+  }
+
+  /* ---------- contenuto ---------- */
+  .di-prose {
+    color: var(--color-base-content);
+    line-height: 1.65;
+  }
+  .di-prose > :first-child,
+  .di-prose section > :first-child {
+    margin-top: 0;
+  }
+  .di-prose h1 {
+    margin: 0 0 1.5rem;
+  }
+  .di-prose h2 {
+    margin: 2.75rem 0 1rem;
+  }
+  .di-prose h3 {
+    margin: 2rem 0 0.75rem;
+  }
+  .di-prose h4,
+  .di-prose h5,
+  .di-prose h6 {
+    margin: 1.5rem 0 0.5rem;
+  }
+  .di-prose :is(h1, h2, h3, h4) {
+    scroll-margin-top: 1rem;
+  }
+  .di-prose p,
+  .di-prose ul,
+  .di-prose ol,
+  .di-prose dl,
+  .di-prose blockquote,
+  .di-prose pre {
+    margin: 0 0 1rem;
+  }
+  .di-prose ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  .di-prose ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+  }
+  .di-prose li + li {
+    margin-top: 0.25rem;
+  }
+  .di-prose a:not([class]),
+  .di-prose a.di-external {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .di-prose blockquote {
+    border-left: 4px solid color-mix(in oklab, var(--color-base-content) 25%, transparent);
+    padding-left: 1rem;
+  }
+  .di-prose code {
+    font-size: 0.9em;
+    background: var(--color-base-200);
+    padding: 0.1em 0.3em;
+    border-radius: 0.25rem;
+  }
+  .di-prose pre {
+    background: var(--color-base-200);
+    padding: 1rem;
+    overflow-x: auto;
+    border-radius: 0.25rem;
+  }
+  .di-prose pre code {
+    background: none;
+    padding: 0;
+  }
+  .di-permalink {
+    visibility: hidden;
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 400;
+  }
+  :is(h1, h2, h3, h4):hover > .di-permalink,
+  .di-permalink:focus {
+    visibility: visible;
+  }
+
+  .di-figure {
+    margin: 2rem 0;
+  }
+  .di-figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
+  }
+  .di-figure.di-align-center {
+    text-align: center;
+  }
+  .di-figure.di-align-center img {
+    margin-inline: auto;
+  }
+  .di-figure figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+  }
+
+  .di-table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .di-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .di-table caption {
+    text-align: left;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+  }
+  .di-table th,
+  .di-table td {
+    border: 1px solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+  .di-table thead th {
+    background: var(--color-base-200);
+  }
+
+  .di-quote {
+    margin: 1.5rem 0;
+  }
+  .di-highlights blockquote {
+    border: 0;
+    padding: 0;
+    font-size: 1.35rem;
+    line-height: 1.4;
+    color: var(--color-primary);
+  }
+  .di-epigraph blockquote {
+    margin-inline: 1.5rem;
+    border-left-color: var(--color-primary);
+  }
+  .di-lead {
+    font-size: 1.2rem;
+  }
+  .di-meta {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
+  }
+  .di-tags {
+    list-style: none !important;
+    padding: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .di-tags li + li {
+    margin-top: 0;
+  }
+  .di-home-toc .di-toc {
+    font-size: 1.05rem;
+  }
+  .di-prose .di-toc {
+    list-style: none;
+    padding-left: 0;
+  }
+  .di-prose .di-toc a {
+    color: var(--color-base-content);
+    text-decoration: none;
+  }
+  .di-prose .di-toc a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .ita-callout .ita-callout-title {
+    margin: 0;
+  }
+  .ita-callout .ita-callout-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .di-footnotes {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    font-size: 0.9rem;
+  }
+  .di-unsupported {
+    border: 2px dashed var(--color-error);
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  .di-broken-ref {
+    color: var(--color-error);
+    text-decoration: wavy underline;
+  }
+
+  .di-pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
+  }
+  .di-pager a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    max-width: 48%;
+  }
+  .di-pager a:hover span {
+    text-decoration: underline;
+  }
+  .di-pager small {
+    display: block;
+    color: color-mix(in oklab, var(--color-base-content) 65%, transparent);
+  }
+  .di-pager-next {
+    margin-left: auto;
+    text-align: right;
+  }
+}

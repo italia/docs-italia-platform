@@ -1,0 +1,23 @@
+{
+  "$schema": "../../spec/schemas/toc.schema.json",
+  "root": "index.md",
+  "caption": "Indice dei contenuti",
+  "numbered": true,
+  "numfig": true,
+  "chapters": [
+    {
+      "file": "capitoli/introduzione.md"
+    },
+    {
+      "file": "capitoli/costrutti.md",
+      "children": [
+        {
+          "file": "capitoli/tabelle.md"
+        }
+      ]
+    },
+    {
+      "file": "capitoli/riferimenti.md"
+    }
+  ]
+}

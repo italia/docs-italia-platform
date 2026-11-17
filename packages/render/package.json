@@ -5,9 +5,20 @@
   "description": "AST → HTML con Italia Tailwind UI: sito, pagina singola, stampa, EPUB, anteprima",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./italia.css": "./src/italia.css",
+    "./prose.css": "./src/prose.css",
+    "./site.css": "./src/site.css",
+    "./epub.css": "./src/epub.css"
   },
   "dependencies": {
-    "@docs-italia/schema": "*"
+    "@docs-italia/schema": "*",
+    "@italia-tailwind/css": "^0.2.0",
+    "@italia-tailwind/recipes": "^0.2.0",
+    "daisyui": "^5.8.1",
+    "tailwindcss": "^4.3.5"
+  },
+  "scripts": {
+    "italia-css": "bun scripts/italia-css.ts"
   }
 }

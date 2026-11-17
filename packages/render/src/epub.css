@@ -1,0 +1,30 @@
+/* Foglio di stile dell'EPUB: CSS 2.1 + poche proprietà diffuse nei lettori. */
+body { font-family: serif; line-height: 1.5; margin: 0 4%; }
+h1, h2, h3, h4 { font-family: sans-serif; line-height: 1.25; page-break-after: avoid; }
+h1 { font-size: 1.7em; margin: 0 0 1em; }
+h2 { font-size: 1.35em; margin: 1.6em 0 0.6em; }
+h3 { font-size: 1.15em; margin: 1.3em 0 0.5em; }
+p { margin: 0 0 0.8em; }
+a { color: #0066cc; }
+.di-number { color: #555; }
+.di-permalink, .sr-only { display: none; }
+figure { margin: 1.5em 0; text-align: center; page-break-inside: avoid; }
+figure img { max-width: 100%; height: auto; }
+figcaption { font-style: italic; font-size: 0.9em; margin-top: 0.5em; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85em; margin: 1em 0; }
+caption { font-weight: bold; text-align: left; padding-bottom: 0.4em; }
+th, td { border: 1px solid #999; padding: 0.3em 0.5em; vertical-align: top; text-align: left; }
+thead th { background: #eee; }
+blockquote { margin: 1em 1.5em; padding-left: 0.8em; border-left: 3px solid #999; }
+.di-highlights blockquote { border: 0; font-size: 1.2em; color: #0066cc; margin: 1em 0; padding: 0; }
+aside.ita-callout { border: 2px solid #777; padding: 0.8em 1em; margin: 1.2em 0; page-break-inside: avoid; }
+aside.ita-callout-primary { border-color: #0066cc; }
+aside.ita-callout-warning { border-color: #a66300; }
+aside.ita-callout-danger { border-color: #cc334d; }
+aside.ita-callout-success { border-color: #008055; }
+.ita-callout-header { margin-bottom: 0.5em; }
+.ita-callout-header svg { width: 1.4em; height: 1.4em; vertical-align: middle; fill: currentColor; }
+.ita-callout-title { display: inline; font-family: sans-serif; font-weight: bold; text-transform: uppercase; margin-left: 0.3em; }
+code, pre { font-family: monospace; font-size: 0.9em; }
+pre { white-space: pre-wrap; background: #f3f3f3; padding: 0.6em; }
+.di-footnotes { border-top: 1px solid #999; margin-top: 2em; font-size: 0.85em; }

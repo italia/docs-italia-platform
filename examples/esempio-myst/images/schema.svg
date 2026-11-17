@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" width="640" height="160" role="img" aria-label="Sorgente MyST, toolkit, pacchetto">
+  <style>rect{fill:#e6f0fa;stroke:#0066cc;stroke-width:2}text{font:600 18px sans-serif;fill:#1a1a1a}path{stroke:#0066cc;stroke-width:2;fill:none}</style>
+  <rect x="10" y="50" width="170" height="60" rx="6"/><text x="35" y="86">Sorgente MyST</text>
+  <rect x="235" y="50" width="170" height="60" rx="6"/><text x="282" y="86">Toolkit</text>
+  <rect x="460" y="50" width="170" height="60" rx="6"/><text x="497" y="86">Pacchetto</text>
+  <path d="M180 80h50m-10-6 10 6-10 6M405 80h50m-10-6 10 6-10 6"/>
+</svg>

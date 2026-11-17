@@ -3,13 +3,26 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleResolution": "bundler",
-    "lib": ["ESNext"],
-    "types": ["bun"],
+    "lib": [
+      "ESNext"
+    ],
+    "types": [
+      "bun"
+    ],
     "strict": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["packages/*/src", "packages/*/bin", "packages/*/test", "apps/*/src", "tests"]
+  "include": [
+    "packages/*/src",
+    "packages/*/bin",
+    "packages/*/test",
+    "packages/*/scripts",
+    "apps/server/src",
+    "apps/mcp/src",
+    "apps/site/src",
+    "tests"
+  ]
 }

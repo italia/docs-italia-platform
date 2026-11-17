@@ -8,6 +8,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@docs-italia/myst": "*",
     "@docs-italia/schema": "*"
   }
 }

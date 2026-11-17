@@ -1,0 +1,13 @@
+document:
+  name: "Documento di esempio"
+  description: "Documento di prova del formato MyST di Docs Italia: copre i costrutti usati nei documenti pubblicati."
+  tags:
+    - esempio
+    - linee guida
+  # campi nuovi (facoltativi): vedi todo.md, sezione 3.5
+  format: myst
+  source: .
+  languages: [it]
+  downloads: [pdf, epub, html]
+  publisher: Esempio
+  project: Formato dei documenti

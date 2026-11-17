@@ -8,6 +8,17 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@docs-italia/schema": "*"
+    "@docs-italia/schema": "*",
+    "myst-common": "^1.9.0",
+    "myst-parser": "^1.7.5",
+    "vfile": "^5.3.7"
+  },
+  "devDependencies": {
+    "myst-to-md": "^1.0.18",
+    "unified": "^11.0.5"
+  },
+  "scripts": {
+    "roundtrip": "bun scripts/roundtrip.ts",
+    "fidelity": "bun scripts/fidelity.ts"
   }
 }

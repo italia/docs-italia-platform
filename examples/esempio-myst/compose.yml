@@ -1,0 +1,28 @@
+# Studio e anteprima del documento con Docker, senza installare nulla.
+#   docker compose up studio      → http://127.0.0.1:4322
+#   docker compose up anteprima   → http://127.0.0.1:4321
+#   docker compose run --rm toolkit build
+# L'immagine si costruisce dalla radice di docs-italia-platform:
+#   docker build -f deploy/toolkit/Dockerfile -t docs-italia-toolkit:dev .
+# (in futuro: ghcr.io/italia/docs-italia-toolkit)
+services:
+  studio:
+    image: docs-italia-toolkit:dev
+    command: studio --port 4322
+    ports: ["127.0.0.1:4322:4322"]   # solo da questo computer
+    volumes:
+      - .:/documento                 # il repository del documento
+      - studio-data:/documento/.docs-italia
+  anteprima:
+    image: docs-italia-toolkit:dev
+    command: dev --port 4321
+    ports: ["127.0.0.1:4321:4321"]
+    volumes:
+      - .:/documento
+  toolkit:
+    image: docs-italia-toolkit:dev
+    profiles: [strumenti]
+    volumes:
+      - .:/documento
+volumes:
+  studio-data:

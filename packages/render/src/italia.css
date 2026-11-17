@@ -1,0 +1,52 @@
+/*
+ * GENERATO da packages/render/scripts/italia-css.ts: non modificare a mano.
+ * Italia Tailwind UI (@italia-tailwind/css 0.2.0) con il solo tema "italia-original".
+ * Sostituisce @import "@italia-tailwind/css", che carica tutti i temi daisyUI.
+ */
+@plugin "daisyui" {
+  themes: false;
+  logs: false;
+}
+
+@import "../node_modules/@italia-tailwind/css/src/fonts.css";
+
+@plugin "daisyui/theme" {
+  name: "italia-original";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f5f5f5;
+  --color-base-300: #ebeced;
+  --color-base-content: #1a1a1a;
+  --color-primary: #0066cc;
+  --color-primary-content: #ffffff;
+  --color-secondary: #5c6f82;
+  --color-secondary-content: #ffffff;
+  --color-accent: #003366;
+  --color-accent-content: #ffffff;
+  --color-neutral: #17324d;
+  --color-neutral-content: #ffffff;
+  --color-info: #004d99;
+  --color-info-content: #ffffff;
+  --color-success: #008055;
+  --color-success-content: #ffffff;
+  --color-warning: #995c00;
+  --color-warning-content: #ffffff;
+  --color-error: #cc334d;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 2.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.275rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@import "../node_modules/@italia-tailwind/css/src/base.css";
+@import "../node_modules/@italia-tailwind/css/src/extensions.css";
+@import "../node_modules/@italia-tailwind/css/src/components.css";

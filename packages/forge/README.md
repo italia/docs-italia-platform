@@ -29,7 +29,7 @@ Webhook invece di interrogazioni periodiche, richieste condizionali (ETag) e, do
 
 Piano di progetto: sezioni 2.2, 4.3, 4.6, 5.4, 5.6, 6.5, 6.6, 8.
 
-Punto di partenza: `_poc/packages/toolkit/src/git.ts` nel PoC.
+Codice portato dal PoC (`_poc/packages/toolkit/src/git.ts`) e poi esteso.
 
 ## Dipende da
 

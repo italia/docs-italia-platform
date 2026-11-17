@@ -1,0 +1,75 @@
+/*
+ * Stampa con Paged.js: margini di pagina con contenuto, numeri di pagina
+ * nell'indice, titolo del capitolo in testa alla pagina, copertina senza numero.
+ * Si aggiunge a site.css solo quando il PDF usa Paged.js. È l'unico foglio
+ * che Paged.js analizza (site.css ha data-pagedjs-ignore): qui vanno anche le
+ * interruzioni di pagina, e niente selettori :is() o :where().
+ */
+@page {
+  size: A4;
+  margin: 22mm 18mm 24mm;
+
+  @top-right {
+    content: string(chapter);
+    font-family: "Titillium Sans Pro", sans-serif;
+    font-size: 8pt;
+    color: #5c6f82;
+  }
+  @bottom-left {
+    content: string(doctitle);
+    font-family: "Titillium Sans Pro", sans-serif;
+    font-size: 8pt;
+    color: #5c6f82;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-family: "Titillium Sans Pro", sans-serif;
+    font-size: 8pt;
+    color: #5c6f82;
+  }
+}
+
+@page :first {
+  @top-right { content: none; }
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+.di-cover h1 {
+  string-set: doctitle content(text);
+}
+.di-chapter > h2:first-child {
+  string-set: chapter content(text);
+}
+
+/* indice con i numeri di pagina */
+.di-print-toc a {
+  display: flex;
+  gap: 0.5em;
+}
+.di-print-toc a::after {
+  content: target-counter(attr(href), page);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* interruzioni di pagina */
+.di-cover,
+.di-print-toc {
+  break-after: page;
+}
+.di-chapter {
+  break-before: page;
+}
+h1,
+h2,
+h3,
+h4 {
+  break-after: avoid;
+}
+.di-figure,
+.ita-callout,
+.di-table tr,
+pre {
+  break-inside: avoid;
+}

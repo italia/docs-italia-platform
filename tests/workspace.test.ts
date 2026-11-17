@@ -19,7 +19,8 @@ describe('workspace', () => {
       expect(pkg.description?.length).toBeGreaterThan(0);
       expect(pkg.private).toBe(true);
       expect(existsSync(join(root, dir, 'README.md'))).toBe(true);
-      expect(existsSync(join(root, dir, 'src', 'index.ts'))).toBe(true);
+      // librerie e server: src/index.ts; app per il browser (editor, dashboard): src/main.tsx
+      expect(existsSync(join(root, dir, 'src', 'index.ts')) || existsSync(join(root, dir, 'src', 'main.tsx'))).toBe(true);
       for (const dep of Object.keys(pkg.dependencies ?? {}).filter((d) => d.startsWith('@docs-italia/'))) {
         expect(names.has(dep)).toBe(true);
       }
@@ -36,6 +37,9 @@ test('i pacchetti interni non hanno dipendenze circolari', () => {
   for (const name of deps.keys()) visit(name, []);
 });
 
-test('ogni pacchetto si importa', async () => {
-  for (const { dir } of pkgs) await import(join(root, dir, 'src', 'index.ts'));
+test('ogni pacchetto (non browser) si importa', async () => {
+  for (const { dir } of pkgs) {
+    const entry = join(root, dir, 'src', 'index.ts');
+    if (existsSync(entry)) await import(entry);
+  }
 });

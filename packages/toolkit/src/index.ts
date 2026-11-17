@@ -1,10 +1,10 @@
 /**
- * @docs-italia/toolkit — CLI docs-italia: init, check, build, dev, studio, publish, mcp.
- *
- * - CLI docs-italia usata nei repository dei documenti, in CI e dal worker della piattaforma.
- * - Build del pacchetto, anteprima locale con ricaricamento automatico, server dello studio con SQLite.
- * - Invio del pacchetto a un'istanza; server MCP locale sul repository.
- *
- * Ossatura: il codice arriverà dal PoC (_poc/packages/toolkit).
+ * @docs-italia/toolkit — build, anteprima e studio dei documenti.
+ * La CLI è in bin/docs-italia.ts.
  */
-export {};
+export { build, documentSlug, toDocView, versionName, TOOLKIT_VERSION, type BuildOptions, type BuildResult } from './build.ts';
+export { buildCss } from './css.ts';
+export { dev } from './dev.ts';
+export { studio } from './studio.ts';
+export { init } from './init.ts';
+export { convert, type ConvertReport } from './convert.ts';

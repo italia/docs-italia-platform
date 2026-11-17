@@ -11,11 +11,14 @@
     "docs-italia": "./bin/docs-italia.ts"
   },
   "dependencies": {
-    "@docs-italia/schema": "*",
+    "@docs-italia/export": "*",
+    "@docs-italia/forge": "*",
     "@docs-italia/myst": "*",
     "@docs-italia/render": "*",
-    "@docs-italia/export": "*",
     "@docs-italia/retrieval": "*",
-    "@docs-italia/forge": "*"
+    "@docs-italia/schema": "*",
+    "@tailwindcss/cli": "^4.3.5",
+    "fflate": "^0.8.3",
+    "yaml": "^2.9.1"
   }
 }

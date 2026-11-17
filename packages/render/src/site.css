@@ -1,0 +1,91 @@
+/*
+ * Foglio di stile del sito di un documento: Tailwind CSS 4 + Italia Tailwind UI
+ * + tipografia di Docs Italia. Il toolkit lo compila aggiungendo come sorgente
+ * l'HTML generato, così entrano solo le classi usate.
+ */
+@import "tailwindcss";
+/* Italia Tailwind UI con il solo tema italia-original (file generato) */
+@import "./italia.css";
+@import "./prose.css";
+@source "./";
+
+/* ---------- stampa (PDF) ---------- */
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm;
+}
+
+@media print {
+  html {
+    font-size: 10.5pt;
+  }
+  .ita-header,
+  .ita-footer,
+  .ita-skiplinks,
+  .ita-back-to-top,
+  .di-sidebar,
+  .di-aside,
+  .di-pager,
+  .di-banner,
+  .di-permalink {
+    display: none !important;
+  }
+  .di-chapter {
+    break-before: page;
+  }
+  /* niente :is() qui: Paged.js divide i selettori alle virgole e lo rompe */
+  .di-prose h1,
+  .di-prose h2,
+  .di-prose h3,
+  .di-prose h4 {
+    break-after: avoid;
+  }
+  .di-figure,
+  .ita-callout,
+  .di-table tr,
+  .di-prose pre {
+    break-inside: avoid;
+  }
+  .di-figure img {
+    max-height: 120mm;
+    width: auto;
+  }
+  /* nel PDF un link esterno non si può cliccare dalla carta: si stampa l'indirizzo */
+  .di-prose a[href^='http']:not(.di-url)::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    overflow-wrap: anywhere;
+  }
+  .di-prose a.di-url {
+    overflow-wrap: anywhere;
+  }
+}
+
+.di-print .di-cover {
+  min-height: 240mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  break-after: page;
+}
+.di-print .di-cover h1 {
+  font-size: 2.6rem;
+  color: var(--color-primary);
+}
+.di-print .di-cover-owner,
+.di-print .di-cover-version {
+  color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+}
+.di-print .di-print-toc {
+  break-after: page;
+}
+.di-print .di-print-toc ol {
+  list-style: none;
+  padding: 0;
+  line-height: 2;
+}
+.di-print .di-print-toc a {
+  color: var(--color-base-content);
+  text-decoration: none;
+}

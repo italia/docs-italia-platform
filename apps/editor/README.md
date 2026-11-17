@@ -10,7 +10,7 @@ Interfaccia dell'editor (Vite + React): studio locale ed editor ospitato.
 
 Piano di progetto: sezioni 5.2, 5.3, 5.6.
 
-Punto di partenza: `_poc/apps/editor` nel PoC.
+Codice portato dal PoC (`_poc/apps/editor`) e poi esteso.
 
 ## Dipende da
 

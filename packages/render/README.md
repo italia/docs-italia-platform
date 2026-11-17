@@ -10,7 +10,7 @@ AST → HTML con Italia Tailwind UI: sito, pagina singola, stampa, EPUB, antepri
 
 Piano di progetto: sezioni 6.1, 6.4.
 
-Punto di partenza: `_poc/packages/render` nel PoC.
+Codice portato dal PoC (`_poc/packages/render`) e poi esteso.
 
 ## Dipende da
 
