@@ -1,11 +1,10 @@
 ---
 import { breadcrumbs } from '@italia-tailwind/recipes';
-import { escapeHtml } from '@docs-italia/render';
 
 interface Props {
   items: Array<{ label: string; href?: string }>;
 }
-// le recipes non fanno escape: le etichette vengono dai documenti
-const items = [{ label: 'Docs Italia', href: '/' }, ...Astro.props.items].map((i) => ({ label: escapeHtml(i.label), href: i.href }));
+// le recipes fanno l'escape delle etichette, che vengono dai documenti
+const items = [{ label: 'Docs Italia', href: '/' }, ...Astro.props.items];
 ---
 <Fragment set:html={breadcrumbs({ items })} />

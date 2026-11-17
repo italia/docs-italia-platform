@@ -201,13 +201,14 @@ export function renderSitePage(doc: DocView, page: PageView, opts: SiteOptions):
   const home = relative(file, 'index.html');
   const prefix = relative(file, 'x').slice(0, -1);
 
+  // le recipes (0.3) fanno l'escape degli argomenti di testo: si passano i testi così come sono
   const crumbs = breadcrumbs({
     items: [
       { label: 'Docs Italia' },
-      ...(doc.publisher ? [{ label: escapeHtml(doc.publisher) }] : []),
-      ...(doc.project ? [{ label: escapeHtml(doc.project) }] : []),
-      isRoot ? { label: escapeHtml(doc.name) } : { label: escapeHtml(doc.name), href: home },
-      ...(isRoot ? [] : [{ label: escapeHtml(`${page.number ? page.number + '. ' : ''}${page.title}`) }]),
+      ...(doc.publisher ? [{ label: doc.publisher }] : []),
+      ...(doc.project ? [{ label: doc.project }] : []),
+      isRoot ? { label: doc.name } : { label: doc.name, href: home },
+      ...(isRoot ? [] : [{ label: `${page.number ? page.number + '. ' : ''}${page.title}` }]),
     ],
   });
 
@@ -216,11 +217,11 @@ export function renderSitePage(doc: DocView, page: PageView, opts: SiteOptions):
     ? navscroll({
         title: 'In questa pagina',
         links: sub.map((s) => ({
-          label: escapeHtml(`${s.number ? s.number + ' ' : ''}${s.title}`),
+          label: `${s.number ? s.number + ' ' : ''}${s.title}`,
           href: `#${s.anchor}`,
           children: page.sections
             .filter((c) => c.depth === 3 && c.number?.startsWith(`${s.number}.`))
-            .map((c) => ({ label: escapeHtml(`${c.number ? c.number + ' ' : ''}${c.title}`), href: `#${c.anchor}` })),
+            .map((c) => ({ label: `${c.number ? c.number + ' ' : ''}${c.title}`, href: `#${c.anchor}` })),
         })),
       })
     : '';
@@ -228,7 +229,7 @@ export function renderSitePage(doc: DocView, page: PageView, opts: SiteOptions):
   const meta = isRoot
     ? `<section class="di-meta" aria-label="Informazioni sul documento">
 <p class="di-lead">${escapeHtml(doc.description)}</p>
-<ul class="di-tags" aria-label="Argomenti">${doc.tags.map((t) => `<li>${chip({ label: escapeHtml(t), size: 'sm' })}</li>`).join('')}</ul>
+<ul class="di-tags" aria-label="Argomenti">${doc.tags.map((t) => `<li>${chip({ label: t, size: 'sm' })}</li>`).join('')}</ul>
 </section>
 <nav class="di-home-toc" aria-label="Indice dei contenuti">${docToc(doc, null, hrefPage)}</nav>
 <p><a class="ita-btn ita-btn-primary ita-btn-outline" href="${escapeAttr(relative(file, 'pagina-singola.html'))}">${ic('it-list')}<span>Leggi in una sola pagina</span></a></p>`

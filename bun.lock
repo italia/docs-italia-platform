@@ -19,8 +19,8 @@
         "@codemirror/state": "^6.7.6",
         "@codemirror/view": "^6.43.15",
         "@docs-italia/render": "*",
-        "@italia-tailwind/css": "^0.2.0",
-        "@italia-tailwind/recipes": "^0.2.0",
+        "@italia-tailwind/css": "^0.3.0",
+        "@italia-tailwind/recipes": "^0.3.0",
         "codemirror": "^6.0.2",
         "daisyui": "^5.8.1",
         "react": "^19.3.1",
@@ -64,8 +64,8 @@
         "@astrojs/node": "^11.1.13",
         "@docs-italia/render": "*",
         "@docs-italia/schema": "*",
-        "@italia-tailwind/css": "^0.2.0",
-        "@italia-tailwind/recipes": "^0.2.0",
+        "@italia-tailwind/css": "^0.3.0",
+        "@italia-tailwind/recipes": "^0.3.0",
         "astro": "^7.4.12",
         "daisyui": "^5.8.1",
       },
@@ -112,8 +112,8 @@
       "version": "0.0.0",
       "dependencies": {
         "@docs-italia/schema": "*",
-        "@italia-tailwind/css": "^0.2.0",
-        "@italia-tailwind/recipes": "^0.2.0",
+        "@italia-tailwind/css": "^0.3.0",
+        "@italia-tailwind/recipes": "^0.3.0",
         "daisyui": "^5.8.1",
         "tailwindcss": "^4.3.5",
       },
@@ -338,9 +338,9 @@
 
     "@img/sharp-win32-x64": ["@img/sharp-win32-x64@0.35.5", "", { "os": "win32", "cpu": "x64" }, "sha512-x76eH0vEiHlcMQu8Y8IenntaACtddpT6W0wmXtWrnKcnKI7ME5DdgqhAD6SEWOEl1v2zDvkZDhFA9KnURwpfqg=="],
 
-    "@italia-tailwind/css": ["@italia-tailwind/css@0.2.0", "", { "peerDependencies": { "daisyui": "^5.7.0", "tailwindcss": "^4.3.0" } }, "sha512-bP0YveIzgjZ2y/qIieNaZMBQsyZOSZnr8lEPlF5DHX+AdH+qGspiMnSc/RDaE6JyKLYq97qTMX0Hm4+/ft0mQA=="],
+    "@italia-tailwind/css": ["@italia-tailwind/css@0.3.0", "", { "peerDependencies": { "daisyui": "^5.7.0", "tailwindcss": "^4.3.0" } }, "sha512-Egx8r+SG8O3ox+gCszZN5V7V4hVqS4oSCb0NFyoPWW5yCC2787m3Zo5VBk4++udWP0rcue34IUfvzBRJ+0+8EQ=="],
 
-    "@italia-tailwind/recipes": ["@italia-tailwind/recipes@0.2.0", "", {}, "sha512-9uw3HO8AsUz51LjE2hfYyauQIMBWPGTO8GmLBi4pMHWvP6xdRGJWT6MXeH8n+boI+TZj6HZ9HtV/NcjB6HQ6cA=="],
+    "@italia-tailwind/recipes": ["@italia-tailwind/recipes@0.3.0", "", {}, "sha512-PymIRMbP+j6sSYME+BOoBrI2zVtk4zkUSgj2R7eUfJox+9s73xxeBVrzwkrRo1+oF0R7s4c+8ni1JWlQLrb5Ug=="],
 
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
 

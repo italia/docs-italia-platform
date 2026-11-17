@@ -13,12 +13,9 @@
   },
   "dependencies": {
     "@docs-italia/schema": "*",
-    "@italia-tailwind/css": "^0.2.0",
-    "@italia-tailwind/recipes": "^0.2.0",
+    "@italia-tailwind/css": "^0.3.0",
+    "@italia-tailwind/recipes": "^0.3.0",
     "daisyui": "^5.8.1",
     "tailwindcss": "^4.3.5"
-  },
-  "scripts": {
-    "italia-css": "bun scripts/italia-css.ts"
   }
 }

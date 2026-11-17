@@ -2,6 +2,8 @@
 
 Bozze di issue per [italia/italia-tailwind-ui](https://github.com/italia/italia-tailwind-ui), emerse usando `@italia-tailwind/css` e `@italia-tailwind/recipes` 0.2.0 in docs-italia-platform. Da rileggere e aprire a mano.
 
+**Risolte nella 0.3.0** (17 novembre 2026), adottata da docs-italia-platform: tutte le proposte sono state accolte. Il file resta come storia delle segnalazioni.
+
 La versione verificata sul sorgente, con file e righe, sta nel repository della libreria: `docs/proposte-docs-italia-platform.md` (clone locale `italia-tailwind-ui`, 17 novembre 2026). Rispetto a questa bozza aggiunge che il contatore globale degli id è anche in `checkbox`, `hero` e `autocomplete`, e che `calloutMore()` usa un id fisso, ripetuto se i riquadri sono più d'uno.
 
 ---

@@ -8,8 +8,8 @@
     "@astrojs/node": "^11.1.13",
     "@docs-italia/render": "*",
     "@docs-italia/schema": "*",
-    "@italia-tailwind/css": "^0.2.0",
-    "@italia-tailwind/recipes": "^0.2.0",
+    "@italia-tailwind/css": "^0.3.0",
+    "@italia-tailwind/recipes": "^0.3.0",
     "astro": "^7.4.12",
     "daisyui": "^5.8.1"
   },

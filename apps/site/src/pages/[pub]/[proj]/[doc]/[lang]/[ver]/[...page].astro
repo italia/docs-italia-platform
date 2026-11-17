@@ -102,7 +102,7 @@ const sub = sections.filter((s) => s.depth === 2);
 const onThisPage = sub.length
   ? navscroll({
       title: 'In questa pagina',
-      links: sub.map((s) => ({ label: escapeHtml(`${s.number ? `${s.number} ` : ''}${s.title}`), href: `#${s.anchor}` })),
+      links: sub.map((s) => ({ label: `${s.number ? `${s.number} ` : ''}${s.title}`, href: `#${s.anchor}` })),
     })
   : '';
 const isDraft = version.kind === 'draft';
