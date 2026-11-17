@@ -20,5 +20,8 @@
     "@tailwindcss/cli": "^4.3.5",
     "fflate": "^0.8.3",
     "yaml": "^2.9.1"
+  },
+  "scripts": {
+    "banco": "bun scripts/banco.ts"
   }
 }

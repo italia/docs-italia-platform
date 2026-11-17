@@ -265,7 +265,9 @@ function allChapters(doc: DocView, mode: 'single' | 'print'): string {
     .map((p, i) => {
       const ctx = singleContext(doc, p, mode);
       const nodes = i === 0 ? p.tree.children?.filter((n) => !(n.type === 'heading' && n.depth === 1)) : p.tree.children;
-      return `<section id="${escapeAttr(p.slug)}" class="${i === 0 ? 'di-intro' : 'di-chapter'}">
+      // data-title: titolo del capitolo per l'intestazione delle pagine stampate (string-set in paged.css)
+      const title = `${p.number ? p.number + ' ' : ''}${p.title}`;
+      return `<section id="${escapeAttr(p.slug)}" class="${i === 0 ? 'di-intro' : 'di-chapter'}" data-title="${escapeAttr(title)}">
 ${renderNodes(nodes, ctx)}
 ${renderFootnotes(p.footnotes, ctx)}
 </section>`;

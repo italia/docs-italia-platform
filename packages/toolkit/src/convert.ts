@@ -49,6 +49,30 @@ function files(dir: string, ext: string, base = dir, out: string[] = []): string
   return out;
 }
 
+/**
+ * Cartella della sorgente RST in un repository (todo.md, 2.2): index.rst alla
+ * radice, poi docs/it, docs, rst, src.
+ */
+export function findRstSource(repo: string): string | undefined {
+  for (const d of ['.', 'docs/it', 'docs', 'rst', 'src', 'doc']) {
+    if (existsSync(join(repo, d, 'index.rst'))) return resolve(repo, d);
+  }
+  return undefined;
+}
+
+/** document_settings.yml nella sorgente o in una cartella superiore (sorgenti in docs/it). */
+function findSettings(src: string): string | undefined {
+  let dir = src;
+  for (let i = 0; i < 4; i++) {
+    const f = join(dir, 'document_settings.yml');
+    if (existsSync(f)) return f;
+    const up = dirname(dir);
+    if (up === dir) break;
+    dir = up;
+  }
+  return undefined;
+}
+
 export async function convert(src: string, out: string, opts: { log?: (m: string) => void } = {}): Promise<ConvertReport> {
   const log = opts.log ?? (() => {});
   src = resolve(src);
@@ -57,10 +81,18 @@ export async function convert(src: string, out: string, opts: { log?: (m: string
   if (!existsSync(join(src, 'index.rst'))) throw new Error(`${src}: manca index.rst (documenti con sorgente in una sottocartella: indicare quella)`);
 
   const ast = mkdtempSync(join(tmpdir(), 'docs-italia-ast-'));
+  // il conf.py non si esegue: se ne leggono solo le impostazioni che servono alla conversione
+  const confPy = existsSync(join(src, 'conf.py')) ? readFileSync(join(src, 'conf.py'), 'utf8') : '';
+  const extensions = ['docs_italia_sphinx'];
+  const defines: string[] = [];
+  if (/['"]sphinx\.ext\.autosectionlabel['"]/.test(confPy)) {
+    extensions.push('sphinx.ext.autosectionlabel');
+    if (/^\s*autosectionlabel_prefix_document\s*=\s*True/m.test(confPy)) defines.push('-D', 'autosectionlabel_prefix_document=1');
+  }
   log('Sphinx: lettura dell’RST…');
   const { stderr } = await run(
     python(),
-    ['-m', 'sphinx', '-q', '-C', '-b', 'docsitalia-ast', '-D', 'extensions=docs_italia_sphinx', '-D', 'master_doc=index', '-D', 'language=it', src, ast],
+    ['-m', 'sphinx', '-q', '-C', '-b', 'docsitalia-ast', '-D', `extensions=${extensions.join(',')}`, ...defines, '-D', 'master_doc=index', '-D', 'language=it', src, ast],
     { maxBuffer: 50 * 1024 * 1024 },
   ).catch((e) => {
     throw new Error(`Sphinx non riuscito: ${e.stderr || e.message}`);
@@ -92,8 +124,8 @@ export async function convert(src: string, out: string, opts: { log?: (m: string
 
   writeFileSync(join(out, 'toc.json'), `${JSON.stringify({ $schema: 'https://docs.italia.it/schema/toc/1.json', ...toc }, null, 2)}\n`);
 
-  const settingsFile = join(src, 'document_settings.yml');
-  if (existsSync(settingsFile)) {
+  const settingsFile = findSettings(src);
+  if (settingsFile) {
     const doc = parseDocument(readFileSync(settingsFile, 'utf8'));
     doc.setIn(['document', 'format'], 'myst');
     writeFileSync(join(out, 'document_settings.yml'), doc.toString());

@@ -38,8 +38,9 @@
 .di-cover h1 {
   string-set: doctitle content(text);
 }
-.di-chapter > h2:first-child {
-  string-set: chapter content(text);
+/* dall'attributo e non dal titolo: con string-set sul titolo Chrome perde il numero nei segnalibri */
+.di-chapter {
+  string-set: chapter attr(data-title);
 }
 
 /* indice con i numeri di pagina */

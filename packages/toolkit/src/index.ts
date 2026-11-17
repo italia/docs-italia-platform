@@ -7,4 +7,4 @@ export { buildCss } from './css.ts';
 export { dev } from './dev.ts';
 export { studio } from './studio.ts';
 export { init } from './init.ts';
-export { convert, type ConvertReport } from './convert.ts';
+export { convert, findRstSource, type ConvertReport } from './convert.ts';

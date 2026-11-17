@@ -889,6 +889,8 @@ Dopo il PoC il codice è passato nei pacchetti di `docs-italia-platform` e gira 
 | Immagine Docker, compose, GitHub Action | Scritti, **non ancora provati**: il demone Docker non era attivo, e l'Action va provata su un repository vero | `deploy/toolkit/Dockerfile`, `examples/esempio-myst/compose.yml`, `.github/workflows/documento.yml`, `deploy/github/` |
 | Specifica | Bozza 0, scritta in MyST e costruita con il toolkit | `spec/` |
 | Segnalazioni a Italia Tailwind UI | Testi pronti, da aprire a mano | `docs/segnalazioni/italia-tailwind-ui.md` |
+| Banco di prova della conversione | Prima versione sui 41 repository presenti in locale (branch attuale): 40 convertiti, 1.008 pagine, tutte le build HTML riuscite, **25 senza errori al controllo**. Errori scesi da 1.163 a 245, quasi tutti in `eid-wallet-it-docs` | `packages/toolkit/scripts/banco.ts`, `inventario/banco-di-prova.md` |
+| Segnalibri del PDF con Paged.js | Corretto: in stampa il numero dei titoli è testo semplice | `packages/render/src/content.ts` |
 
 Criticità emerse dopo il PoC:
 
@@ -900,13 +902,24 @@ Criticità emerse dopo il PoC:
 - Paged.js 0.4 applica le regole a frammenti del documento senza `body`: i selettori di `paged.css` non devono partire da `body` o da sue classi.
 - Con Bun, `italia.css` deve passare dal collegamento locale del pacchetto (`node_modules/@italia-tailwind/css`), perché il percorso reale contiene un hash che cambia a ogni versione.
 
+Dal banco di prova:
+
+- **Le etichette vanno risolte con l'indice di Sphinx** (`std.labels`), che comprende quelle generate da `autosectionlabel`: il builder raccoglie i riferimenti di tutte le pagine prima di scrivere e mette le etichette sull'elemento giusto (sezione, paragrafo, figura). Il `conf.py` si legge come testo solo per sapere se il documento usa `autosectionlabel`.
+- **Non tutte le etichette RST sono etichette MyST**: `(§4.4)=` è testo. Le etichette si convertono in una forma sicura, e i riferimenti con la stessa regola.
+- **Il risolutore confronta le etichette normalizzate** come fa MyST (minuscole, spazi compattati); le pagine stanno in uno spazio di nomi separato dalle etichette.
+- **Le direttive sconosciute non vanno perse**: senza le estensioni del `conf.py` (mermaid, plantuml…) docutils le sostituisce con un errore. Il convertitore le ricostruisce come direttive MyST e il controllo le segnala.
+- **Link scritti come URL HTML** verso altre pagine (`../pagina.html`, `../pagina`) diventano link ai file `.md`; URN e altri schemi non ammessi (`urn:oasis:…`, `about:blank`) diventano testo.
+- La stessa pagina in più `toctree` (uno nascosto e uno visibile) compare una sola volta in `toc.json`.
+- Con Paged.js, Chrome perde nei segnalibri del PDF un numero di titolo scritto in un `<span>` separato.
+- Restano da capire i riferimenti di `eid-wallet-it-docs` nella forma `pagina:slug-del-titolo` (188): non sono etichette di `autosectionlabel` e potrebbero dipendere da estensioni del suo `conf.py` o essere rotti anche nell'originale.
+
 ## 13. Prossimi passi
 
 1. Costruire l'immagine Docker del toolkit (serve il demone Docker attivo) e provarla con `compose.yml` e con `epubcheck`.
 2. Provare la GitHub Action su un repository di prova.
-3. Convertire con `docs-italia convert` documenti più complessi: uno con tabelle a griglia e celle unite, PlantUML e glossario, e uno multilingua (`italia/spid-cie-oidc-docs`). Misurare cosa resta nel rapporto.
-4. Banco di prova (fase 1): convertire tutte le versioni dell'inventario e produrre un rapporto di compatibilità.
-5. Confronto del PDF di Paged.js con il LaTeX attuale sui documenti con più `only:: format_latex`; correggere i segnalibri dei capitoli.
+3. Banco di prova esteso: clonare tutti i 102 repository dell'inventario e convertire tutte le 205 versioni pubblicate, non solo il branch attuale dei 41 locali.
+4. Chiarire i riferimenti rimasti in `eid-wallet-it-docs` e le celle unite delle tabelle (11 tabelle, unione persa nella conversione).
+5. Confronto del PDF di Paged.js con il LaTeX attuale sui documenti con più `only:: format_latex` (51 blocchi scartati nella conversione).
 6. Editor visuale (fase 8) sopra `sourceBlocks` e `replaceBlocks`.
 7. Aprire le segnalazioni a Italia Tailwind UI.
 8. Iniziare il server (fase 3): modello dati, importazione da `italia-conf`, ricezione dei pacchetti.

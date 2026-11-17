@@ -36,7 +36,6 @@ ADMONITIONS = {
 SKIP = (
     nodes.comment,
     nodes.substitution_definition,
-    nodes.system_message,
     addnodes.index,
     nodes.meta if hasattr(nodes, "meta") else nodes.comment,
 )
@@ -44,6 +43,30 @@ SKIP = (
 
 class forum_node(nodes.General, nodes.Element):
     """Nodo della direttiva RST forum_italia."""
+
+
+SAFE_SCHEMES = ("http://", "https://", "mailto:", "tel:")
+
+
+def safe_label(name: str) -> str:
+    """Etichetta valida per MyST: `(§4.4)=` non è un'etichetta, `(sez-4.4)=` sì."""
+    import re
+
+    out = re.sub(r"[^A-Za-z0-9_.:-]+", "-", name.strip()).strip("-")
+    return out or "etichetta"
+
+
+@dataclass
+class Labels:
+    """Etichette da emettere: per pagina, id docutils dell'elemento -> etichette MyST."""
+
+    needed: dict[str, dict[str, list[str]]] = field(default_factory=dict)
+    emitted: set[str] = field(default_factory=set)
+
+    def add(self, docname: str, node_id: str, label: str) -> None:
+        lst = self.needed.setdefault(docname, {}).setdefault(node_id, [])
+        if label not in lst:
+            lst.append(label)
 
 
 @dataclass
@@ -63,12 +86,57 @@ def text(value: str) -> Node:
     return {"type": "text", "value": value}
 
 
+def parse_rst_directive(source: str) -> dict[str, Any] | None:
+    """Scompone il testo di una direttiva RST (`.. nome:: argomenti`, opzioni, corpo)."""
+    lines = source.split("\n")
+    import re
+
+    m = re.match(r"^\.\.\s+([\w:.-]+)::\s*(.*)$", lines[0].strip())
+    if not m:
+        return None
+    name, args = m.group(1), m.group(2).strip()
+    options: dict[str, Any] = {}
+    i = 1
+    while i < len(lines):
+        om = re.match(r"^\s+:([\w-]+):\s*(.*)$", lines[i])
+        if not om:
+            break
+        options[om.group(1)] = om.group(2).strip() or True
+        i += 1
+    body = [l for l in lines[i:]]
+    indent = min((len(l) - len(l.lstrip()) for l in body if l.strip()), default=0)
+    value = "\n".join(l[indent:] for l in body).strip("\n")
+    return {"name": name, "args": args or None, "options": options, "value": value}
+
+
 class Converter:
-    def __init__(self, env: Any, docname: str, report: Report):
+    def __init__(self, env: Any, docname: str, report: Report, labels: Labels | None = None):
         self.env = env
         self.docname = docname
         self.report = report
+        self.labels = labels or Labels()
         self.dir = posixpath.dirname(docname)
+
+    def targets_for(self, n: nodes.Node) -> list[Node]:
+        """Etichette MyST da mettere prima di un elemento: nomi espliciti e etichette richieste dai riferimenti."""
+        if not isinstance(n, nodes.Element) or isinstance(n, (nodes.footnote, nodes.citation)):
+            return []
+        names: list[str] = []
+        if not isinstance(n, nodes.section):
+            names += [safe_label(x) for x in n.get("names", []) if not isinstance(n, (nodes.figure, nodes.table))]
+        need = self.labels.needed.get(self.docname, {})
+        for i in n.get("ids", []):
+            names += need.get(i, [])
+        out: list[Node] = []
+        for name in names:
+            key = name.lower()
+            if key in self.labels.emitted:
+                if name not in [x["label"] for x in out]:
+                    self.report.note(f"etichetta ripetuta: {name}", self.docname, n, "dropped")
+                continue
+            self.labels.emitted.add(key)
+            out.append({"type": "mystTarget", "label": name})
+        return out
 
     # ------------------------------------------------------------------ utilità
 
@@ -101,8 +169,16 @@ class Converter:
     def block(self, n: nodes.Node, depth: int) -> list[Node]:
         if isinstance(n, SKIP):
             return []
+        if isinstance(n, nodes.system_message):
+            return self.system_message(n)
         if isinstance(n, nodes.section):
             return self.section(n, depth + 1)
+        out = self.block_inner(n, depth)
+        if out and not isinstance(n, (nodes.target, addnodes.toctree)):
+            return self.targets_for(n) + out
+        return out
+
+    def block_inner(self, n: nodes.Node, depth: int) -> list[Node]:
         if isinstance(n, nodes.paragraph):
             return [{"type": "paragraph", "children": self.inline_children(n)}]
         if isinstance(n, (nodes.bullet_list, nodes.enumerated_list)):
@@ -134,6 +210,12 @@ class Converter:
             return [{"type": "paragraph", "children": [text("— "), *self.inline_children(n)]}]
         if type(n) in ADMONITIONS:
             return [{"type": "admonition", "kind": ADMONITIONS[type(n)], "children": self.block_children(n, depth)}]
+        if isinstance(n, addnodes.seealso):
+            return [{"type": "admonition", "kind": "seealso", "children": self.block_children(n, depth)}]
+        if isinstance(n, addnodes.glossary):
+            return [self.glossary(n)]
+        if isinstance(n, nodes.container) and "literal-block-wrapper" in n.get("classes", []):
+            return self.captioned_code(n)
         if isinstance(n, (nodes.admonition, nodes.topic, nodes.sidebar)):
             return [self.titled_box(n, depth)]
         if isinstance(n, nodes.figure):
@@ -191,20 +273,64 @@ class Converter:
         content = n.astext().strip()
         return [{"type": "paragraph", "children": [text(content)]}] if content else []
 
+    def system_message(self, n: nodes.system_message) -> list[Node]:
+        """Direttiva sconosciuta (es. mermaid, plantuml senza le estensioni del conf.py):
+        docutils la sostituisce con un errore che contiene il testo originale. La si
+        ricostruisce come direttiva MyST, così il contenuto non si perde e il controllo
+        la segnala come non supportata."""
+        block = n.next_node(nodes.literal_block)
+        if n.get("level", 0) >= 3 and block is not None:
+            parsed = parse_rst_directive(block.astext())
+            if parsed:
+                self.report.note(f"direttiva sconosciuta: {parsed['name']}", self.docname, n)
+                return [{"type": "unsupported", "name": parsed["name"], "value": parsed["value"],
+                         "origin": {"kind": "directive", **parsed}}]
+        if n.get("level", 0) >= 3:
+            self.report.note(f"errore di docutils: {n.astext()[:80]}", self.docname, n, "dropped")
+        return []
+
     def section(self, n: nodes.section, depth: int) -> list[Node]:
         title = n.next_node(nodes.title)
         title_text = title.astext() if title else ""
-        out: list[Node] = []
         auto = fully_normalize_name(title_text)
-        for name in n.get("names", []):
-            if name != auto:
-                out.append({"type": "mystTarget", "label": name})
+        explicit = [safe_label(x) for x in n.get("names", []) if x != auto]
+        out: list[Node] = []
+        for name in explicit + [l for i in n.get("ids", []) for l in self.labels.needed.get(self.docname, {}).get(i, [])]:
+            if name.lower() in self.labels.emitted:
+                continue
+            self.labels.emitted.add(name.lower())
+            out.append({"type": "mystTarget", "label": name})
         out.append({"type": "heading", "depth": min(depth, 6), "children": self.inline_children(title) if title else []})
         for c in n.children:
             if c is title:
                 continue
             out.extend(self.block(c, depth))
         return out
+
+    def glossary(self, n: nodes.Element) -> Node:
+        """Glossario: direttiva MyST {glossary} con la stessa sintassi dell'RST."""
+        lines: list[str] = []
+        for item in n.traverse(nodes.definition_list_item):
+            for t in item.traverse(nodes.term):
+                lines.append(t.astext())
+            for d in item.traverse(nodes.definition):
+                lines.extend("  " + l for l in d.astext().split("\n"))
+            lines.append("")
+        return {"type": "unsupported", "name": "glossary", "value": "\n".join(lines).strip(),
+                "origin": {"kind": "directive", "name": "glossary", "options": {}, "value": "\n".join(lines).strip()}}
+
+    def captioned_code(self, n: nodes.Element) -> list[Node]:
+        cap = n.next_node(nodes.caption)
+        code = n.next_node(nodes.literal_block)
+        if code is None:
+            return []
+        lang = code.get("language")
+        lang = lang if lang and lang not in ("default", "none", "text") else None
+        options: dict[str, Any] = {}
+        if cap is not None:
+            options["caption"] = cap.astext()
+        return [{"type": "code", "value": code.astext(), **({"lang": lang} if lang else {}),
+                 "origin": {"kind": "directive", "name": "code-block", "args": lang, "options": options, "value": code.astext()}}]
 
     def titled_box(self, n: nodes.Element, depth: int) -> Node:
         title = n.next_node(nodes.title)
@@ -308,7 +434,7 @@ class Converter:
             return [self.download(n)]
         if isinstance(n, nodes.reference):
             if n.get("refuri"):
-                return [{"type": "link", "url": n["refuri"], "children": self.inline_children(n)}]
+                return [self.uri_link(n)]
             if n.get("refid"):
                 return [{"type": "link", "url": "#" + n["refid"], "children": self.inline_children(n)}]
             return self.inline_children(n)
@@ -316,10 +442,47 @@ class Converter:
             return [self.xref(n)]
         if isinstance(n, nodes.image):
             return [self.image(n, block=False)]
+        if isinstance(n, nodes.raw):
+            import re
+
+            if re.fullmatch(r"\s*<br\s*/?>\s*", n.astext(), re.I):
+                return [{"type": "break"}]
+            self.report.note("in linea: raw", self.docname, n, "dropped")
+            return [{"type": "html", "value": n.astext()}]
         if isinstance(n, (nodes.inline, nodes.generated, nodes.problematic)):
             return self.inline_children(n)
         self.report.note(f"in linea: {type(n).__name__}", self.docname, n)
         return [text(n.astext())]
+
+    def uri_link(self, n: nodes.reference) -> Node:
+        uri: str = n["refuri"]
+        kids = self.inline_children(n)
+        import re
+
+        scheme = re.match(r"^([a-zA-Z][a-zA-Z0-9+.-]*):", uri)
+        if scheme and not uri.lower().startswith(SAFE_SCHEMES):
+            # urn:…, saml:…, about:blank: non sono link da pubblicare
+            only_text = len(n.children) == 1 and n.astext() == uri
+            return {"type": "inlineCode", "value": uri} if only_text else {"type": "emphasis", "children": kids}
+        if not scheme:
+            # link scritto come URL HTML verso un'altra pagina (../pagina.html, ../pagina)
+            path, _, frag = uri.partition("#")
+            page = self.html_target(path)
+            if page is not None:
+                url = self.rel(page) + ".md" + (f"#{frag}" if frag else "")
+                return {"type": "link", "url": url, "children": kids}
+        return {"type": "link", "url": uri, "children": kids}
+
+    def html_target(self, path: str) -> str | None:
+        if not path or path.startswith("/"):
+            return None
+        clean = path[:-5] if path.endswith(".html") else path.rstrip("/")
+        for base in (self.dir, self.docname):  # builder html e dirhtml
+            cand = posixpath.normpath(posixpath.join(base, clean))
+            for c in (cand, posixpath.join(cand, "index")):
+                if c in self.env.found_docs:
+                    return c
+        return None
 
     def xref(self, n: addnodes.pending_xref) -> Node:
         typ = n.get("reftype")
@@ -333,8 +496,9 @@ class Converter:
             kids = [text(label if explicit else (title.astext() if title else label))]
             return {"type": "link", "url": self.rel(path) + ".md", "children": kids}
         if typ in ("ref", "numref", "term"):
-            value = f"{label} <{target}>" if explicit else target
-            return {"type": "crossReference", "kind": typ, "identifier": target, "label": target,
+            tgt = safe_label(target) if typ != "term" else target
+            value = f"{label} <{tgt}>" if explicit else tgt
+            return {"type": "crossReference", "kind": typ, "identifier": tgt.lower(), "label": tgt,
                     "children": [text(label)] if explicit else [],
                     "origin": {"kind": "role", "name": typ, "value": value}}
         self.report.note(f"riferimento {n.get('refdomain')}:{typ}", self.docname, n)

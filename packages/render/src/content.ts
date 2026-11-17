@@ -89,7 +89,8 @@ export function renderNode(node: GenericNode, ctx: RenderContext): string {
     case 'heading': {
       const level = Math.min(6, (node.depth ?? 1) + (ctx.headingOffset ?? 0));
       const id = node.anchor ? ctx.idFor(ctx.page, node.anchor) : undefined;
-      const num = node.number ? `<span class="di-number">${escapeHtml(node.number)}</span> ` : '';
+      // in stampa il numero è testo semplice: in un <span> separato, con Paged.js, Chrome lo perde nei segnalibri del PDF
+      const num = node.number ? (ctx.mode === 'print' ? `${escapeHtml(node.number)}\u00a0` : `<span class="di-number">${escapeHtml(node.number)}</span> `) : '';
       const permalink =
         id && (ctx.mode === 'site' || ctx.mode === 'single')
           ? ` <a class="di-permalink" href="#${escapeAttr(id)}" aria-label="Link a questa sezione">#</a>`

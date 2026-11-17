@@ -22,7 +22,7 @@ from docutils.parsers.rst import Directive, directives
 from sphinx.application import Sphinx
 from sphinx.builders import Builder
 
-from .convert import Converter, Report, forum_node
+from .convert import Converter, Labels, Report, forum_node, safe_label
 
 __version__ = "0.0.0"
 
@@ -46,6 +46,7 @@ class DocsItaliaAstBuilder(Builder):
 
     def init(self) -> None:
         self.report = Report()
+        self.labels = Labels()
 
     def get_outdated_docs(self):  # type: ignore[override]
         return self.env.found_docs
@@ -54,12 +55,27 @@ class DocsItaliaAstBuilder(Builder):
         return docname + ".md"
 
     def prepare_writing(self, docnames: set[str]) -> None:
-        pass
+        """Raccoglie i riferimenti di tutte le pagine e decide dove emettere le etichette.
+
+        std.labels contiene le etichette esplicite (`.. _nome:`) e quelle generate da
+        autosectionlabel (`pagina:Titolo`): per ognuna si sa pagina e id dell'elemento.
+        """
+        from sphinx import addnodes
+
+        std = self.env.get_domain("std")
+        for docname in sorted(self.env.found_docs):
+            for x in self.env.get_doctree(docname).findall(addnodes.pending_xref):
+                if x.get("reftype") not in ("ref", "numref"):
+                    continue
+                target = x.get("reftarget", "")
+                found = std.labels.get(target.lower()) or std.anonlabels.get(target.lower())
+                if found:
+                    self.labels.add(found[0], found[1], safe_label(target))
 
     def write_doc(self, docname: str, doctree: nodes.document) -> None:
         # doctree NON risolto: i riferimenti restano etichette
         raw = self.env.get_doctree(docname)
-        tree = Converter(self.env, docname, self.report).document(raw)
+        tree = Converter(self.env, docname, self.report, self.labels).document(raw)
         out = os.path.join(self.outdir, "pages", docname + ".json")
         os.makedirs(os.path.dirname(out), exist_ok=True)
         with open(out, "w", encoding="utf-8") as f:
@@ -71,6 +87,7 @@ class DocsItaliaAstBuilder(Builder):
 
         root = self.config.master_doc
         numbered_any = False
+        seen: set[str] = {root}
 
         def entries(docname: str, inherited: bool | None) -> list[dict[str, Any]]:
             doctree = self.env.get_doctree(docname)
@@ -82,6 +99,9 @@ class DocsItaliaAstBuilder(Builder):
                 for title, ref in tt.get("entries", []):
                     if ref == "self" or ref.startswith(("http://", "https://")):
                         continue
+                    if ref in seen:  # stessa pagina in più toctree (es. uno nascosto e uno visibile)
+                        continue
+                    seen.add(ref)
                     entry: dict[str, Any] = {"file": ref + ".md"}
                     if title:
                         entry["title"] = title

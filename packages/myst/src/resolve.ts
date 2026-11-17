@@ -49,6 +49,8 @@ export function toPlain(node: GenericNode | undefined): string {
 
 const lineOf = (n: GenericNode) => n.position?.start?.line as number | undefined;
 const SAFE_SCHEME = /^(https?|mailto|tel):/i;
+/** Come normalizeIdentifier di myst-common: i riferimenti arrivano già in questa forma. */
+export const labelKey = (s: string) => s.replace(/[\t\n\r ]+/g, ' ').trim().toLowerCase();
 
 /**
  * Sostituisce mystDirective e mystRole con i nodi che producono. Il primo nodo
@@ -121,23 +123,24 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
   };
 
   // etichette (label)= : si applicano al nodo successivo
-  const pendingLabels = new Map<GenericNode, string>();
+  const pendingLabels = new Map<GenericNode, string[]>();
   walk(tree, (n) => {
     const kids = n.children ?? [];
     kids.forEach((c, i) => {
       if (c.type !== 'mystTarget') return;
       const next = kids.slice(i + 1).find((k) => k.type !== 'mystTarget');
-      if (next) pendingLabels.set(next, c.label);
+      if (next) pendingLabels.set(next, [...(pendingLabels.get(next) ?? []), c.label]);
       else problems.push({ level: 'avviso', file, line: lineOf(c), code: 'label', message: `etichetta "${c.label}" senza contenuto dopo` });
     });
   });
 
   const register = (label: string, entry: InventoryEntry, n: GenericNode) => {
-    if (inventory[label]) {
-      problems.push({ level: 'errore', file, line: lineOf(n), code: 'label-duplicate', message: `etichetta "${label}" già definita in ${inventory[label].page}` });
+    const key = labelKey(label);
+    if (inventory[key]) {
+      problems.push({ level: 'errore', file, line: lineOf(n), code: 'label-duplicate', message: `etichetta "${label}" già definita in ${inventory[key].page}` });
       return;
     }
-    inventory[label] = entry;
+    inventory[key] = entry;
   };
 
   // titoli: ancora e numero
@@ -167,8 +170,7 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
       if (info.number) n.number = [info.number, ...counters.slice(1, depth)].join('.');
     }
     sections.push({ anchor: n.anchor, title: text, number: n.number, depth });
-    const label = pendingLabels.get(n);
-    if (label) register(label, { page: info.slug, anchor: n.anchor, title: text, number: n.number, kind: 'section' }, n);
+    for (const label of new Set((pendingLabels.get(n) ?? []).map(labelKey))) register(label, { page: info.slug, anchor: n.anchor, title: text, number: n.number, kind: 'section' }, n);
   });
   if (!h1count) problems.push({ level: 'errore', file, code: 'no-title', message: 'la pagina deve iniziare con un titolo di primo livello (# Titolo)' });
   if (!title) title = info.slug;
@@ -205,15 +207,14 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
         n.number = info.number ? `${info.number}.${k}` : String(k);
         n.showNumber = project.toc.numfig;
       }
-      const label = n.label ?? pendingLabels.get(n);
-      if (label) {
-        n.anchor = unique(label);
-        register(label, { page: info.slug, anchor: n.anchor, title: toPlain(cap).trim() || label, number: n.number, kind: n.kind === 'table' ? 'table' : 'figure' }, n);
-      }
+      // la stessa etichetta può arrivare sia da :name: sia da un'etichetta (label)= prima del blocco
+      const labels = [...new Set([...(n.label ? [n.label] : []), ...(pendingLabels.get(n) ?? [])].map(labelKey))];
+      if (labels.length) n.anchor = unique(labels[0]);
+      for (const label of labels) register(label, { page: info.slug, anchor: n.anchor, title: toPlain(cap).trim() || label, number: n.number, kind: n.kind === 'table' ? 'table' : 'figure' }, n);
     } else if (n.type !== 'heading' && pendingLabels.has(n)) {
-      const label = pendingLabels.get(n)!;
-      n.anchor = unique(label);
-      register(label, { page: info.slug, anchor: n.anchor, title: toPlain(n).trim().slice(0, 80) || label, kind: 'target' }, n);
+      const labels = [...new Set(pendingLabels.get(n)!.map(labelKey))];
+      n.anchor = unique(labels[0]!);
+      for (const label of labels) register(label, { page: info.slug, anchor: n.anchor, title: toPlain(n).trim().slice(0, 80) || label, kind: 'target' }, n);
     }
   });
 
@@ -243,7 +244,8 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
     if (!f.enumerator) problems.push({ level: 'avviso', file, line: lineOf(f), code: 'footnote-unused', message: `nota "${f.label}" mai citata nel testo` });
   }
 
-  inventory[info.slug] = { page: info.slug, anchor: '', title, number: info.number, kind: 'page' };
+  // le pagine stanno in uno spazio di nomi separato: una pagina "approfondimento" non è un'etichetta
+  inventory[`doc:${info.slug}`] = { page: info.slug, anchor: '', title, number: info.number, kind: 'page' };
   return { ...info, title, tree, sections, footnotes: footnotes.filter((f) => f.enumerator), source, anchors };
 }
 
@@ -255,7 +257,7 @@ function secondPass(page: ResolvedPage, doc: ResolvedDoc) {
 
   const resolveAnchor = (target: ResolvedPage, anchor: string): string | undefined => {
     if (target.anchors.has(anchor)) return anchor;
-    const inv = inventory[anchor];
+    const inv = inventory[labelKey(anchor)];
     if (inv && inv.page === target.slug) return inv.anchor;
     return undefined;
   };
@@ -273,8 +275,9 @@ function secondPass(page: ResolvedPage, doc: ResolvedDoc) {
       if (url.startsWith('#')) {
         const id = decodeURIComponent(url.slice(1));
         const local = resolveAnchor(page, id);
+        const inv = inventory[labelKey(id)];
         if (local) n.internal = { page: page.slug, anchor: local };
-        else if (inventory[id]) n.internal = { page: inventory[id].page, anchor: inventory[id].anchor || undefined };
+        else if (inv) n.internal = { page: inv.page, anchor: inv.anchor || undefined };
         else problems.push({ level: 'errore', file, line: lineOf(n), code: 'broken-link', message: `ancora o etichetta "${id}" inesistente` });
         return;
       }
@@ -303,7 +306,7 @@ function secondPass(page: ResolvedPage, doc: ResolvedDoc) {
       return;
     }
     if (n.type === 'crossReference') {
-      const inv = inventory[n.identifier];
+      const inv = inventory[labelKey(n.identifier ?? n.label ?? '')];
       if (!inv) {
         problems.push({ level: 'errore', file, line: lineOf(n), code: 'broken-ref', message: `riferimento a "${n.identifier}": etichetta inesistente` });
         return;

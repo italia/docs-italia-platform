@@ -180,8 +180,11 @@ export async function build(root: string, opts: BuildOptions = {}): Promise<Buil
       try {
         await htmlToPdf(printFile, pdf, view.name, { engine: opts.pdfEngine });
       } finally {
-        rmSync(printFile, { force: true });
-        if (paged) rmSync(join(htmlDir, 'assets', 'paged.css'), { force: true });
+        // DOCS_ITALIA_KEEP_PRINT=1 conserva la pagina di stampa per controllarla nel browser
+        if (!process.env.DOCS_ITALIA_KEEP_PRINT) {
+          rmSync(printFile, { force: true });
+          if (paged) rmSync(join(htmlDir, 'assets', 'paged.css'), { force: true });
+        }
       }
       outputs.pdf = pdf;
     });
