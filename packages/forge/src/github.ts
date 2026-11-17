@@ -10,7 +10,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { Octokit } from '@octokit/rest';
 import { createAppAuth } from '@octokit/auth-app';
-import type { Forge, Refs, RepoInfo } from './forge.ts';
+import type { Check, Forge, Refs, RepoInfo } from './forge.ts';
 
 const run = promisify(execFile);
 
@@ -46,6 +46,72 @@ export class GitHubForge implements Forge {
     const c = this.make(undefined, { appId: this.auth.appId, privateKey: this.auth.privateKey, installationId: data.id });
     this.perOwner.set(owner, c);
     return c;
+  }
+
+  async status(owners: string[]): Promise<Check[]> {
+    const group = 'GitHub';
+    const out: Check[] = [];
+    const err = (name: string, e: any) => out.push({ group, name, status: 'errore', detail: `${e.status ? `${e.status} ` : ''}${e.message ?? e}` });
+    let limited: Array<[string, Octokit]> = [['', this.base]];
+
+    if (this.auth.kind === 'anonymous') {
+      out.push({ group, name: 'Modalità di accesso', status: 'avviso', detail: 'anonima: solo repository pubblici e 60 richieste l\'ora. Configurare una GitHub App (consigliata) o GITHUB_TOKEN' });
+    } else if (this.auth.kind === 'token') {
+      out.push({ group, name: 'Modalità di accesso', status: 'ok', detail: `token (…${this.auth.token.slice(-4)})` });
+      try {
+        const res = await this.base.rest.users.getAuthenticated();
+        const exp = res.headers['github-authentication-token-expiration' as keyof typeof res.headers] as string | undefined;
+        const days = exp ? Math.floor((new Date(exp).getTime() - Date.now()) / 86_400_000) : null;
+        out.push({
+          group,
+          name: 'Token',
+          status: days === null || days > 30 ? 'ok' : days < 0 ? 'errore' : 'avviso',
+          detail: `valido, di ${res.data.login}; ${days === null ? 'senza scadenza' : days < 0 ? 'scaduto' : `scade tra ${days} giorni (${exp})`}`,
+        });
+      } catch (e) {
+        err('Token', e);
+      }
+    } else {
+      out.push({ group, name: 'Modalità di accesso', status: 'ok', detail: `GitHub App ${this.auth.appId}` });
+      limited = [];
+      try {
+        const { data: app } = await this.base.rest.apps.getAuthenticated();
+        out.push({ group, name: 'Chiave privata', status: 'ok', detail: `JWT valido: app "${app?.name}"` });
+        const installations = await this.base.paginate(this.base.rest.apps.listInstallations, { per_page: 100 });
+        for (const owner of owners) {
+          const inst = installations.find((i) => (i.account as { login?: string } | null)?.login?.toLowerCase() === owner.toLowerCase());
+          if (!inst) {
+            out.push({ group, name: `Installazione su ${owner}`, status: 'errore', detail: 'App non installata: l\'organizzazione non si sincronizza' });
+            continue;
+          }
+          const perms = Object.entries(inst.permissions ?? {}).map(([k, v]) => `${k}: ${v}`).join(', ');
+          out.push({ group, name: `Installazione su ${owner}`, status: 'ok', detail: `installata (${inst.repository_selection === 'all' ? 'tutti i repository' : 'repository scelti'}; ${perms})` });
+          // client dell'installazione già trovata: nessuna richiesta in più
+          const client = this.perOwner.get(owner) ?? this.make(undefined, { appId: this.auth.appId, privateKey: this.auth.privateKey, installationId: inst.id });
+          this.perOwner.set(owner, client);
+          limited.push([owner, client]);
+        }
+      } catch (e) {
+        err('Chiave privata', e);
+      }
+    }
+
+    for (const [owner, c] of limited) {
+      try {
+        const { data } = await c.rest.rateLimit.get();
+        const { remaining, limit, reset } = data.resources.core;
+        const at = new Date(reset * 1000).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+        out.push({
+          group,
+          name: `Limiti dell'API${owner ? ` (${owner})` : ''}`,
+          status: remaining < limit * 0.1 ? 'avviso' : 'ok',
+          detail: `${remaining} richieste rimaste su ${limit}, azzeramento alle ${at}`,
+        });
+      } catch (e) {
+        err(`Limiti dell'API${owner ? ` (${owner})` : ''}`, e);
+      }
+    }
+    return out;
   }
 
   async repo(owner: string, name: string): Promise<RepoInfo | null> {

@@ -7,14 +7,15 @@
  */
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { unzipSync } from 'fflate';
-import { Hono, type Context } from 'hono';
+import { Hono } from 'hono';
+import { adminApi } from './admin.ts';
 import type { Config } from './config.ts';
+import { serveDashboard } from './dashboard.ts';
 import type { Db } from './db.ts';
 import { enqueue } from './jobs.ts';
 import type { OidcVerifier } from './oidc.ts';
 import { contentType, publishBundle, type BundleFiles } from './publish.ts';
 import { search } from './search.ts';
-import { seedFromSnapshot } from './seed.ts';
 
 export interface AppDeps {
   sql: Db;
@@ -27,7 +28,9 @@ const ALIASES: Record<string, 'default' | 'draft'> = { stabile: 'default', stabl
 /** Versione predefinita: quella indicata, altrimenti l'ultima release pubblicata, altrimenti la bozza. */
 /** Versione predefinita: la regola sta nel database (default_version_id, migrazione 002). */
 async function defaultVersion(sql: Db, documentId: number) {
-  const [v] = await sql`select id, slug, kind, published_build_id from version where id = default_version_id(${documentId})`;
+  const [v] = await sql`select id, slug, kind, published_build_id,
+      exists (select 1 from version_override o where o.version_id = version.id and o.action = 'promote' and o.revoked_at is null) as promoted
+    from version where id = default_version_id(${documentId})`;
   return v ?? null;
 }
 
@@ -90,12 +93,14 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       publisher: { slug: d.publisher_slug, name: d.publisher_name },
       project: { slug: d.project_slug, name: d.project_name },
       defaultVersion: def?.slug ?? null,
-      // la predefinita scritta in document_settings o nell'inventario, come slug di
-      // una versione pubblicata: spesso è il nome del branch ("master" → "bozza").
-      // null = nessuna, o non pubblicata: vale l'ultima release
-      declaredDefault: d.default_version
-        ? (versions.find((v: any) => v.slug === d.default_version) ?? versions.find((v: any) => v.ref === d.default_version))?.slug ?? null
-        : null,
+      // la predefinita scelta esplicitamente, come slug di una versione pubblicata:
+      // promossa dalla dashboard, oppure scritta in document_settings o nell'inventario
+      // (spesso è il nome del branch: "master" → "bozza"). null = vale l'ultima release
+      declaredDefault: def?.promoted
+        ? def.slug
+        : d.default_version
+          ? (versions.find((v: any) => v.slug === d.default_version) ?? versions.find((v: any) => v.ref === d.default_version))?.slug ?? null
+          : null,
       aliases: { stabile: def?.slug ?? null, bozza: versions.some((v: any) => v.slug === 'bozza') ? 'bozza' : null },
       versions,
     });
@@ -133,48 +138,9 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     c.json(await search(sql, c.req.query('q') ?? '', { publisher: c.req.query('publisher'), document: c.req.query('document'), limit: Number(c.req.query('limit') ?? 20) })),
   );
 
-  // ------------------------------------------------------------------ amministrazione
-  const admin = async (c: Context, next: () => Promise<void>) => {
-    const token = c.req.header('authorization')?.replace(/^Bearer /, '');
-    if (!config.adminToken || !token || token.length !== config.adminToken.length || !timingSafeEqual(Buffer.from(token), Buffer.from(config.adminToken))) {
-      return c.json({ error: 'non autorizzato' }, 401);
-    }
-    await next();
-  };
-
-  app.post('/api/admin/sync/:owner', admin, async (c) => {
-    const id = await enqueue(sql, 'sync', { owner: c.req.param('owner'), queueBuilds: c.req.query('build') !== '0' });
-    await sql`insert into audit_log (actor, action, target) values ('admin-token', 'sync', ${c.req.param('owner')})`;
-    return c.json({ job: id }, 202);
-  });
-
-  app.post('/api/admin/seed', admin, async (c) => {
-    const r = await seedFromSnapshot(sql, await c.req.json(), { queueBuilds: c.req.query('build') !== '0' });
-    await sql`insert into audit_log (actor, action, detail) values ('admin-token', 'seed', ${r as object})`;
-    return c.json(r);
-  });
-
-  app.post('/api/admin/builds', admin, async (c) => {
-    const { repository, version } = await c.req.json<{ repository: string; version?: string }>();
-    const [owner, name] = repository.split('/');
-    const [v] = await sql`select v.id from version v join document d on d.id = v.document_id
-      where d.repo_owner = ${owner} and d.repo_name = ${name} and v.slug = ${version ?? 'bozza'}`;
-    if (!v) return c.json({ error: 'versione non trovata' }, 404);
-    return c.json({ job: await enqueue(sql, 'build', { versionId: v.id }) }, 202);
-  });
-
-  app.get('/api/admin/builds', admin, async (c) =>
-    c.json(
-      await sql`select b.id, d.repo_owner || '/' || d.repo_name as repository, v.slug as version, b.origin, b.status, b.commit, b.error,
-          jsonb_array_length(b.problems) as problems, b.created_at, b.finished_at
-        from build b join document d on d.id = b.document_id left join version v on v.id = b.version_id
-        order by b.id desc limit ${Number(c.req.query('limit') ?? 50)}`,
-    ),
-  );
-
-  app.get('/api/admin/jobs', admin, async (c) =>
-    c.json(await sql`select id, kind, payload, status, attempts, last_error, created_at, finished_at from job order by id desc limit 50`),
-  );
+  // ------------------------------------------------------------------ amministrazione e dashboard
+  app.route('/api/admin', adminApi({ sql, config }));
+  serveDashboard(app);
 
   // ------------------------------------------------------------------ webhook GitHub
   app.post('/api/webhooks/github', async (c) => {

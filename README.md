@@ -12,7 +12,7 @@ Usa gli stessi repository GitHub e gli stessi file di configurazione di oggi (`i
 - ricerca semantica e un server MCP per gli assistenti;
 - la possibilità per altre PA di installare la propria istanza.
 
-> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Il server importa da `italia-conf`, costruisce e pubblica i pacchetti e offre API e ricerca (`apps/server`). Il sito Astro (`apps/site`) mostra i documenti agli stessi URL di oggi. Server MCP e dashboard sono ancora ossatura.
+> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Il server importa da `italia-conf`, costruisce e pubblica i pacchetti e offre API e ricerca (`apps/server`). Il sito Astro (`apps/site`) mostra i documenti agli stessi URL di oggi. La dashboard (`apps/dashboard`) dà la visione d'insieme, lo stato dei collegamenti e gli interventi sulle versioni, per ora senza magic link. Il server MCP è ancora ossatura.
 
 ## Provare
 
@@ -22,6 +22,10 @@ bun run docs-italia check --dir examples/esempio-myst
 bun run docs-italia build --dir examples/esempio-myst     # → examples/esempio-myst/dist/
 bun run docs-italia dev --dir examples/esempio-myst       # anteprima su http://127.0.0.1:4321
 (cd apps/editor && bun run build) && bun run docs-italia studio --dir examples/esempio-myst   # http://127.0.0.1:4322
+
+# istanza: server con la dashboard aperta (solo in locale)
+(cd apps/dashboard && bun run build)
+DASHBOARD_OPEN=1 FORGE_LOCAL_ROOT=<cartella con le organizzazioni> bun apps/server/src/main.ts   # http://127.0.0.1:8080/dashboard/
 ```
 
 La specifica in `spec/` è anch'essa un documento MyST: `bun run docs-italia build --dir spec`.
@@ -62,6 +66,7 @@ apps/                applicazioni
   mcp/               server MCP
   site/              sito pubblico
   editor/            studio locale ed editor ospitato
+  dashboard/         amministrazione dell'istanza
 deploy/              Docker Compose, Helm, immagine del toolkit
 spec/                specifica pubblica del formato e JSON Schema (documento MyST)
 examples/            documenti di esempio per provare il toolkit
@@ -89,6 +94,7 @@ docs/                note di progetto (segnalazioni ad altri progetti)
 | [`apps/mcp`](apps/mcp) | SDK MCP, Streamable HTTP | Ricerca e lettura dei documenti per assistenti e agenti, sempre con fonte e versione. Restituisce frammenti, non genera risposte |
 | [`apps/site`](apps/site) | Astro con rendering lato server, Italia Tailwind UI | Sito pubblico con gli stessi URL di oggi; versioni archiviate; ricerca; download |
 | [`apps/editor`](apps/editor) | Vite, React, CodeMirror | Studio locale (con SQLite) ed editor ospitato nell'istanza (con PostgreSQL): stesso codice, backend diverso |
+| [`apps/dashboard`](apps/dashboard) | Vite, React, Italia Tailwind UI | Amministrazione dell'istanza: organizzazioni, documenti, build, coda, webhook, stato dei collegamenti; ritirare e promuovere versioni, con motivazione e registro |
 
 ## Strumenti
 

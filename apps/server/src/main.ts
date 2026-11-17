@@ -9,7 +9,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { createApp } from './api.ts';
-import { configFromEnv } from './config.ts';
+import { checkDashboardOpen, configFromEnv } from './config.ts';
 import { connect, migrate } from './db.ts';
 import { oidcVerifier } from './oidc.ts';
 import { seedFromSnapshot } from './seed.ts';
@@ -17,6 +17,7 @@ import { syncPublisher } from './sync.ts';
 import { startWorker, workOnce } from './worker.ts';
 
 const config = configFromEnv();
+checkDashboardOpen(config);
 const sql = connect(config.databaseUrl);
 const [cmd, arg] = process.argv.slice(2);
 
@@ -42,6 +43,7 @@ if (cmd === 'migrate') {
   const oidc = oidcVerifier({ issuer: config.oidcIssuer, audience: config.oidcAudience, jwksUrl: config.oidcJwksUrl });
   const app = createApp({ sql, config, oidc });
   if (config.worker) startWorker({ sql, config });
-  Bun.serve({ port: config.port, hostname: process.env.HOST ?? '127.0.0.1', fetch: app.fetch });
+  Bun.serve({ port: config.port, hostname: config.host, fetch: app.fetch });
   console.log(`docs-italia-platform server: http://127.0.0.1:${config.port}  (forge: ${config.forge.kind}, organizzazioni: ${config.organizations.join(', ') || 'nessuna'})`);
+  console.log(`dashboard: http://127.0.0.1:${config.port}/dashboard/${config.dashboardOpen ? '  (SENZA AUTENTICAZIONE: DASHBOARD_OPEN=1)' : ''}`);
 }

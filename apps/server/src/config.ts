@@ -9,12 +9,22 @@ export interface Config {
   databaseUrl: string;
   port: number;
   publicUrl: string;
+  /** indirizzo del sito pubblico (Astro), per i link dalla dashboard */
+  siteUrl: string;
   /** organizzazioni da sincronizzare (es. "agid,italia,teamdigitale") */
   organizations: string[];
   forge: Forge;
   storage: Storage;
-  /** token per le operazioni di amministrazione, finché non c'è la dashboard */
+  /** token per le operazioni di amministrazione (script, curl) */
   adminToken?: string;
+  /**
+   * Dashboard senza autenticazione (DASHBOARD_OPEN=1), finché non c'è il
+   * magic link: solo con il server in ascolto su un indirizzo locale.
+   */
+  dashboardOpen?: boolean;
+  /** indirizzo di ascolto */
+  host?: string;
+
   webhookSecret?: string;
   /** audience attesa nei token OIDC delle GitHub Actions */
   oidcAudience: string;
@@ -42,16 +52,28 @@ function storageFromEnv(env: NodeJS.ProcessEnv): Storage {
   return new FsStorage(env.STORAGE_DIR ?? './.docs-italia/storage');
 }
 
+const LOOPBACK = new Set(['127.0.0.1', 'localhost', '::1']);
+
+/** La dashboard aperta non deve mai essere raggiungibile da fuori. */
+export function checkDashboardOpen(config: Pick<Config, 'dashboardOpen' | 'host'>): void {
+  if (config.dashboardOpen && !LOOPBACK.has(config.host ?? '')) {
+    throw new Error(`DASHBOARD_OPEN=1 è ammesso solo con HOST locale (127.0.0.1), non con "${config.host}": la dashboard sarebbe aperta a chiunque`);
+  }
+}
+
 export function configFromEnv(env: NodeJS.ProcessEnv = process.env): Config {
   const publicUrl = env.PUBLIC_URL ?? 'http://127.0.0.1:8080';
   return {
     databaseUrl: env.DATABASE_URL ?? 'postgres://localhost/docs_italia_dev',
     port: Number(env.PORT ?? 8080),
     publicUrl,
+    siteUrl: env.SITE_URL ?? publicUrl,
     organizations: (env.ORGANIZATIONS ?? '').split(',').map((s) => s.trim()).filter(Boolean),
     forge: forgeFromEnv(env),
     storage: storageFromEnv(env),
     adminToken: env.ADMIN_TOKEN,
+    dashboardOpen: env.DASHBOARD_OPEN === '1',
+    host: env.HOST ?? '127.0.0.1',
     webhookSecret: env.GITHUB_WEBHOOK_SECRET,
     oidcAudience: env.OIDC_AUDIENCE ?? publicUrl,
     oidcJwksUrl: env.OIDC_JWKS_URL ?? 'https://token.actions.githubusercontent.com/.well-known/jwks',

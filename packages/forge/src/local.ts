@@ -6,10 +6,10 @@
  * clone non viene mai toccata.
  */
 import { execFile } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
-import type { Forge, Refs, RepoInfo } from './forge.ts';
+import type { Check, Forge, Refs, RepoInfo } from './forge.ts';
 
 const run = promisify(execFile);
 
@@ -21,6 +21,18 @@ async function git(cwd: string, args: string[], encoding: 'utf8' | 'buffer' = 'u
 export class LocalForge implements Forge {
   readonly kind = 'local' as const;
   constructor(readonly root: string) {}
+
+  async status(owners: string[]): Promise<Check[]> {
+    const group = 'Repository';
+    if (!existsSync(this.root)) return [{ group, name: 'Cartelle locali', status: 'errore', detail: `${this.root} non esiste` }];
+    const checks: Check[] = [{ group, name: 'Modalità di accesso', status: 'ok', detail: `cartelle locali in ${this.root} (sviluppo e test, nessun accesso a GitHub)` }];
+    for (const owner of owners) {
+      const dir = join(this.root, owner);
+      const repos = existsSync(dir) ? readdirSync(dir).filter((n) => existsSync(join(dir, n, '.git'))).length : 0;
+      checks.push({ group, name: `Organizzazione ${owner}`, status: repos ? 'ok' : 'errore', detail: repos ? `${repos} repository` : `nessun repository in ${dir}` });
+    }
+    return checks;
+  }
 
   private dir(owner: string, name: string): string | null {
     const d = join(this.root, owner, name);

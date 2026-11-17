@@ -16,11 +16,12 @@
     "apps/server",
     "apps/mcp",
     "apps/site",
-    "apps/editor"
+    "apps/editor",
+    "apps/dashboard"
   ],
   "scripts": {
     "test": "bun test",
-    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p apps/editor",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p apps/editor && tsc --noEmit -p apps/dashboard",
     "docs-italia": "bun packages/toolkit/bin/docs-italia.ts"
   },
   "devDependencies": {

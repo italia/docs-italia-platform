@@ -13,8 +13,11 @@ import { strToU8, zipSync } from 'fflate';
 import { SignJWT, createLocalJWKSet, exportJWK, generateKeyPair } from 'jose';
 import { LocalForge } from '@docs-italia/forge';
 import { build } from '@docs-italia/toolkit';
+import { Hono } from 'hono';
+import { OPEN_ACTOR } from '../src/admin.ts';
 import { createApp } from '../src/api.ts';
-import type { Config } from '../src/config.ts';
+import { checkDashboardOpen, type Config } from '../src/config.ts';
+import { serveDashboard } from '../src/dashboard.ts';
 import { connect, migrate, type Db } from '../src/db.ts';
 import { oidcVerifier } from '../src/oidc.ts';
 import { FsStorage } from '../src/storage.ts';
@@ -234,6 +237,116 @@ describe.skipIf(!available)('server', () => {
     }
     // senza dichiarazione: l'ultima release in ordine di versione
     expect((await (await app.request('/api/documents/esempio/prova/documento-prova')).json()).defaultVersion).toBe('2.0');
+  });
+
+  describe('dashboard', () => {
+    const auth = { authorization: 'Bearer token-admin' };
+    const call = (path: string, init: RequestInit = {}) =>
+      app.request(`/api/admin${path}`, { ...init, headers: { ...auth, 'content-type': 'application/json', ...(init.headers ?? {}) } });
+    const act = (versionId: number, action: string, reason?: string) => call(`/versions/${versionId}/${action}`, { method: 'POST', body: JSON.stringify({ reason }) });
+    const publicDoc = async () => (await app.request('/api/documents/esempio/prova/documento-prova')).json();
+    let docId: number;
+    let ids: Record<string, number>;
+
+    beforeAll(async () => {
+      const [d] = await sql`select id from document where repo_name = 'documento-prova'`;
+      docId = d.id;
+      ids = Object.fromEntries((await sql`select slug, id from version where document_id = ${docId}`).map((v: any) => [v.slug, v.id]));
+    });
+
+    test('accesso: token, oppure aperta solo su indirizzo locale', async () => {
+      expect((await app.request('/api/admin/whoami')).status).toBe(401);
+      expect((await (await call('/whoami')).json()).actor).toBe('admin-token');
+      const open = createApp({ sql, config: { ...config, dashboardOpen: true }, oidc: async () => ({}) as any });
+      const who = await (await open.request('/api/admin/whoami')).json();
+      expect(who).toMatchObject({ open: true, actor: OPEN_ACTOR });
+      expect(() => checkDashboardOpen({ dashboardOpen: true, host: '0.0.0.0' })).toThrow('solo con HOST locale');
+      expect(() => checkDashboardOpen({ dashboardOpen: true, host: '127.0.0.1' })).not.toThrow();
+    });
+
+    test('documenti e dettaglio', async () => {
+      const docs = await (await call('/documents')).json();
+      const d = docs.find((x: any) => x.id === docId);
+      expect(d).toMatchObject({ default_version: '2.0', versions: 3 });
+      const detail = await (await call(`/documents/${docId}`)).json();
+      expect(detail.versions.filter((v: any) => v.published_build_id).map((v: any) => v.slug)).toEqual(['bozza', '2.0', '1.0']); // bozza prima, release in ordine numerico
+      expect(detail.versions.find((v: any) => v.slug === '3.0')).toMatchObject({ published_build_id: null, last_status: 'failed' }); // pacchetto manomesso: mai pubblicata
+      expect(detail.default_version_id).toBe(ids['2.0']);
+      const build = await (await call(`/builds/${detail.builds[0].id}`)).json();
+      expect(build.repo_name).toBe('documento-prova');
+    });
+
+    test('promuovere e tornare alla regola del repository', async () => {
+      expect((await act(ids['1.0']!, 'promote')).status).toBe(400); // motivazione obbligatoria
+      expect((await act(ids['1.0']!, 'promote', 'la 2.0 ha un errore nelle tabelle')).status).toBe(200);
+      let doc = await publicDoc();
+      expect(doc.defaultVersion).toBe('1.0');
+      expect(doc.declaredDefault).toBe('1.0'); // il sito reindirizza alla promossa
+      // promuoverne un'altra revoca la prima promozione
+      await act(ids.bozza!, 'promote', 'prova');
+      expect((await publicDoc()).defaultVersion).toBe('bozza');
+      expect((await act(ids['1.0']!, 'unpromote', 'prova')).status).toBe(409);
+      await act(ids.bozza!, 'unpromote', 'torna la regola del repository');
+      doc = await publicDoc();
+      expect(doc.defaultVersion).toBe('2.0');
+      expect(doc.declaredDefault).toBe(null);
+    });
+
+    test('ritirare: sparisce dal sito e prevale sul repository; ripristinare', async () => {
+      expect((await act(ids['2.0']!, 'withdraw', 'pubblicata per errore')).status).toBe(200);
+      expect((await act(ids['2.0']!, 'withdraw', 'di nuovo')).status).toBe(409);
+      const doc = await publicDoc();
+      expect(doc.versions.map((v: any) => v.slug)).not.toContain('2.0');
+      expect(doc.defaultVersion).toBe('1.0');
+      expect((await app.request('/api/documents/esempio/prova/documento-prova/it/2.0/toc.json')).status).toBe(404);
+      // un nuovo push del tag non la ripubblica
+      const res = await hook('push', { ...repoPayload('documento-prova'), ref: 'refs/tags/2.0' });
+      expect((await res.json()).ignored).toBe('versione ritirata');
+      const overview = await (await call('/overview')).json();
+      expect(overview.overrides.map((o: any) => o.action)).toEqual(['withdraw']);
+      expect((await act(ids['2.0']!, 'restore', 'corretta')).status).toBe(200);
+      expect((await publicDoc()).defaultVersion).toBe('2.0');
+      const log = await (await call('/audit')).json();
+      expect(log.find((e: any) => e.action === 'version.withdraw')).toMatchObject({ actor: 'admin-token', target: 'esempio/documento-prova@2.0', detail: { reason: 'pubblicata per errore' } });
+    });
+
+    test('visione d\'insieme e stato dei collegamenti', async () => {
+      const o = await (await call('/overview')).json();
+      expect(o.counts.publishers).toBe(1);
+      expect(o.attention.documents.map((d: any) => d.repo_name)).toContain('repo-mancante');
+      const { checks } = await (await call('/checks?fresh=1')).json();
+      const get = (name: string) => checks.find((c: any) => c.name === name);
+      expect(get('PostgreSQL').status).toBe('ok');
+      expect(get('Lettura e scrittura').status).toBe('ok');
+      expect(get('Modalità di accesso').detail).toContain('cartelle locali');
+      expect(get('esempio/italia-conf').status).toBe('ok');
+      expect(JSON.stringify(checks)).not.toContain('token-admin');
+    });
+
+    test('rilanciare un lavoro fallito', async () => {
+      const [j] = await sql`insert into job (kind, payload, status, attempts, last_error) values ('sync', ${{ owner: 'nessuno' }}, 'failed', 3, 'errore') returning id`;
+      expect((await call(`/jobs/${j.id}/retry`, { method: 'POST' })).status).toBe(200);
+      const [after] = await sql`select status, attempts from job where id = ${j.id}`;
+      expect(after).toMatchObject({ status: 'queued', attempts: 0 });
+      await sql`delete from job where id = ${j.id}`;
+      expect((await call(`/jobs/${j.id}/retry`, { method: 'POST' })).status).toBe(409);
+    });
+
+    test('file della dashboard: applicazione, risorse, niente percorsi fuori dalla cartella', async () => {
+      const dist = mkdtempSync(join(tmpdir(), 'docs-italia-dashboard-'));
+      mkdirSync(join(dist, 'assets'));
+      writeFileSync(join(dist, 'index.html'), '<!doctype html><title>Dashboard</title>');
+      writeFileSync(join(dist, 'assets', 'app.js'), 'console.log(1)');
+      const h = new Hono();
+      serveDashboard(h, dist);
+      expect((await h.request('/dashboard')).status).toBe(301);
+      expect(await (await h.request('/dashboard/')).text()).toContain('Dashboard');
+      const js = await h.request('/dashboard/assets/app.js');
+      expect(js.headers.get('content-type')).toContain('javascript');
+      expect(js.headers.get('cache-control')).toContain('immutable');
+      expect((await h.request('/dashboard/%2e%2e/%2e%2e/package.json')).status).toBe(404); // normalizzato dal parser degli URL
+      expect((await h.request('/dashboard/..%2F..%2Fpackage.json')).status).toBe(400); // "/" codificato: lo ferma il controllo
+    });
   });
 
   test('documento tolto da italia-conf: disattivato', async () => {

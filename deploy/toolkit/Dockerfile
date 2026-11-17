@@ -35,7 +35,8 @@ RUN python3 -m venv /opt/docs-italia/packages/sphinx/.venv \
  && /opt/docs-italia/packages/sphinx/.venv/bin/pip install --no-cache-dir ./packages/sphinx
 
 RUN bun install --frozen-lockfile \
- && cd apps/editor && bun run build
+ && (cd apps/editor && bun run build) \
+ && (cd apps/dashboard && bun run build)
 
 ENV DOCS_ITALIA_CHROME=/usr/bin/chromium \
     DOCS_ITALIA_HOST=0.0.0.0 \

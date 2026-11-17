@@ -23,8 +23,22 @@ export interface Refs {
   tags: Ref[];
 }
 
+/** Esito di un controllo di collegamento (dashboard, todo.md 6.6). */
+export type CheckStatus = 'ok' | 'avviso' | 'errore' | 'non configurato';
+export interface Check {
+  group: string;
+  name: string;
+  status: CheckStatus;
+  detail: string;
+}
+
 export interface Forge {
   readonly kind: 'local' | 'github';
+  /**
+   * Stato del collegamento: modalità di accesso, credenziali, limiti, accesso
+   * alle organizzazioni indicate. Non contiene mai segreti.
+   */
+  status(owners: string[]): Promise<Check[]>;
   /** Informazioni sul repository, o null se non esiste. */
   repo(owner: string, name: string): Promise<RepoInfo | null>;
   /** Contenuto di un file a un ref (predefinito: branch predefinito), o null se non esiste. */

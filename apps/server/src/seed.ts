@@ -43,7 +43,9 @@ export async function seedFromSnapshot(sql: Db, snapshot: SnapshotDoc[], opts: {
       const [row] = await sql`
         insert into version (document_id, slug, kind, ref, commit, active)
         values (${doc.id}, ${v.slug}, ${kind}, ${ref}, ${v.type === 'tag' ? v.identifier : null}, true)
-        on conflict (document_id, slug) do update set kind = excluded.kind, ref = excluded.ref, active = true
+        on conflict (document_id, slug) do update set kind = excluded.kind, ref = excluded.ref,
+          -- una versione ritirata dalla dashboard resta ritirata
+          active = not exists (select 1 from version_override o where o.version_id = version.id and o.action = 'withdraw' and o.revoked_at is null)
         returning id, published_build_id`;
       r.versions++;
       if (opts.queueBuilds && !row.published_build_id) {
