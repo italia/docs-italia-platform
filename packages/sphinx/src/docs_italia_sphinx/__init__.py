@@ -129,7 +129,7 @@ class DocsItaliaAstBuilder(Builder):
                     "unsupported": dict(r.unsupported),
                     "dropped": dict(r.dropped),
                     "where": r.where,
-                    "assets": sorted(r.assets),
+                    "assets": dict(sorted(r.assets.items())),
                 },
                 f,
                 ensure_ascii=False,

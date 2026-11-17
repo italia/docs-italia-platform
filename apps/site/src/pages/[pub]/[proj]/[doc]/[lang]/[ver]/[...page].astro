@@ -27,19 +27,41 @@ const resolved = ALIAS[ver] ? info.aliases[ALIAS[ver]] : ver;
 const version = info.versions.find((v) => v.slug === resolved);
 if (!version) return notFound();
 
-// Astro toglie ".html" dal parametro: "pagina.html" e il vecchio stile "pagina/" arrivano uguali
+// Astro toglie ".html" dal parametro (e "index.html" in fondo): "pagina.html" e il
+// vecchio stile "pagina/" arrivano uguali
 const pageName = pageParam.replace(/\.html$/, '').replace(/\/$/, '');
 
 const file = (path: string, as: 'json' | 'bytes' = 'json') => api.file(pub, proj, doc, lang, version.slug, path, version.build, as);
-const toc = await file('toc.json');
 const manifest = await file('manifest.json');
+
+// Immagini e allegati. Stanno qui e non in una route a parte: Astro ignora le
+// cartelle che iniziano con "_" in src/pages.
+//   _assets/<percorso>  file della sorgente (gli URL prodotti dal renderer)
+//   _images/<nome>      vecchi URL delle immagini di Sphinx, per nome del file
+if (pageParam.startsWith('_assets/') || pageParam.startsWith('_images/')) {
+  let path = pageParam.startsWith('_assets/') ? `assets/${pageParam.slice(8)}` : null;
+  if (!path) {
+    const name = pageParam.slice(8);
+    path = (manifest.files as Array<{ path: string }>).map((f) => f.path).find((f) => f.startsWith('assets/') && f.split('/').pop() === name) ?? null;
+  }
+  if (!path) return new Response('File non trovato', { status: 404 });
+  try {
+    const f = await file(path, 'bytes');
+    return new Response(f.body, { headers: { 'content-type': f.type, 'cache-control': 'public, max-age=600' } });
+  } catch {
+    return new Response('File non trovato', { status: 404 });
+  }
+}
+const toc = await file('toc.json');
 const pages: Array<{ slug: string; title: string; number?: string; depth: number; file: string }> = toc.pages;
 const root = pages[0]!;
 const base = `/${pub}/${proj}/${doc}/${lang}/${ver}/`;
 const href = (slug: string) => `${base}${slug === root.slug ? '' : `${slug}.html`}`;
 const single = pageName === 'pagina-singola';
-const slug = single ? null : pageName === '' || pageName === 'index' ? root.slug : pageName;
-const current = slug ? pages.find((p) => p.slug === slug) : null;
+// pagine in sottocartella: "sezione/index" arriva come "sezione" (Astro toglie index.html)
+const wanted = pageName === '' || pageName === 'index' ? [root.slug] : [pageName, `${pageName}/index`];
+const current = single ? null : (pages.find((p) => wanted.includes(p.slug)) ?? null);
+const slug = current?.slug ?? null;
 if (!single && !current) return notFound();
 
 const ctx: RenderContext = {
@@ -59,7 +81,7 @@ if (single) {
     version: { name: version.slug }, pages: all, downloads: {},
   };
   // la pagina singola usa id con il nome della pagina: i link interni restano nella pagina
-  content = `<h1>${escapeHtml(info.name)}</h1>` + renderAllChapters(view, 'single').replace(/src="(?!https?:)([^"]+)"/g, (_m, p) => `src="${base}_assets/${p}"`);
+  content = `<h1>${escapeHtml(info.name)}</h1>` + renderAllChapters(view, 'single', { assetHref: ctx.assetHref });
 } else {
   const data = await file(`pages/${current!.slug}.json`);
   content = renderNodes(data.tree.children, ctx) + renderFootnotes(data.footnotes, ctx);

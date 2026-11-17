@@ -95,8 +95,12 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       publisher: { slug: d.publisher_slug, name: d.publisher_name },
       project: { slug: d.project_slug, name: d.project_name },
       defaultVersion: def?.slug ?? null,
-      // la predefinita scritta in document_settings o nell'inventario; null = ultima release
-      declaredDefault: d.default_version ?? null,
+      // la predefinita scritta in document_settings o nell'inventario, come slug di
+      // una versione pubblicata: spesso è il nome del branch ("master" → "bozza").
+      // null = nessuna, o non pubblicata: vale l'ultima release
+      declaredDefault: d.default_version
+        ? (versions.find((v: any) => v.slug === d.default_version) ?? versions.find((v: any) => v.ref === d.default_version))?.slug ?? null
+        : null,
       aliases: { stabile: def?.slug ?? null, bozza: versions.some((v: any) => v.slug === 'bozza') ? 'bozza' : null },
       versions,
     });

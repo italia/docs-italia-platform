@@ -8,8 +8,22 @@
  *
  * Ogni nodo conserva `position` (righe e colonne di origine): serve all'editor.
  */
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join, normalize } from 'node:path';
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
+import { dirname, join, normalize, sep } from 'node:path';
+
+/**
+ * Un file del documento (immagine, allegato) esiste ed è dentro il progetto.
+ * Il documento non è fidato: "../" o un link simbolico non devono portare nel
+ * pacchetto pubblicato file che stanno fuori dal repository.
+ */
+export function projectFile(sourceDir: string, target: string): boolean {
+  if (target.startsWith('..') || target.startsWith('/')) return false;
+  const file = join(sourceDir, target);
+  if (!existsSync(file)) return false;
+  const root = realpathSync(sourceDir);
+  const real = realpathSync(file);
+  return real.startsWith(root + sep) && statSync(real).isFile();
+}
 import type { GenericNode, InventoryEntry, PageInfo, PageView, Problem, SectionView } from '@docs-italia/schema';
 import { parseMyst } from './myst.ts';
 import type { Project } from './project.ts';
@@ -297,11 +311,11 @@ function secondPass(page: ResolvedPage, doc: ResolvedDoc) {
         n.internal = { page: tp.slug, anchor };
         return;
       }
-      if (existsSync(join(project.sourceDir, target))) {
+      if (projectFile(project.sourceDir, target)) {
         n.asset = target;
         doc.assets.add(target);
       } else {
-        problems.push({ level: 'errore', file, line: lineOf(n), code: 'broken-link', message: `link a "${url}": file inesistente` });
+        problems.push({ level: 'errore', file, line: lineOf(n), code: 'broken-link', message: `link a "${url}": file inesistente o fuori dal progetto` });
       }
       return;
     }
@@ -325,11 +339,11 @@ function secondPass(page: ResolvedPage, doc: ResolvedDoc) {
         problems.push({ level: 'avviso', file, line: lineOf(n), code: 'external-image', message: `immagine esterna "${url}": non sarà nel PDF/EPUB se il sito non è raggiungibile` });
       } else {
         const target = normalize(join(here, decodeURIComponent(url))).split('\\').join('/');
-        if (existsSync(join(project.sourceDir, target))) {
+        if (projectFile(project.sourceDir, target)) {
           n.asset = target;
           doc.assets.add(target);
         } else {
-          problems.push({ level: 'errore', file, line: lineOf(n), code: 'missing-image', message: `immagine "${url}" inesistente` });
+          problems.push({ level: 'errore', file, line: lineOf(n), code: 'missing-image', message: `immagine "${url}" inesistente o fuori dal progetto` });
         }
       }
       if (!n.alt?.trim()) problems.push({ level: 'avviso', file, line: lineOf(n), code: 'alt', message: 'immagine senza testo alternativo (accessibilità)' });

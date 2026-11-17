@@ -1,6 +1,6 @@
 import { test } from 'bun:test';
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { check } from '../src/check.ts';
@@ -111,4 +111,20 @@ test('elenchi compatti e distanziati ricavati dal sorgente', () => {
   const dir = project({ 'index.md': '# Doc\n\n- a\n- b\n\nTesto\n\n- c\n\n- d\n\n1. lungo\n   seguito\n2. due\n' }, []);
   const lists = resolveDir(dir).pages[0].tree.children!.filter((n: any) => n.type === 'list');
   assert.deepEqual(lists.map((l: any) => l.spread), [false, true, false]);
+});
+
+test('file fuori dal progetto (../ o link simbolico): errore, non finiscono tra i file del documento', () => {
+  const outside = mkdtempSync(join(tmpdir(), 'docs-italia-fuori-'));
+  writeFileSync(join(outside, 'segreto.png'), 'segreto');
+  const dir = project(
+    {
+      'index.md': `# Doc\n\n![su](../${outside.split('/').pop()}/segreto.png)\n\n![link](link.png)\n\n[allegato](allegato.pdf)\n`,
+      'allegato.pdf': '%PDF',
+    },
+    [],
+  );
+  symlinkSync(join(outside, 'segreto.png'), join(dir, 'link.png'));
+  const doc = resolveDir(dir);
+  assert.deepEqual([...doc.assets], ['allegato.pdf']);
+  assert.equal(doc.problems.filter((p) => p.code === 'missing-image').length, 2);
 });

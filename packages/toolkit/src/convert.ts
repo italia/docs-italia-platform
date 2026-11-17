@@ -11,7 +11,7 @@
  * La cartella di origine non viene mai modificata.
  */
 import { execFile } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -111,20 +111,27 @@ export async function convert(src: string, out: string, opts: { log?: (m: string
   }
   log(`${pages.length} pagine riscritte in MyST`);
 
+  // percorso nel progetto MyST → percorso nella sorgente. Può risalire con "../"
+  // (sorgente in docs/it, immagini in media/), ma non oltre la radice del
+  // repository: il documento non è fidato e non deve pubblicare file del server.
+  const settingsFile = findSettings(src);
+  const repoRoot = realpathSync(settingsFile ? dirname(settingsFile) : src);
+  const real = (f: string) => (existsSync(f) ? realpathSync(f) : f); // anche i link simbolici restano nel repository
+  const assets = Object.entries(report.assets as Record<string, string>);
   const missingAssets: string[] = [];
-  for (const a of report.assets as string[]) {
-    const from = join(src, a);
-    if (!existsSync(from)) {
-      missingAssets.push(a);
+  for (const [dest, from] of assets) {
+    const to = resolve(out, dest);
+    const source = real(resolve(src, from));
+    if (!to.startsWith(out + '/') || !source.startsWith(repoRoot + '/') || !existsSync(source) || !statSync(source).isFile()) {
+      missingAssets.push(from);
       continue;
     }
-    mkdirSync(dirname(join(out, a)), { recursive: true });
-    cpSync(from, join(out, a));
+    mkdirSync(dirname(to), { recursive: true });
+    cpSync(source, to);
   }
 
   writeFileSync(join(out, 'toc.json'), `${JSON.stringify({ $schema: 'https://docs.italia.it/schema/toc/1.json', ...toc }, null, 2)}\n`);
 
-  const settingsFile = findSettings(src);
   if (settingsFile) {
     const doc = parseDocument(readFileSync(settingsFile, 'utf8'));
     doc.setIn(['document', 'format'], 'myst');
@@ -137,7 +144,7 @@ export async function convert(src: string, out: string, opts: { log?: (m: string
     unsupported: report.unsupported,
     dropped: report.dropped,
     where: report.where,
-    assets: report.assets,
+    assets: assets.map(([dest]) => dest),
     missingAssets,
     sphinxWarnings,
   };

@@ -11,6 +11,7 @@ viene conservato come paragrafo, e il rapporto dice dove.
 from __future__ import annotations
 
 import posixpath
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
@@ -74,7 +75,22 @@ class Report:
     unsupported: Counter = field(default_factory=Counter)
     dropped: Counter = field(default_factory=Counter)
     where: list[str] = field(default_factory=list)
-    assets: set[str] = field(default_factory=set)
+    # file del documento: percorso nel progetto MyST → percorso nella sorgente RST
+    assets: dict[str, str] = field(default_factory=dict)
+
+    def asset(self, src: str) -> str:
+        """Registra un file e restituisce dove starà nel progetto MyST.
+
+        Sphinx accetta immagini e download fuori dalla cartella della sorgente
+        (`../../media/x.png` da docs/it): nel progetto MyST finiscono in
+        `esterni/`, perché il progetto deve contenere tutti i suoi file.
+        """
+        src = posixpath.normpath(src)
+        dest = src
+        if src == ".." or src.startswith("../"):
+            dest = "esterni/" + re.sub(r"^(\.\./)+", "", src)
+        self.assets[dest] = src
+        return dest
 
     def note(self, kind: str, docname: str, node: nodes.Node, counter: str = "unsupported") -> None:
         getattr(self, counter)[kind] += 1
@@ -349,9 +365,7 @@ class Converter:
 
     def image(self, n: nodes.image, block: bool) -> Node:
         uri = n.get("uri", "")
-        url = uri if "://" in uri else self.rel(uri)
-        if "://" not in uri:
-            self.report.assets.add(uri)
+        url = uri if "://" in uri else self.rel(self.report.asset(uri))
         out: Node = {"type": "image", "url": url, "alt": n.get("alt", "")}
         for k in ("align", "width", "height"):
             if n.get(k):
@@ -507,5 +521,4 @@ class Converter:
     def download(self, n: nodes.Node) -> Node:
         target = n.get("reftarget", "")
         src = target.lstrip("/") if target.startswith("/") else posixpath.normpath(posixpath.join(self.dir, target))
-        self.report.assets.add(src)
-        return {"type": "link", "url": self.rel(src), "children": [text(n.astext())]}
+        return {"type": "link", "url": self.rel(self.report.asset(src)), "children": [text(n.astext())]}

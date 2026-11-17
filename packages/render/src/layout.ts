@@ -271,10 +271,12 @@ ${opts.bodyEnd ?? ''}
 // ---------------------------------------------------------------------------
 
 /** Tutti i capitoli in un solo documento (pagina singola e stampa). */
-export function renderAllChapters(doc: DocView, mode: 'single' | 'print'): string {
+/** `assetHref`: dove stanno i file del documento (predefinito: accanto alla pagina, come nel pacchetto). */
+export function renderAllChapters(doc: DocView, mode: 'single' | 'print', opts: { assetHref?: (path: string) => string } = {}): string {
   return doc.pages
     .map((p, i) => {
       const ctx = singleContext(doc, p, mode);
+      if (opts.assetHref) ctx.assetHref = opts.assetHref;
       const nodes = i === 0 ? p.tree.children?.filter((n) => !(n.type === 'heading' && n.depth === 1)) : p.tree.children;
       // data-title: titolo del capitolo per l'intestazione delle pagine stampate (string-set in paged.css)
       const title = `${p.number ? p.number + ' ' : ''}${p.title}`;
