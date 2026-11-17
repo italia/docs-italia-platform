@@ -1,6 +1,6 @@
 import { test } from 'bun:test';
 import assert from 'node:assert/strict';
-import { renderNodes, type RenderContext } from '../src/index.ts';
+import { imageSize, renderNodes, type RenderContext } from '../src/index.ts';
 
 const ctx: RenderContext = {
   mode: 'site',
@@ -63,4 +63,19 @@ test('pagina singola e stampa: id validi come selettori CSS (Paged.js usa queryS
   const hrefs = [...html.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]!);
   for (const id of [...ids, ...hrefs]) assert.match(id, /^[A-Za-z][A-Za-z0-9_-]*$/, id);
   for (const h of hrefs) assert.ok(ids.includes(h), `link senza destinazione: #${h}`);
+});
+
+test('dimensioni delle immagini: pixel nell\'attributo, altre unità nello stile', () => {
+  // ":width: 15 cm" del documento CIE: come attributo diventava un'immagine di 15 pixel
+  assert.deepEqual(imageSize('15cm'), { style: 'width:15cm' });
+  assert.deepEqual(imageSize('15 cm', '50%'), { style: 'width:15cm;height:50%' });
+  assert.deepEqual(imageSize('400'), { width: '400' });
+  assert.deepEqual(imageSize('400px', 300), { width: '400', height: '300' });
+  assert.deepEqual(imageSize('80%'), { style: 'width:80%' });
+  // valori non riconosciuti (anche tentativi di iniettare CSS) si ignorano
+  assert.deepEqual(imageSize('15cm;background:url(x)'), {});
+  assert.deepEqual(imageSize('auto'), {});
+  const html = renderNodes([{ type: 'image', url: 'a.png', asset: 'a.png', alt: 'A', width: '15 cm' }], ctx);
+  assert.match(html, /style="width:15cm"/);
+  assert.doesNotMatch(html, /width="/);
 });

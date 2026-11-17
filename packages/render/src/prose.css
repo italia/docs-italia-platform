@@ -227,6 +227,11 @@
     visibility: visible;
   }
 
+  /* larghezze dal documento (":width: 15cm") nello stile: mai oltre la colonna */
+  .di-image {
+    max-width: 100%;
+    height: auto;
+  }
   .di-figure {
     margin: 2rem 0;
   }

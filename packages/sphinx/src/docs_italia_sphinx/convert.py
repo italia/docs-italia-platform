@@ -48,6 +48,9 @@ class forum_node(nodes.General, nodes.Element):
 
 SAFE_SCHEMES = ("http://", "https://", "mailto:", "tel:")
 
+# testo di un commento che in realtà voleva essere una direttiva: "code-block::java"
+LOOKS_LIKE_DIRECTIVE = re.compile(r"^[A-Za-z][\w-]*::\S")
+
 
 def safe_label(name: str) -> str:
     """Etichetta valida per MyST: `(§4.4)=` non è un'etichetta, `(sez-4.4)=` sì."""
@@ -183,6 +186,11 @@ class Converter:
         return self.block_children(doctree, 0)
 
     def block(self, n: nodes.Node, depth: int) -> list[Node]:
+        if isinstance(n, nodes.comment) and LOOKS_LIKE_DIRECTIVE.match(n.astext()):
+            # ".. code-block::java" senza spazio dopo "::": per RST è un commento e
+            # non si pubblica, né oggi su docs.italia.it né qui. Lo si segnala.
+            self.report.note("commento che sembra una direttiva (manca lo spazio dopo «::»)", self.docname, n, "dropped")
+            return []
         if isinstance(n, SKIP):
             return []
         if isinstance(n, nodes.system_message):

@@ -66,7 +66,14 @@ export async function htmlToPdf(htmlFile: string, pdfFile: string, title: string
     const page = await browser.newPage();
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
-    if (engine === 'pagedjs') await page.addInitScript('window.PagedConfig = { auto: false };');
+    if (engine === 'pagedjs') {
+      await page.addInitScript('window.PagedConfig = { auto: false };');
+      // Paged.js impagina con gli stili attivi in quel momento: se fossero quelli
+      // dello schermo, le regole @media print (dimensioni delle immagini…)
+      // cambierebbero le altezze solo in stampa, a pagine già divise, e il
+      // contenuto in eccesso verrebbe tagliato. Si impagina già in modalità stampa.
+      await page.emulateMedia({ media: 'print' });
+    }
     await page.goto(site.url + basename(htmlFile), { waitUntil: 'load' });
     await page.evaluate('document.fonts.ready'); // eseguito nel browser
     if (engine === 'pagedjs') {

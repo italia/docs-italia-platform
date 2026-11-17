@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 export { escapeHtml, escapeAttr } from './escape.ts';
-export { renderNode, renderNodes, renderFootnotes } from './content.ts';
+export { imageSize, renderNode, renderNodes, renderFootnotes } from './content.ts';
 export type { GenericNode, RenderContext, RenderMode } from './content.ts';
 export { renderSitePage, renderSinglePage, renderAllChapters, renderPrint, renderEpubChapter, renderPreview, relative, pageId } from './layout.ts';
 export type { DocView, PageView, SectionView, SiteOptions } from './layout.ts';

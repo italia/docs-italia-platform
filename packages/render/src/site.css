@@ -49,6 +49,8 @@
   .di-figure img {
     max-height: 120mm;
     width: auto;
+    /* una larghezza indicata dal documento resta: l'immagine si adatta senza deformarsi */
+    object-fit: contain;
   }
   /* nel PDF un link esterno non si può cliccare dalla carta: si stampa l'indirizzo */
   .di-prose a[href^='http']:not(.di-url)::after {

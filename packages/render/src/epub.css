@@ -9,7 +9,7 @@ a { color: #0066cc; }
 .di-number { color: #555; }
 .di-permalink, .sr-only { display: none; }
 figure { margin: 1.5em 0; text-align: center; page-break-inside: avoid; }
-figure img { max-width: 100%; height: auto; }
+img { max-width: 100%; height: auto; }
 figcaption { font-style: italic; font-size: 0.9em; margin-top: 0.5em; }
 table { border-collapse: collapse; width: 100%; font-size: 0.85em; margin: 1em 0; }
 caption { font-weight: bold; text-align: left; padding-bottom: 0.4em; }

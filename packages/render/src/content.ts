@@ -226,6 +226,29 @@ function renderCrossReference(node: GenericNode, ctx: RenderContext): string {
   return `<a${attrs({ href: ctx.hrefFor(node.resolved.page, node.resolved.anchor) })}>${body}</a>`;
 }
 
+const SIZE = /^(\d+(?:\.\d+)?)\s*(px|cm|mm|in|pt|pc|em|rem|ex|ch|%|vw)?$/i;
+
+/**
+ * Dimensioni di un'immagine da `:width:` e `:height:` (MyST, RST). Gli
+ * attributi HTML width e height accettano solo pixel: "15cm" diventerebbe
+ * 15 pixel. Un numero (o "px") va quindi nell'attributo, ogni altra unità
+ * nello stile. I valori non riconosciuti si ignorano.
+ */
+export function imageSize(width?: unknown, height?: unknown): { width?: string; height?: string; style?: string } {
+  const out: { width?: string; height?: string; style?: string } = {};
+  const styles: string[] = [];
+  for (const [prop, value] of [['width', width], ['height', height]] as const) {
+    if (value === undefined || value === null || value === '') continue;
+    const m = String(value).trim().match(SIZE);
+    if (!m) continue;
+    const unit = (m[2] ?? 'px').toLowerCase();
+    if (unit === 'px') out[prop] = m[1];
+    else styles.push(`${prop}:${m[1]}${unit}`);
+  }
+  if (styles.length) out.style = styles.join(';');
+  return out;
+}
+
 function renderImage(node: GenericNode, ctx: RenderContext): string {
   const src = node.asset ? ctx.assetHref(node.asset) : /^https?:\/\//i.test(node.url ?? '') ? node.url : undefined;
   if (!src) return '';
@@ -234,7 +257,7 @@ function renderImage(node: GenericNode, ctx: RenderContext): string {
     src,
     alt: node.alt ?? '',
     class: cls,
-    width: node.width,
+    ...imageSize(node.width, node.height),
     loading: ctx.mode === 'site' || ctx.mode === 'single' ? 'lazy' : undefined,
   })} />`;
 }
