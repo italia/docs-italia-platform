@@ -1,0 +1,135 @@
+---
+/**
+ * Pagina di un documento, con gli URL della piattaforma attuale:
+ *   /<publisher>/<progetto>/<documento>/<lingua>/<versione>/                pagina iniziale
+ *   /<publisher>/<progetto>/<documento>/<lingua>/<versione>/<pagina>.html   capitolo
+ *   /<publisher>/<progetto>/<documento>/<lingua>/<versione>/pagina-singola.html
+ * La versione accetta gli alias stabile/stable e bozza/draft.
+ */
+import Base from '../../../../../../layouts/Base.astro';
+import Breadcrumbs from '../../../../../../components/Breadcrumbs.astro';
+import { api } from '../../../../../../lib/api';
+import { icon, navscroll } from '@italia-tailwind/recipes';
+import { escapeHtml, renderAllChapters, renderFootnotes, renderNodes, type DocView, type RenderContext } from '@docs-italia/render';
+
+const { pub, proj, doc, lang, ver } = Astro.params as Record<string, string>;
+const pageParam = Astro.params.page ?? '';
+
+const notFound = () => {
+  Astro.response.status = 404;
+  return Astro.rewrite('/404');
+};
+
+const info = await api.document(pub, proj, doc).catch(() => null);
+if (!info || lang !== info.language) return notFound();
+const ALIAS: Record<string, keyof typeof info.aliases> = { stabile: 'stabile', stable: 'stabile', bozza: 'bozza', draft: 'bozza' };
+const resolved = ALIAS[ver] ? info.aliases[ALIAS[ver]] : ver;
+const version = info.versions.find((v) => v.slug === resolved);
+if (!version) return notFound();
+
+// Astro toglie ".html" dal parametro: "pagina.html" e il vecchio stile "pagina/" arrivano uguali
+const pageName = pageParam.replace(/\.html$/, '').replace(/\/$/, '');
+
+const file = (path: string, as: 'json' | 'bytes' = 'json') => api.file(pub, proj, doc, lang, version.slug, path, version.build, as);
+const toc = await file('toc.json');
+const manifest = await file('manifest.json');
+const pages: Array<{ slug: string; title: string; number?: string; depth: number; file: string }> = toc.pages;
+const root = pages[0]!;
+const base = `/${pub}/${proj}/${doc}/${lang}/${ver}/`;
+const href = (slug: string) => `${base}${slug === root.slug ? '' : `${slug}.html`}`;
+const single = pageName === 'pagina-singola';
+const slug = single ? null : pageName === '' || pageName === 'index' ? root.slug : pageName;
+const current = slug ? pages.find((p) => p.slug === slug) : null;
+if (!single && !current) return notFound();
+
+const ctx: RenderContext = {
+  mode: 'site',
+  page: slug ?? root.slug,
+  hrefFor: (p, a) => (p === slug ? '' : href(p)) + (a ? `#${a}` : '') || '#',
+  idFor: (_p, a) => a,
+  assetHref: (path) => `${base}_assets/${path}`,
+};
+
+let content = '';
+let sections: Array<{ anchor: string; title: string; number?: string; depth: number }> = [];
+if (single) {
+  const all = await Promise.all(pages.map((p) => file(`pages/${p.slug}.json`)));
+  const view: DocView = {
+    name: info.name, description: info.description, tags: info.tags, language: info.language,
+    version: { name: version.slug }, pages: all, downloads: {},
+  };
+  // la pagina singola usa id con il nome della pagina: i link interni restano nella pagina
+  content = `<h1>${escapeHtml(info.name)}</h1>` + renderAllChapters(view, 'single').replace(/src="(?!https?:)([^"]+)"/g, (_m, p) => `src="${base}_assets/${p}"`);
+} else {
+  const data = await file(`pages/${current!.slug}.json`);
+  content = renderNodes(data.tree.children, ctx) + renderFootnotes(data.footnotes, ctx);
+  sections = data.sections;
+}
+
+const i = current ? pages.indexOf(current) : -1;
+const prev = i > 0 ? pages[i - 1] : null;
+const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : null;
+const label = (p: { number?: string; title: string }) => `${p.number ? `${p.number}. ` : ''}${p.title}`;
+const downloads = Object.entries(manifest.downloads ?? {}).map(([k]) => ({
+  label: k === 'html' ? 'HTML compresso' : k.toUpperCase(),
+  icon: k === 'pdf' ? 'it-file-pdf' : k === 'html' ? 'it-file-compressed' : 'it-file',
+  href: `/projects/${doc}/downloads/${k === 'html' ? 'htmlzip' : k}/${ver}/`,
+}));
+const ic = (name: string) => icon(name as any, 'size-5 shrink-0 fill-current');
+const sub = sections.filter((s) => s.depth === 2);
+const onThisPage = sub.length
+  ? navscroll({
+      title: 'In questa pagina',
+      links: sub.map((s) => ({ label: escapeHtml(`${s.number ? `${s.number} ` : ''}${s.title}`), href: `#${s.anchor}` })),
+    })
+  : '';
+const isDraft = version.kind === 'draft';
+const title = single ? `${info.name} — pagina singola` : current === root ? info.name : `${current!.title} — ${info.name}`;
+---
+<Base title={title} description={info.description}>
+  {isDraft && (
+    <div slot="banner" class="di-banner" role="status"><Fragment set:html={ic('it-info-circle')} /><p>Bozza: versione in lavorazione, non ancora rilasciata.</p></div>
+  )}
+  <Breadcrumbs items={[
+    { label: info.publisher.name, href: `/${pub}/` },
+    { label: info.project.name, href: `/${pub}/${proj}/` },
+    current && current !== root ? { label: info.name, href: href(root.slug) } : { label: info.name },
+    ...(current && current !== root ? [{ label: label(current) }] : single ? [{ label: 'Pagina singola' }] : []),
+  ]} />
+  <div class={`di-layout ${single ? 'di-layout-single' : ''}`}>
+    <nav id="indice" class="di-sidebar" aria-label="Indice del documento">
+      <details class="di-versions mb-6" open={false}>
+        <summary><strong>Versione:</strong> {version.slug}{ALIAS[ver] && ver !== version.slug ? ` (${ver})` : ''}</summary>
+        <ul>
+          {info.versions.map((v) => (
+            <li><a class="ita-link" href={`/${pub}/${proj}/${doc}/${lang}/${v.slug}/`} aria-current={v.slug === version.slug ? 'true' : undefined}>{v.slug}{v.slug === info.defaultVersion ? ' (predefinita)' : ''}</a></li>
+          ))}
+        </ul>
+      </details>
+      <p class="di-toc-caption">{toc.caption ?? 'Indice dei contenuti'}</p>
+      <ol class="di-toc">
+        {pages.slice(1).map((p) => (
+          <li class={`di-toc-depth-${p.depth}`}><a href={href(p.slug)} aria-current={p === current ? 'page' : undefined}>{p.number && <span class="di-number">{p.number}</span>} {p.title}</a></li>
+        ))}
+      </ol>
+      <p class="di-single-link"><a href={single ? href(root.slug) : `${base}pagina-singola.html`}>{single ? 'Versione a capitoli' : 'Pagina singola'}</a></p>
+      {downloads.length > 0 && (
+        <div class="di-downloads">
+          <p class="di-toc-caption">Scarica</p>
+          <ul>{downloads.map((d) => <li><a href={d.href}><Fragment set:html={ic(d.icon)} /><span>{d.label}</span></a></li>)}</ul>
+        </div>
+      )}
+      <p class="di-single-link"><a href={`${info.repository}/tree/${encodeURIComponent(version.ref ?? version.slug)}`}><Fragment set:html={ic('it-github')} /><span>Sorgente su GitHub</span></a></p>
+    </nav>
+    <main id="main" class="di-main">
+      <article class="di-prose" set:html={content} />
+      {!single && (
+        <nav class="di-pager" aria-label="Pagine precedente e successiva">
+          {prev ? <a class="di-pager-prev" href={href(prev.slug)} rel="prev"><Fragment set:html={ic('it-arrow-left')} /><span><small>Precedente</small>{label(prev)}</span></a> : <span />}
+          {next && <a class="di-pager-next" href={href(next.slug)} rel="next"><span><small>Successivo</small>{label(next)}</span><Fragment set:html={ic('it-arrow-right')} /></a>}
+        </nav>
+      )}
+    </main>
+    {!single && <aside class="di-aside" set:html={onThisPage} />}
+  </div>
+</Base>

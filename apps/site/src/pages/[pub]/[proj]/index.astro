@@ -1,0 +1,24 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { api } from '../../../lib/api';
+const p = await api.publisher(Astro.params.pub!).catch(() => null);
+const pr = p?.projects?.find((x) => x.slug === Astro.params.proj);
+if (!p || !pr) return Astro.rewrite('/404');
+---
+<Base title={pr.name} description={pr.description}>
+  <Breadcrumbs items={[{ label: p.name, href: `/${p.slug}/` }, { label: pr.name }]} />
+  <main id="main" class="py-8">
+    <h1 class="mb-2">{pr.name}</h1>
+    <p class="di-lead mb-8 max-w-3xl">{pr.description}</p>
+    <div class="di-cards">
+      {pr.documents.map((d) => (
+        <article class="di-card">
+          <h2><a href={`/${p.slug}/${pr.slug}/${d.slug}/`}>{d.name}</a></h2>
+          <p>{d.description}</p>
+          <ul class="di-tags">{d.tags.map((t) => <li><span class="ita-chip"><span>{t}</span></span></li>)}</ul>
+        </article>
+      ))}
+    </div>
+  </main>
+</Base>

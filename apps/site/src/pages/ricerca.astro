@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { api } from '../lib/api';
+const q = Astro.url.searchParams.get('q')?.trim() ?? '';
+const publisher = Astro.url.searchParams.get('publisher') ?? undefined;
+const document = Astro.url.searchParams.get('document') ?? undefined;
+const hits: any[] = q ? await api.search(q, { publisher, document }).catch(() => []) : [];
+// lo snippet arriva da PostgreSQL con <mark>: si fa escape del resto
+const snippet = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!).replace(/&lt;mark&gt;/g, '<mark>').replace(/&lt;\/mark&gt;/g, '</mark>');
+---
+<Base title={q ? `Ricerca: ${q}` : 'Ricerca'} query={q}>
+  <Breadcrumbs items={[{ label: 'Ricerca' }]} />
+  <main id="main" class="py-8 max-w-4xl">
+    <h1 class="mb-6">Ricerca</h1>
+    {q && <p class="mb-4" role="status">{hits.length ? `${hits.length} risultati per «${q}»` : `Nessun risultato per «${q}»`}</p>}
+    {hits.map((h) => (
+      <article class="di-search-hit">
+        <h2 class="text-lg"><a class="ita-link" href={`/${h.publisher}/${h.project}/${h.document}/it/${h.version}/${h.page === 'index' ? '' : `${h.page}.html`}${h.anchor ? `#${h.anchor}` : ''}`}>{h.title}</a></h2>
+        <p class="text-sm opacity-75">{h.path.join(' › ')}</p>
+        <p set:html={snippet(h.snippet)} />
+      </article>
+    ))}
+  </main>
+</Base>

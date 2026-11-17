@@ -1,0 +1,11 @@
+---
+/** Radice del documento (o della lingua): alla versione predefinita, con lo stesso URL canonico del sito attuale. */
+import { api } from '../../../../lib/api';
+const { pub, proj, doc } = Astro.params;
+const d = await api.document(pub!, proj!, doc!).catch(() => null);
+if (!d || !d.defaultVersion) return Astro.rewrite('/404');
+const en = d.language !== 'it';
+const hasRelease = d.versions.some((v) => v.kind === 'release');
+const slug = d.declaredDefault ?? (hasRelease ? (en ? 'stable' : 'stabile') : (en ? 'draft' : 'bozza'));
+return Astro.redirect(`/${pub}/${proj}/${doc}/${d.language}/${slug}/`, 302);
+---

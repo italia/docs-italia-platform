@@ -63,7 +63,7 @@ export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
       html: config.buildPdf,
       pdf: config.buildPdf,
       epub: true,
-      zip: false,
+      zip: config.buildPdf, // l'HTML compresso richiede il sito HTML, costruito insieme al PDF
       bundle: true,
       log: (m) => log.push(m),
     });

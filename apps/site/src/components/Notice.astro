@@ -1,0 +1,9 @@
+---
+interface Props {
+  title: string;
+}
+---
+<section class="py-16 max-w-2xl">
+  <h1 class="mb-4">{Astro.props.title}</h1>
+  <div class="di-prose"><slot /></div>
+</section>

@@ -4,11 +4,23 @@
   "private": true,
   "description": "Sito pubblico di Docs Italia (Astro, rendering lato server)",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "dependencies": {
+    "@astrojs/node": "^11.1.13",
     "@docs-italia/render": "*",
-    "@docs-italia/retrieval": "*"
+    "@docs-italia/schema": "*",
+    "@italia-tailwind/css": "^0.2.0",
+    "@italia-tailwind/recipes": "^0.2.0",
+    "astro": "^7.4.12",
+    "daisyui": "^5.8.1"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "start": "bun ./dist/server/entry.mjs",
+    "check": "astro check"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "tailwindcss": "^4.3.5"
   }
 }

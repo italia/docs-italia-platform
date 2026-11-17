@@ -891,6 +891,7 @@ Dopo il PoC il codice è passato nei pacchetti di `docs-italia-platform` e gira 
 | Segnalazioni a Italia Tailwind UI | Testi pronti, da aprire a mano | `docs/segnalazioni/italia-tailwind-ui.md` |
 | Banco di prova della conversione | Prima versione sui 41 repository presenti in locale (branch attuale): 40 convertiti, 1.008 pagine, tutte le build HTML riuscite, **25 senza errori al controllo**. Errori scesi da 1.163 a 245, quasi tutti in `eid-wallet-it-docs` | `packages/toolkit/scripts/banco.ts`, `inventario/banco-di-prova.md` |
 | Segnalibri del PDF con Paged.js | Corretto: in stampa il numero dei titoli è testo semplice | `packages/render/src/content.ts` |
+| Sito (fase 4) | Prima versione in Astro 7 sopra le API del server: home con ricerca, amministrazioni, publisher, progetto, pagina del documento (indice, versioni, pagina singola, download, sorgente), ricerca, pagine istituzionali (quelle legali sono segnaposto). **URL compatibili**: tutti i 77 URL dell'inventario dei documenti importati rispondono, zero errori; anche i vecchi URL dei download | `apps/site`, `apps/site/scripts/url-compat.ts` |
 | Server (fase 3) | Prima versione: modello dati, sincronizzazione da `italia-conf` (regole del fork), versioni dall'inventario, coda in PostgreSQL, worker con conversione RST, pubblicazione con verifica del manifest, ricezione dei pacchetti con OIDC, webhook firmati, API e ricerca in italiano. Forge comune con `LocalForge` (clone locali) e `GitHubForge` (Octokit). Su dati reali: 3 publisher, 33 bozze e 98 versioni dell'inventario pubblicate (le altre versioni sono di repository non clonati in locale). 10 test di integrazione su PostgreSQL | `apps/server`, `packages/forge` |
 
 Criticità emerse dopo il PoC:
@@ -925,4 +926,6 @@ Dal banco di prova:
 6. Editor visuale (fase 8) sopra `sourceBlocks` e `replaceBlocks`.
 7. Aprire le segnalazioni a Italia Tailwind UI.
 8. Server (fase 3), da completare: anteprime delle pull request, versioni archiviate, prova di `GitHubForge` su GitHub e di una GitHub Action vera che invia il pacchetto, istanza completa in `deploy/compose`.
-9. Sito Astro (fase 4) sopra le API del server, e dashboard (6.6) con utenti, ruoli e magic link.
+9. Sito (fase 4), da completare: versioni archiviate, sitemap, pagine istituzionali come documenti MyST dell'istanza, confronto visivo con il sito attuale, verifica di accessibilità.
+10. Dashboard (6.6) con utenti, ruoli e magic link; server MCP e RAG (fase 6).
+11. Segnalare ad AgID che la descrizione nel suo `publisher_settings.yml` è quella di Developers Italia ("GitHub Italia è l'organizzazione…").

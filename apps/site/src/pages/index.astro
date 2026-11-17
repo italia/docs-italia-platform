@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { api } from '../lib/api';
+const publishers = await api.publishers().catch(() => []);
+---
+<Base title="Docs Italia">
+  <section class="py-12">
+    <h1 class="mb-4">Documentazione tecnica della Pubblica Amministrazione</h1>
+    <p class="di-lead mb-6 max-w-3xl">Linee guida, regole tecniche, manuali e documenti pubblicati dalle amministrazioni, in versione web, PDF ed EPUB.</p>
+    <form action="/ricerca/" method="get" role="search" class="di-hero-search">
+      <label for="cerca-home" class="sr-only">Cerca nei documenti</label>
+      <input id="cerca-home" name="q" type="search" class="ita-input flex-1" placeholder="Cerca, per esempio: domicilio digitale" />
+      <button class="ita-btn ita-btn-primary" type="submit">Cerca</button>
+    </form>
+  </section>
+  <section id="main" class="pb-16">
+    <h2 class="mb-2">Amministrazioni</h2>
+    <div class="di-cards">
+      {publishers.map((p) => (
+        <article class="di-card">
+          <h3><a href={`/${p.slug}/`}>{p.name}</a></h3>
+          <p>{p.description}</p>
+          <p class="text-sm opacity-75">{p.documents} documenti</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</Base>

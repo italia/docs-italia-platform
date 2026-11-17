@@ -270,7 +270,8 @@ ${opts.bodyEnd ?? ''}
 // Pagina singola e stampa
 // ---------------------------------------------------------------------------
 
-function allChapters(doc: DocView, mode: 'single' | 'print'): string {
+/** Tutti i capitoli in un solo documento (pagina singola e stampa). */
+export function renderAllChapters(doc: DocView, mode: 'single' | 'print'): string {
   return doc.pages
     .map((p, i) => {
       const ctx = singleContext(doc, p, mode);
@@ -302,7 +303,7 @@ ${downloadsBox(doc, '')}
 <main id="main" class="di-main">
 <article class="di-prose">
 <h1>${escapeHtml(doc.name)}</h1>
-${allChapters(doc, 'single')}
+${renderAllChapters(doc, 'single')}
 </article>
 </main>
 </div>
@@ -337,7 +338,7 @@ export function renderPrint(doc: DocView, opts: { css: string; date: string; ext
     .join('')}</ol>
 </nav>
 <main class="di-prose">
-${allChapters(doc, 'print')}
+${renderAllChapters(doc, 'print')}
 </main>
 </body>
 </html>

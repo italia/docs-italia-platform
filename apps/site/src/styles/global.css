@@ -1,0 +1,51 @@
+@import "tailwindcss";
+/* Italia Tailwind UI con il solo tema italia-original, e tipografia dei documenti */
+@import "@docs-italia/render/italia.css";
+@import "@docs-italia/render/prose.css";
+/* le classi del contenuto dei documenti arrivano dal renderer */
+@source "../../../../packages/render/src";
+@source "../../node_modules/@italia-tailwind/recipes";
+
+.di-hero-search {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 40rem;
+}
+.di-cards {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  margin: 2rem 0;
+}
+.di-card {
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.di-card h2,
+.di-card h3 {
+  font-size: 1.25rem;
+}
+.di-card a {
+  color: var(--color-primary);
+}
+.di-versions summary {
+  cursor: pointer;
+}
+.di-versions ul {
+  list-style: none;
+  padding: 0.5rem 0 0;
+  margin: 0;
+}
+.di-versions a[aria-current] {
+  font-weight: 600;
+}
+.di-search-hit {
+  padding: 1rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
+}
+.di-search-hit mark {
+  background: color-mix(in oklab, var(--color-warning) 35%, transparent);
+}

@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Notice from '../components/Notice.astro';
+---
+<Base title="Che cos'è Docs Italia">
+  <Breadcrumbs items={[{ label: "Che cos'è Docs Italia" }]} />
+  <main id="main">
+    <Notice title="Che cos'è Docs Italia">
+      <p>Docs Italia pubblica la documentazione tecnica delle pubbliche amministrazioni: linee guida, regole tecniche, manuali operativi, piani e documenti di indirizzo.</p>
+      <p>Ogni documento vive in un repository pubblico su GitHub, è versionato e si legge sul web, in PDF e in EPUB. Chiunque può proporre correzioni con una pull request.</p>
+      <p>Il sito è realizzato con docs-italia-platform, software libero che altre amministrazioni possono installare per pubblicare la propria documentazione.</p>
+    </Notice>
+  </main>
+</Base>

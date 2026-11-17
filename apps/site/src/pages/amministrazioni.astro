@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { api } from '../lib/api';
+const publishers = await api.publishers().catch(() => []);
+---
+<Base title="Amministrazioni">
+  <Breadcrumbs items={[{ label: 'Amministrazioni' }]} />
+  <main id="main" class="py-8">
+    <h1 class="mb-4">Amministrazioni</h1>
+    <div class="di-cards">
+      {publishers.map((p) => (
+        <article class="di-card">
+          <h2><a href={`/${p.slug}/`}>{p.name}</a></h2>
+          <p>{p.description}</p>
+          <p class="text-sm opacity-75">{p.documents} documenti</p>
+        </article>
+      ))}
+    </div>
+  </main>
+</Base>

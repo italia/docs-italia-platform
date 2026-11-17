@@ -1,0 +1,96 @@
+---
+/**
+ * Layout di tutte le pagine dell'istanza: intestazione, piè di pagina,
+ * scorciatoie. Intestazione e piè di pagina sono scritti con le classi ita-*
+ * (le recipes header() e footer() inseriscono contenuti dimostrativi).
+ */
+import '../styles/global.css';
+import { icon, skiplinks, backToTop } from '@italia-tailwind/recipes';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** testo della ricerca, da riportare nel campo */
+  query?: string;
+}
+const { title, description = 'Documentazione tecnica della Pubblica Amministrazione italiana', query = '' } = Astro.props;
+const instance = 'Docs Italia';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/amministrazioni/', label: 'Amministrazioni' },
+  { href: '/che-cos-e-docs-italia/', label: "Che cos'è" },
+  { href: '/come-pubblicare/', label: 'Come pubblicare' },
+];
+const ic = (name: string, cls = 'size-5') => icon(name as any, `${cls} shrink-0 fill-current`);
+---
+<!doctype html>
+<html lang="it" data-theme="italia-original">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === instance ? title : `${title} — ${instance}`}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, Astro.site ?? Astro.url).href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <Fragment set:html={skiplinks({ links: [{ label: 'Vai al contenuto', href: '#main' }, { label: 'Vai alla ricerca', href: '#ricerca' }] })} />
+    <header class="ita-header">
+      <div class="ita-header-slim">
+        <div class="ita-header-container">
+          <a href="/" class="ita-header-owner">{instance}</a>
+          <nav aria-label="Navigazione accessoria" class="ita-header-links">
+            <ul>
+              {nav.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="ita-header-center">
+        <div class="ita-header-container">
+          <div class="ita-header-brand">
+            <a href="/">
+              <Fragment set:html={ic('it-pa', 'size-12')} />
+              <span>
+                <span class="ita-header-name">{instance}</span>
+                <span class="ita-header-tagline">Documentazione tecnica della Pubblica Amministrazione</span>
+              </span>
+            </a>
+          </div>
+          <div class="ita-header-tools">
+            <form action="/ricerca/" method="get" role="search" class="flex gap-2 items-center">
+              <label for="ricerca" class="sr-only">Cerca nei documenti</label>
+              <input id="ricerca" name="q" type="search" value={query} placeholder="Cerca nei documenti" class="ita-input ita-input-sm bg-base-100 text-base-content" />
+              <button class="ita-btn ita-btn-sm ita-btn-inverse" type="submit"><Fragment set:html={ic('it-search')} /><span class="sr-only">Cerca</span></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+    <slot name="banner" />
+    <div class="di-shell">
+      <slot />
+    </div>
+    <footer class="ita-footer">
+      <div class="ita-footer-main">
+        <div class="ita-footer-container">
+          <section class="ita-footer-brand">
+            <a href="/">
+              <Fragment set:html={ic('it-pa', 'size-12')} />
+              <span><span class="ita-footer-name">{instance}</span><span class="ita-footer-tagline">Documentazione tecnica della Pubblica Amministrazione</span></span>
+            </a>
+          </section>
+        </div>
+      </div>
+      <div class="ita-footer-legal">
+        <ul class="ita-footer-container">
+          <li><a href="/note-legali/">Note legali</a></li>
+          <li><a href="/privacy-policy/">Privacy</a></li>
+          <li><a href="/cookies-policy/">Cookie</a></li>
+          <li><span>Realizzato con docs-italia-platform</span></li>
+        </ul>
+      </div>
+    </footer>
+    <Fragment set:html={backToTop({} as any)} />
+  </body>
+</html>

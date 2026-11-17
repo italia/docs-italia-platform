@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Notice from '../components/Notice.astro';
+---
+<Base title="Cookie">
+  <Breadcrumbs items={[{ label: "Cookie" }]} />
+  <main id="main">
+    <Notice title="Cookie">
+      <p>Il contenuto di questa pagina è definito dall'amministrazione che gestisce l'istanza.</p>
+      <p>In docs-italia-platform le pagine istituzionali saranno documenti MyST configurati per ogni istanza (piano di progetto, sezione 8).</p>
+    </Notice>
+  </main>
+</Base>

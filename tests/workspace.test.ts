@@ -19,8 +19,9 @@ describe('workspace', () => {
       expect(pkg.description?.length).toBeGreaterThan(0);
       expect(pkg.private).toBe(true);
       expect(existsSync(join(root, dir, 'README.md'))).toBe(true);
-      // librerie e server: src/index.ts; app per il browser (editor, dashboard): src/main.tsx
-      expect(existsSync(join(root, dir, 'src', 'index.ts')) || existsSync(join(root, dir, 'src', 'main.tsx'))).toBe(true);
+      // librerie e server: src/index.ts; app per il browser (editor, dashboard): src/main.tsx; sito Astro: astro.config.mjs
+      const entries = [join('src', 'index.ts'), join('src', 'main.tsx'), 'astro.config.mjs'];
+      expect(entries.some((e) => existsSync(join(root, dir, e)))).toBe(true);
       for (const dep of Object.keys(pkg.dependencies ?? {}).filter((d) => d.startsWith('@docs-italia/'))) {
         expect(names.has(dep)).toBe(true);
       }

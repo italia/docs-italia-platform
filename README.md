@@ -12,7 +12,7 @@ Usa gli stessi repository GitHub e gli stessi file di configurazione di oggi (`i
 - ricerca semantica e un server MCP per gli assistenti;
 - la possibilità per altre PA di installare la propria istanza.
 
-> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Il server importa da `italia-conf`, costruisce e pubblica i pacchetti e offre API e ricerca (`apps/server`). Sito, server MCP e dashboard sono ancora ossatura.
+> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Il server importa da `italia-conf`, costruisce e pubblica i pacchetti e offre API e ricerca (`apps/server`). Il sito Astro (`apps/site`) mostra i documenti agli stessi URL di oggi. Server MCP e dashboard sono ancora ossatura.
 
 ## Provare
 

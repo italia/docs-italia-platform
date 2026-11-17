@@ -38,7 +38,8 @@ async function defaultVersion(sql: Db, documentId: number, declared: string | nu
 
 async function findDocument(sql: Db, pub: string, proj: string, doc: string) {
   const [d] = await sql`
-    select d.*, pr.slug as project_slug from document d join project pr on pr.id = d.project_id join publisher p on p.id = pr.publisher_id
+    select d.*, pr.slug as project_slug, pr.name as project_name, p.slug as publisher_slug, p.name as publisher_name
+    from document d join project pr on pr.id = d.project_id join publisher p on p.id = pr.publisher_id
     where p.slug = ${pub} and pr.slug = ${proj} and d.slug = ${doc} and d.active`;
   return d ?? null;
 }
@@ -80,7 +81,7 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     const d = await findDocument(sql, c.req.param('pub'), c.req.param('proj'), c.req.param('doc'));
     if (!d) return c.json({ error: 'documento non trovato' }, 404);
     const versions = await sql`
-      select v.slug, v.kind, v.ref, v.commit, b.finished_at as published_at
+      select v.slug, v.kind, v.ref, v.commit, b.id as build, b.finished_at as published_at
       from version v join build b on b.id = v.published_build_id
       where v.document_id = ${d.id} and v.active order by v.kind, v.slug`;
     const def = await defaultVersion(sql, d.id, d.default_version);
@@ -91,7 +92,11 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       tags: d.tags,
       language: d.language,
       repository: `https://github.com/${d.repo_owner}/${d.repo_name}`,
+      publisher: { slug: d.publisher_slug, name: d.publisher_name },
+      project: { slug: d.project_slug, name: d.project_name },
       defaultVersion: def?.slug ?? null,
+      // la predefinita scritta in document_settings o nell'inventario; null = ultima release
+      declaredDefault: d.default_version ?? null,
       aliases: { stabile: def?.slug ?? null, bozza: versions.some((v: any) => v.slug === 'bozza') ? 'bozza' : null },
       versions,
     });
@@ -113,6 +118,16 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     const data = await config.storage.get(`${b.bundle_prefix}/${decodeURIComponent(path)}`);
     if (!data) return c.json({ error: 'file non trovato' }, 404);
     return new Response(data, { headers: { 'content-type': contentType(path), 'cache-control': 'public, max-age=300' } });
+  });
+
+  // dal nome del documento a publisher e progetto: serve ai vecchi URL dei download
+  // (/projects/<documento>/downloads/<formato>/<versione>/)
+  app.get('/api/lookup/:doc', async (c) => {
+    const [d] = await sql`
+      select p.slug as publisher, pr.slug as project, d.slug as document from document d
+      join project pr on pr.id = d.project_id join publisher p on p.id = pr.publisher_id
+      where d.slug = ${c.req.param('doc').toLowerCase()} and d.active`;
+    return d ? c.json(d) : c.json({ error: 'documento non trovato' }, 404);
   });
 
   app.get('/api/search', async (c) =>
