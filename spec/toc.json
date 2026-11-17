@@ -1,0 +1,14 @@
+{
+  "$schema": "schemas/toc.schema.json",
+  "root": "index.md",
+  "caption": "Indice",
+  "numbered": true,
+  "numfig": true,
+  "chapters": [
+    { "file": "capitoli/configurazione.md" },
+    { "file": "capitoli/indice.md" },
+    { "file": "capitoli/myst.md" },
+    { "file": "capitoli/pacchetto.md" },
+    { "file": "capitoli/conversione.md" }
+  ]
+}

@@ -1,0 +1,14 @@
+document:
+  name: "Formato dei documenti Docs Italia"
+  description: "Specifica del formato dei documenti di Docs Italia: configurazione, indice, estensioni MyST e pacchetto di build."
+  tags:
+    - specifica
+    - formato
+  format: myst
+  source: .
+  languages: [it]
+  downloads: [pdf, epub, html]
+  publisher: Docs Italia
+  project: Docs Italia Platform
+  # bozza 0: cambia senza preavviso finché non viene pubblicata la versione 1
+  version: "0 (bozza)"

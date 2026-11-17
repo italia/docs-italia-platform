@@ -1,6 +1,6 @@
 # Nuovo Docs Italia — piano
 
-Versione 5 · 16 novembre 2026 — adottato MyST; aggiunti RAG e server MCP; risultati del PoC del toolkit (sezione 12); dashboard di amministrazione (6.6)
+Versione 6 · 17 novembre 2026 — adottato MyST; aggiunti RAG e server MCP; risultati del PoC del toolkit (sezione 12); dashboard di amministrazione (6.6)
 
 ## Sintesi
 
@@ -182,6 +182,7 @@ Regole, per non avere due fonti di verità:
 - `toc.json` elenca **file** e il loro ordine. I titoli e le sezioni dentro un file vengono dai titoli del Markdown; `title` serve solo a sovrascrivere.
 - Ogni file è una pagina nella vista a capitoli. La vista a pagina singola concatena i file nell'ordine della `toc`.
 - La build segnala come errore un file `.md` non elencato e una voce che punta a un file inesistente.
+- `numfig: true` mostra il numero nelle didascalie ("Figura 2.1"); senza, figure e tabelle sono numerate solo per `{numref}`. Una voce con `numbered: false` (ad esempio gli allegati) resta senza numero anche in un indice numerato. Entrambi aggiunti nel monorepo (12.7).
 
 ### 3.5 `document_settings.yml` esteso
 
@@ -300,6 +301,8 @@ Le 108 direttive `only` con `format_latex` / `latex` indicano che alcuni editori
 
 **Risultati del PoC** (Chrome headless, senza Paged.js): PDF *tagged* e accessibile, segnalibri, copertina, capitoli su pagine nuove, intestazione delle tabelle ripetuta, indirizzi dei link stampati; circa 1–2 secondi per un documento di 8 pagine. Mancano i numeri di pagina nell'indice e la possibilità di togliere il numero dalla copertina, e nei segnalibri si perde lo spazio dove il titolo va a capo: per questo serve Paged.js. L'EPUB è XML ben formato con struttura corretta, ma non è ancora stato validato con `epubcheck`, che va messo nella CI.
 
+**Nel monorepo** (12.7) il PDF usa **Paged.js** come motore predefinito: indice con i numeri di pagina, piè di pagina con titolo e "pagina N di M", titolo del capitolo in testa, copertina senza numero, in circa un secondo. Paged.js 0.4 non regge i selettori di Tailwind (`:is()`, `:where()`), quindi il CSS del sito è escluso dalla sua analisi (`data-pagedjs-ignore`) e le regole di impaginazione stanno in un foglio a parte. Resta un difetto: nei segnalibri del PDF i titoli dei capitoli perdono il numero. Chrome da solo resta disponibile con `--pdf-engine chrome`. `epubcheck` è nella build quando è installato e nell'immagine del toolkit.
+
 ### 4.6 Ciclo di pubblicazione
 
 Pubblicare un documento **non modifica il repository della piattaforma** (`docs-italia-platform`), che contiene solo il codice. I contenuti restano nei repository dei documenti; ciò che l'istanza pubblica finisce nel suo database e nel suo object storage, non in Git. La piattaforma non scrive mai nei repository dei documenti, tranne quando un utente salva dall'editor ospitato (5.6).
@@ -370,6 +373,13 @@ Il contenuto vive **solo** nei file del repository. SQLite è una cache: cancell
 Per il livello 3, al salvataggio vengono riscritti **solo i blocchi modificati**, usando le posizioni di origine dell'AST. Il resto del file resta identico byte per byte, e il diff mostra solo le modifiche reali. Questa è la condizione perché l'editor sia accettato da chi lavora anche a mano in Git.
 
 Il PoC ha confermato che non c'è alternativa. Rigenerando un capitolo semplice dall'AST, `myst-to-md` cambia 12 righe su 18, perde il testo alternativo delle immagini e riscrive gli apostrofi, che il parser converte in tipografici. Serve un serializzatore delle direttive che conservi le opzioni, misurato con `scripts/roundtrip.ts` del PoC.
+
+**Fatto nel monorepo** (`packages/myst/src/serialize.ts`, 12.7): su 495 blocchi tra il documento di esempio, quello del PoC e i Markdown di `eid-wallet-it-docs`, l'AST resta identico nel 100% dei casi e il testo nel 96,8%. Per arrivarci:
+
+- la tipografia automatica del parser è disattivata (il testo resta come è scritto);
+- direttive e ruoli conservano la forma originale (`origin`);
+- le posizioni delle note a piè di pagina, che `myst-parser` sbaglia, si ricavano dal sorgente;
+- un blocco con posizioni sovrapposte non si può riscrivere.
 
 Per l'RST non è previsto un editor visuale: il costo di una serializzazione RST affidabile non è giustificato quando esiste la strada della conversione a MyST.
 
@@ -728,7 +738,7 @@ Va previsto dall'inizio, non aggiunto alla fine:
 |---|---|
 | 0. Fotografia | Download dei file, copia dell'HTML, elenco URL, ordine e progetti in evidenza (2.1). Su cloud, fuori da questo lavoro |
 | 1. Specifica e AST | Schema di `toc.json`, pacchetto, `document_settings.yml` esteso; lettura MyST con plugin Docs Italia; estensione Sphinx con conversione doctree → AST; **banco di prova** che costruisce tutte le 205 versioni e produce un rapporto di compatibilità |
-| 2. Toolkit | CLI (`check`, `build`, `dev`), renderer, PDF ed EPUB, frammentazione (`chunks.jsonl`), immagine Docker, GitHub Action riusabile. **PoC fatto per il formato MyST** (sezione 12); mancano immagine Docker, GitHub Action, Paged.js ed `epubcheck` |
+| 2. Toolkit | CLI (`check`, `build`, `dev`), renderer, PDF ed EPUB, frammentazione (`chunks.jsonl`), immagine Docker, GitHub Action riusabile. **Nel monorepo** (12.7): toolkit MyST, conversione RST, Paged.js ed `epubcheck` fatti; immagine Docker e GitHub Action scritte, da provare |
 | 3. Server | Modello dati, importazione, GitHub App, coda delle build, ricezione dei pacchetti con OIDC, autenticazione e ruoli, anteprime delle PR |
 | 4. Sito | Astro, URL compatibili, versioni archiviate, ricerca, download, pagine istituzionali; dashboard di amministrazione con magic link (6.6), necessaria già al passaggio per gestire le versioni |
 | 5. Passaggio | Ripopolamento completo, revisione con alcuni editori, confronto visivo con il sito attuale, cambio del DNS, guida "come pubblicare" aggiornata |
@@ -783,7 +793,7 @@ Da prendere:
 
 1. **Licenza** del codice e della specifica (ad esempio AGPL-3.0 o EUPL-1.2).
 2. **Commenti del forum** (`forum_italia`, `discourse`, 270 occorrenze): mantenere, sostituire con un link, o rimuovere.
-3. **PDF**: Chromium con CSS di stampa, o LaTeX come oggi. Il PoC mostra che Chromium da solo è adatto all'anteprima e ai documenti semplici; per l'indice con i numeri di pagina serve Paged.js. Prossima prova: Paged.js contro LaTeX sui documenti con più `only:: format_latex`.
+3. **PDF**: Paged.js è il motore predefinito nel monorepo e risolve i limiti di Chrome (4.5). Resta da decidere se basta, confrontandolo con il LaTeX attuale sui documenti con più `only:: format_latex`.
 4. **Dove gira l'istanza** di Docs Italia e chi gestisce la GitHub App sulle organizzazioni.
 5. **Redirect personalizzati**: verificare se ne esistono nel database attuale.
 6. **Modello di embedding e dove calcolarlo**: modello aperto su infrastruttura propria (raccomandato) o fornitore esterno. Si decide con le misure della 7.5, ma va deciso subito se è disponibile una GPU.
@@ -865,12 +875,38 @@ Già riportato nelle sezioni indicate:
 - Paged.js per il PDF; validazione EPUB con `epubcheck`.
 - Editor visuale (fase 8); più lingue e più versioni nello stesso repository.
 
+### 12.7 Avanzamento nel monorepo
+
+Dopo il PoC il codice è passato nei pacchetti di `docs-italia-platform` e gira con Bun. Lo stato, passo per passo:
+
+| Passo | Stato | Dove |
+|---|---|---|
+| Codice del PoC nei pacchetti | Fatto. I tipi dell'AST sono in `schema`; `myst`, `render`, `export`, `retrieval`, `forge`, `toolkit` ed `editor` dipendono solo da ciò che dichiarano (installazione isolata di Bun). 47 test | `packages/*`, `apps/editor` |
+| Documento di esempio | Fatto, con contenuto proprio: il repository originale del documento del PoC non dichiara una licenza | `examples/esempio-myst` |
+| Serializzatore a blocchi | Fatto (5.3) | `packages/myst/src/serialize.ts`, `bun run fidelity` |
+| Paged.js per il PDF | Fatto, motore predefinito (4.5) | `packages/export`, `packages/render/src/paged.css` |
+| RST con Sphinx e conversione in MyST | Prima versione: builder `docsitalia-ast` ed estensione `docs_italia_sphinx`, comando `docs-italia convert`. Su `agid/lg-accessibilita-docs`: 11 pagine, nessun nodo perso, controllo senza problemi, 96,6% delle parole dell'uscita testuale di Sphinx (la differenza sono i numeri delle sezioni) | `packages/sphinx`, `packages/toolkit/src/convert.ts` |
+| Immagine Docker, compose, GitHub Action | Scritti, **non ancora provati**: il demone Docker non era attivo, e l'Action va provata su un repository vero | `deploy/toolkit/Dockerfile`, `examples/esempio-myst/compose.yml`, `.github/workflows/documento.yml`, `deploy/github/` |
+| Specifica | Bozza 0, scritta in MyST e costruita con il toolkit | `spec/` |
+| Segnalazioni a Italia Tailwind UI | Testi pronti, da aprire a mano | `docs/segnalazioni/italia-tailwind-ui.md` |
+
+Criticità emerse dopo il PoC:
+
+- `myst-parser` imposta `spread` degli elenchi sempre allo stesso modo: elenchi compatti e distanziati si distinguono solo dal sorgente (righe vuote tra le voci).
+- `myst-parser` assegna alle definizioni delle note la posizione del paragrafo che le cita.
+- `{numref}` senza numerazione delle figure mostrava la didascalia al posto di "Figura 2.1": ora figure e tabelle sono sempre numerate per capitolo, e `numfig` decide se il numero compare.
+- Nell'RST convertito il testo conserva gli a capo del sorgente: il serializzatore protegge l'inizio di ogni riga, non solo della prima.
+- Sphinx rappresenta `:download:` con una sottoclasse di `reference`: va riconosciuto prima dei link.
+- Paged.js 0.4 applica le regole a frammenti del documento senza `body`: i selettori di `paged.css` non devono partire da `body` o da sue classi.
+- Con Bun, `italia.css` deve passare dal collegamento locale del pacchetto (`node_modules/@italia-tailwind/css`), perché il percorso reale contiene un hash che cambia a ogni versione.
+
 ## 13. Prossimi passi
 
-1. Convertire in MyST due documenti più grandi e diversi: uno con PlantUML e glossario, uno multilingua (ad esempio `italia/spid-cie-oidc-docs`). Servono a mettere alla prova le estensioni di Docs Italia.
-2. Prova di Paged.js per il PDF, confrontata con il LaTeX attuale sui documenti con più `only:: format_latex`.
-3. Immagine Docker del toolkit con Chromium ed `epubcheck`, `compose.yml` dello studio e GitHub Action riusabile.
-4. Serializzatore a blocchi per le direttive MyST, misurato con la prova di andata e ritorno.
-5. Prova tecnica sull'RST: `agid/lg-accessibilita-docs` (senza `conf.py`) letto da Sphinx e convertito in AST, confrontato con la sua versione MyST.
-6. Segnalare a Italia Tailwind UI i punti di 12.5.
-7. Prima bozza della specifica del formato e del pacchetto, partendo dagli schemi del PoC, da far leggere a due o tre editori.
+1. Costruire l'immagine Docker del toolkit (serve il demone Docker attivo) e provarla con `compose.yml` e con `epubcheck`.
+2. Provare la GitHub Action su un repository di prova.
+3. Convertire con `docs-italia convert` documenti più complessi: uno con tabelle a griglia e celle unite, PlantUML e glossario, e uno multilingua (`italia/spid-cie-oidc-docs`). Misurare cosa resta nel rapporto.
+4. Banco di prova (fase 1): convertire tutte le versioni dell'inventario e produrre un rapporto di compatibilità.
+5. Confronto del PDF di Paged.js con il LaTeX attuale sui documenti con più `only:: format_latex`; correggere i segnalibri dei capitoli.
+6. Editor visuale (fase 8) sopra `sourceBlocks` e `replaceBlocks`.
+7. Aprire le segnalazioni a Italia Tailwind UI.
+8. Iniziare il server (fase 3): modello dati, importazione da `italia-conf`, ricezione dei pacchetti.

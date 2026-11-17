@@ -12,7 +12,19 @@ Usa gli stessi repository GitHub e gli stessi file di configurazione di oggi (`i
 - ricerca semantica e un server MCP per gli assistenti;
 - la possibilità per altre PA di installare la propria istanza.
 
-> **Stato: ossatura.** Le cartelle, i pacchetti e le loro dipendenze ci sono, ma il codice no. Il punto di partenza è il PoC del toolkit, che costruisce già un documento MyST in sito, PDF, EPUB e pacchetto, e ha una prima bozza dell'editor.
+> **Stato.** Il toolkit funziona: costruisce un documento MyST in sito, PDF (Paged.js), EPUB e pacchetto, converte un documento RST in MyST, ha l'anteprima e una prima versione dello studio. Server, sito, server MCP e dashboard sono ancora ossatura.
+
+## Provare
+
+```sh
+bun install
+bun run docs-italia check --dir examples/esempio-myst
+bun run docs-italia build --dir examples/esempio-myst     # → examples/esempio-myst/dist/
+bun run docs-italia dev --dir examples/esempio-myst       # anteprima su http://127.0.0.1:4321
+(cd apps/editor && bun run build) && bun run docs-italia studio --dir examples/esempio-myst   # http://127.0.0.1:4322
+```
+
+La specifica in `spec/` è anch'essa un documento MyST: `bun run docs-italia build --dir spec`.
 
 ## Come funziona
 
@@ -51,7 +63,9 @@ apps/                applicazioni
   site/              sito pubblico
   editor/            studio locale ed editor ospitato
 deploy/              Docker Compose, Helm, immagine del toolkit
-spec/                specifica pubblica del formato e JSON Schema
+spec/                specifica pubblica del formato e JSON Schema (documento MyST)
+examples/            documenti di esempio per provare il toolkit
+docs/                note di progetto (segnalazioni ad altri progetti)
 ```
 
 ## Pacchetti
@@ -90,9 +104,10 @@ Si installa nei repository dei documenti e si usa in locale, in CI e nel worker 
 | `docs-italia dev` | Anteprima locale con ricaricamento automatico e problemi mostrati sopra la pagina |
 | `docs-italia studio` | Editor locale nel browser, anche tramite `docker compose up` nel repository del documento |
 | `docs-italia publish` | Invia il pacchetto a un'istanza |
+| `docs-italia convert <rst> --out <cartella>` | Converte un documento RST in MyST: Sphinx legge l'RST senza eseguire il `conf.py`, ogni pagina viene riscritta con il serializzatore a blocchi; rapporto in `conversione.json` |
 | `docs-italia mcp` | Server MCP locale sul documento in lavorazione |
 
-Nell'ossatura la CLI elenca i comandi ma non li esegue ancora.
+Funzionano `init`, `check`, `build`, `dev`, `studio` e `convert`; `publish` e `mcp` arriveranno con il server.
 
 ### Tecnologie
 
@@ -103,9 +118,9 @@ Nell'ossatura la CLI elenca i comandi ma non li esegue ancora.
 | Test | `bun test` con `bun:test` | File `*.test.ts` in `packages/<nome>/test/` e `apps/<nome>/test/`; `tests/` alla radice controlla la struttura del monorepo |
 | Controllo dei tipi | TypeScript 5.9 (`bun run typecheck`) | Solo controllo: l'esecuzione è di Bun |
 | Formato dei documenti | `myst-parser`, `myst-directives`, `myst-roles` | Più le estensioni di Docs Italia |
-| RST | Sphinx 8 (Python 3.12+) | Solo in `packages/sphinx`; il `conf.py` dei repository non viene eseguito |
+| RST | Sphinx 9 (Python 3.12+) | Solo in `packages/sphinx`; il `conf.py` dei repository non viene eseguito |
 | Interfaccia | Tailwind CSS 4, daisyUI 5, [Italia Tailwind UI](https://github.com/italia/italia-tailwind-ui) | Solo il tema `italia-original`, per ora |
-| PDF | Chromium headless, poi Paged.js | Nell'immagine del toolkit |
+| PDF | Chromium headless con Paged.js 0.4 (indice con numeri di pagina, margini con contenuto); Chrome da solo con `--pdf-engine chrome` | Paged.js non regge i selettori di Tailwind: il CSS del sito è escluso dalla sua analisi e le regole di impaginazione stanno in `paged.css` |
 | Validazione EPUB | `epubcheck` | In CI |
 | Database | PostgreSQL con pgvector e pg-boss | Metadati, coda, ricerca testuale e vettoriale |
 | File | Object storage S3-compatibile, MinIO per le installazioni autonome | Pacchetti immutabili |
