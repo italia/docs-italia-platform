@@ -21,6 +21,7 @@ import { serveDashboard } from '../src/dashboard.ts';
 import { connect, migrate, type Db } from '../src/db.ts';
 import { oidcVerifier } from '../src/oidc.ts';
 import { FsStorage } from '../src/storage.ts';
+import { seedFromSnapshot } from '../src/seed.ts';
 import { syncPublisher } from '../src/sync.ts';
 import { workOnce } from '../src/worker.ts';
 
@@ -442,6 +443,14 @@ describe.skipIf(!available)('server', () => {
       expect((await h.request('/dashboard/%2e%2e/%2e%2e/package.json')).status).toBe(404); // normalizzato dal parser degli URL
       expect((await h.request('/dashboard/..%2F..%2Fpackage.json')).status).toBe(400); // "/" codificato: lo ferma il controllo
     });
+  });
+
+  test('lingua dall\'inventario: resta anche dopo una nuova sincronizzazione, se document_settings.yml non la dichiara', async () => {
+    await seedFromSnapshot(sql, [{ slug: 'documento-rst', repo: 'https://github.com/esempio/documento-rst.git', default_version: 'bozza', language: 'en', active_versions: [] }]);
+    await syncPublisher(sql, config.forge, 'esempio');
+    const [d] = await sql`select language from document where repo_name = 'documento-rst'`;
+    expect(d.language).toBe('en');
+    await sql`update document set language = 'it' where repo_name = 'documento-rst'`;
   });
 
   test('documento tolto da italia-conf: disattivato', async () => {

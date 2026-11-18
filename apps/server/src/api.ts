@@ -16,6 +16,7 @@ import { enqueue } from './jobs.ts';
 import type { OidcVerifier } from './oidc.ts';
 import { contentType, publishBundle, type BundleFiles } from './publish.ts';
 import { search } from './search.ts';
+import { isSafePath } from './storage.ts';
 
 export interface AppDeps {
   sql: Db;
@@ -124,9 +125,14 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     else [v] = await sql`select id, slug, published_build_id from version where document_id = ${d.id} and slug = ${alias === 'draft' ? 'bozza' : slug} and active`;
     if (!v?.published_build_id) return c.json({ error: 'versione non pubblicata' }, 404);
     const [b] = await sql`select bundle_prefix from build where id = ${v.published_build_id}`;
-    const path = c.req.path.split(`/${c.req.param('lang')}/${slug}/`)[1] ?? '';
-    if (!path || path.includes('..')) return c.json({ error: 'percorso non valido' }, 400);
-    const data = await config.storage.get(`${b.bundle_prefix}/${decodeURIComponent(path)}`);
+    const raw = c.req.path.split(`/${c.req.param('lang')}/${slug}/`)[1] ?? '';
+    let path = '';
+    try {
+      path = decodeURIComponent(raw);
+    } catch {}
+    // il controllo va sul percorso decodificato: "%2e%2e" è ".."
+    if (!isSafePath(path)) return c.json({ error: 'percorso non valido' }, 400);
+    const data = await config.storage.get(`${b.bundle_prefix}/${path}`);
     if (!data) return c.json({ error: 'file non trovato' }, 404);
     return new Response(data, { headers: { 'content-type': contentType(path), 'cache-control': 'public, max-age=300' } });
   });

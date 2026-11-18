@@ -13,8 +13,18 @@ export interface Storage {
   remove(prefix: string): Promise<void>;
 }
 
+/**
+ * Percorso relativo sicuro: niente "/" iniziale, "\\", caratteri nulli né
+ * segmenti "." o ".." (che risalgono di cartella) o vuoti. Due punti dentro un
+ * nome sono ammessi: "modello-a-valorizzazione-culturale..json" è un file vero.
+ */
+export function isSafePath(path: string): boolean {
+  if (!path || path.startsWith('/') || path.includes('\\') || path.includes('\0')) return false;
+  return path.split('/').every((seg) => seg !== '' && seg !== '.' && seg !== '..');
+}
+
 function safeKey(key: string): string {
-  if (key.includes('..') || key.startsWith('/')) throw new Error(`chiave non valida: ${key}`);
+  if (!isSafePath(key)) throw new Error(`chiave non valida: ${key}`);
   return key;
 }
 

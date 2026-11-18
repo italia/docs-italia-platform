@@ -159,7 +159,7 @@ const title = single ? `${info.name} — pagina singola` : current === root ? in
       <p class="di-single-link"><a href={`${info.repository}/tree/${encodeURIComponent(version.ref ?? version.slug)}`}><Fragment set:html={ic('it-github')} /><span>Sorgente su GitHub</span></a></p>
     </nav>
     <main id="main" class="di-main">
-      <article class="di-prose" set:html={content} />
+      <article class="di-prose" lang={info.language} set:html={content} />
       {!single && (
         <nav class="di-pager" aria-label="Pagine precedente e successiva">
           {prev ? <a class="di-pager-prev" href={href(prev.slug)} rel="prev"><Fragment set:html={ic('it-arrow-left')} /><span><small>Precedente</small>{label(prev)}</span></a> : <span />}

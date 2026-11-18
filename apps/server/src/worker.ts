@@ -35,7 +35,7 @@ function readDir(dir: string): BundleFiles {
 export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
   const { sql, config } = ctx;
   const [v] = await sql`
-    select v.id, v.ref, v.slug, d.id as document_id, d.repo_owner, d.repo_name, d.format,
+    select v.id, v.ref, v.slug, d.id as document_id, d.repo_owner, d.repo_name, d.format, d.language as doc_language,
       d.slug as doc_slug, d.language, pr.slug as project_slug, p.slug as publisher_slug
     from version v join document d on d.id = v.document_id
       left join project pr on pr.id = d.project_id left join publisher p on p.id = pr.publisher_id
@@ -66,6 +66,7 @@ export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
       html: config.buildPdf,
       pdf: config.buildPdf,
       epub: true,
+      language: v.doc_language,
       // gli allegati linkati dal PDF e dall'EPUB: i file della versione sul sito
       filesUrl: v.project_slug && config.siteUrl
         ? `${config.siteUrl.replace(/\/$/, '')}/${v.publisher_slug}/${v.project_slug}/${v.doc_slug}/${v.language}/${v.slug}/_assets/`

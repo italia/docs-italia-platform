@@ -86,7 +86,9 @@ export async function syncPublisher(sql: Db, forge: Forge, owner: string, opts: 
         name: d.name,
         description: d.description.trim(),
         tags: d.tags.map((t) => t.trim().toLowerCase()),
-        language: d.language ?? d.languages[0] ?? 'it',
+        // solo se dichiarata: altrimenti resta quella che c'è (per i documenti importati,
+        // quella dell'inventario, che la piattaforma attuale teneva fuori dal repository)
+        language: d.language ?? (/^\s+languages\s*:/m.test(text ?? "") ? d.languages[0] : undefined),
         format: d.format,
         settings: d as object,
         draftBranch,
@@ -137,7 +139,7 @@ async function upsertDocument(sql: Db, d: DocInput): Promise<{ id: number }> {
       name = case when excluded.sync_error is null then excluded.name else document.name end,
       description = case when excluded.sync_error is null then excluded.description else document.description end,
       tags = case when excluded.sync_error is null then excluded.tags else document.tags end,
-      language = case when excluded.sync_error is null then excluded.language else document.language end,
+      language = case when excluded.sync_error is null and ${d.language ?? null}::text is not null then excluded.language else document.language end,
       format = case when excluded.sync_error is null then excluded.format else document.format end,
       settings = case when excluded.sync_error is null then excluded.settings else document.settings end,
       draft_branch = coalesce(excluded.draft_branch, document.draft_branch)

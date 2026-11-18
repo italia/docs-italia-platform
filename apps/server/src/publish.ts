@@ -9,7 +9,7 @@
 import { createHash } from 'node:crypto';
 import { BUNDLE_SCHEMA_VERSION, type Manifest, type SearchRecord } from '@docs-italia/schema';
 import type { Db } from './db.ts';
-import type { Storage } from './storage.ts';
+import { isSafePath, type Storage } from './storage.ts';
 
 export type BundleFiles = Map<string, Uint8Array>;
 
@@ -48,7 +48,7 @@ export function verifyBundle(files: BundleFiles): { manifest?: Manifest; errors:
     else if (createHash('sha256').update(data).digest('hex') !== f.sha256) errors.push(`hash non corrispondente: ${f.path}`);
   }
   for (const p of files.keys()) if (p !== 'manifest.json' && !listed.has(p)) errors.push(`file non elencato nel manifest: ${p}`);
-  for (const p of files.keys()) if (p.includes('..') || p.startsWith('/')) errors.push(`percorso non valido: ${p}`);
+  for (const p of files.keys()) if (!isSafePath(p)) errors.push(`percorso non valido: ${p}`);
   return { manifest, errors };
 }
 

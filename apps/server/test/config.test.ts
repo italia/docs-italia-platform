@@ -13,3 +13,10 @@ test('magic link: email normalizzate; senza SMTP le email vanno nel log solo su 
   expect(smtp.mailer?.describe).not.toContain('segreto');
   expect(configFromEnv({ MAGIC_LINK_TTL_MINUTES: 'abc', FORGE_LOCAL_ROOT: '/tmp' }).magicLinkTtlMinutes).toBe(15);
 });
+
+test('percorsi dei pacchetti: due punti in un nome sono ammessi, i segmenti ".." no', async () => {
+  const { isSafePath } = await import('../src/storage.ts');
+  expect(isSafePath('pages/processo-2---modello-a-valorizzazione-culturale..json')).toBe(true);
+  expect(isSafePath('assets/img/a.png')).toBe(true);
+  for (const bad of ['', '/etc/passwd', '../x', 'a/../b', 'a/./b', 'a//b', 'a\\b', '..', 'a/..']) expect(isSafePath(bad)).toBe(false);
+});

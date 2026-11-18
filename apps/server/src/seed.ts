@@ -14,6 +14,8 @@ interface SnapshotDoc {
   slug: string;
   repo: string;
   default_version: string;
+  /** lingua del progetto in Read the Docs */
+  language?: string;
   active_versions: Array<{ slug: string; identifier: string; type: 'branch' | 'tag' }>;
 }
 
@@ -55,7 +57,12 @@ export async function seedFromSnapshot(sql: Db, snapshot: SnapshotDoc[], opts: {
     }
     // "stabile" come predefinita: vale la regola del repository (ultima release)
     const def = s.default_version === 'stabile' || s.default_version === 'stable' ? null : s.default_version;
-    await sql`update document set default_version = ${def} where id = ${doc.id}`;
+    // la lingua dell'inventario (impostata in Read the Docs, non nel repository),
+    // se document_settings.yml non ne dichiara una
+    await sql`
+      update document set default_version = ${def},
+        language = case when settings->>'language' is null then coalesce(${s.language ?? null}, language) else language end
+      where id = ${doc.id}`;
   }
   return r;
 }
