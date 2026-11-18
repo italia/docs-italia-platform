@@ -153,6 +153,38 @@ function later(group: string, name: string, detail: string): Check {
   return { group, name, status: 'non configurato', detail };
 }
 
+/** Accesso con magic link: elenco delle email e invio. */
+async function email(sql: Db, config: Config): Promise<Check[]> {
+  const group = 'Email e accesso';
+  const n = config.adminEmails?.length ?? 0;
+  const out: Check[] = [
+    {
+      group,
+      name: 'Amministratori',
+      status: n ? 'ok' : config.dashboardOpen ? 'avviso' : 'errore',
+      detail: n ? `${n} email in DASHBOARD_ADMIN_EMAILS` : 'DASHBOARD_ADMIN_EMAILS vuoto: nessuno può entrare con il magic link',
+    },
+  ];
+  if (!config.mailer) {
+    out.push({ group, name: 'SMTP', status: config.dashboardOpen ? 'avviso' : 'errore', detail: 'SMTP_URL mancante: i magic link non si possono inviare' });
+  } else if (config.mailer.kind === 'log') {
+    out.push({ group, name: 'SMTP', status: 'avviso', detail: config.mailer.describe });
+  } else {
+    try {
+      await config.mailer.verify();
+      out.push({ group, name: 'SMTP', status: 'ok', detail: `connessione e autenticazione riuscite: ${config.mailer.describe}` });
+    } catch (e) {
+      out.push({ group, name: 'SMTP', status: 'errore', detail: `${config.mailer.describe}: ${(e as Error).message}` });
+    }
+  }
+  const [r] = await sql`
+    select count(*) filter (where ended_at is null and expires_at > now())::int as active,
+      (select count(*)::int from admin_login_request where created_at > now() - interval '1 day') as requests
+    from admin_session`;
+  out.push({ group, name: 'Sessioni', status: 'ok', detail: `${r.active} sessioni aperte; ${r.requests} richieste di link nelle ultime 24 ore` });
+  return out;
+}
+
 export async function runChecks(sql: Db, config: Config): Promise<ChecksResult> {
   const pubs = await sql`select slug from publisher where active`;
   const owners = [...new Set([...pubs.map((p: any) => p.slug as string), ...config.organizations])].sort();
@@ -162,13 +194,13 @@ export async function runChecks(sql: Db, config: Config): Promise<ChecksResult> 
     ['Coda e worker', () => queue(sql, config)],
     ['Repository', () => repositories(sql, config, owners)],
     ['Webhook', () => webhooks(sql, config, owners)],
+    ['Email e accesso', () => email(sql, config)],
   ];
   const results = await Promise.all(
     groups.map(([group, f]) => within(f()).catch((e): Check[] => [{ group, name: 'Controllo', status: 'errore', detail: (e as Error).message }])),
   );
   const checks = results.flat();
   checks.push(
-    later('Email', 'SMTP', 'non ancora usato: arriverà con l\'accesso tramite magic link'),
     later('Ricerca semantica', 'Servizio di embedding', 'fase 6'),
     later('Server MCP', 'Ricerca di prova', 'fase 6'),
   );

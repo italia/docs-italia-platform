@@ -26,6 +26,8 @@ bun run docs-italia dev --dir examples/esempio-myst       # anteprima su http://
 # istanza: server con la dashboard aperta (solo in locale)
 (cd apps/dashboard && bun run build)
 DASHBOARD_OPEN=1 FORGE_LOCAL_ROOT=<cartella con le organizzazioni> bun apps/server/src/main.ts   # http://127.0.0.1:8080/dashboard/
+# oppure con il magic link: senza SMTP_URL, in locale, il link si legge nel log del server
+DASHBOARD_ADMIN_EMAILS=nome@esempio.it FORGE_LOCAL_ROOT=… bun apps/server/src/main.ts
 ```
 
 La specifica in `spec/` è anch'essa un documento MyST: `bun run docs-italia build --dir spec`.

@@ -1,8 +1,9 @@
 /**
  * API di amministrazione: dashboard (todo.md, 6.6) e script.
  *
- * Accesso: con DASHBOARD_OPEN=1 (solo su indirizzo locale, finché non c'è il
- * magic link) è aperta; altrimenti serve "Authorization: Bearer <ADMIN_TOKEN>".
+ * Accesso: sessione aperta con il magic link (auth.ts), oppure
+ * "Authorization: Bearer <ADMIN_TOKEN>" per gli script. Con DASHBOARD_OPEN=1
+ * (solo su indirizzo locale) è aperta.
  *
  * Gli interventi sulle versioni sono operazioni sul database, mai scritture nei
  * repository: si registrano in version_override, prevalgono sugli eventi del
@@ -11,13 +12,14 @@
  */
 import { timingSafeEqual } from 'node:crypto';
 import { Hono } from 'hono';
+import { clientIp, closeSession, magicLinkEnabled, openSession, requestLink, sessionEmail, setSessionCookie } from './auth.ts';
 import { runChecks, type ChecksResult } from './checks.ts';
 import type { Config } from './config.ts';
 import type { Db } from './db.ts';
 import { enqueue } from './jobs.ts';
 import { seedFromSnapshot } from './seed.ts';
 
-type Env = { Variables: { actor: string } };
+type Env = { Variables: { actor: string; via: 'open' | 'token' | 'session' } };
 
 export const OPEN_ACTOR = 'dashboard (accesso aperto)';
 const ACTIONS = ['withdraw', 'restore', 'promote', 'unpromote'] as const;
@@ -30,23 +32,65 @@ export function adminApi({ sql, config }: { sql: Db; config: Config }) {
   const app = new Hono<Env>();
   let lastChecks: ChecksResult | null = null;
 
-  app.use('*', async (c, next) => {
-    if (config.dashboardOpen) {
-      c.set('actor', OPEN_ACTOR);
-      return next();
-    }
-    const token = c.req.header('authorization')?.replace(/^Bearer /, '');
-    if (!config.adminToken || !token || token.length !== config.adminToken.length || !timingSafeEqual(Buffer.from(token), Buffer.from(config.adminToken))) {
-      return c.json({ error: 'non autorizzato' }, 401);
-    }
-    c.set('actor', 'admin-token');
-    return next();
-  });
-
   const audit = (actor: string, action: string, target: string | null, detail: object = {}) =>
     sql`insert into audit_log (actor, action, target, detail) values (${actor}, ${action}, ${target}, ${detail})`;
 
-  app.get('/whoami', (c) => c.json({ actor: c.get('actor'), open: !!config.dashboardOpen, siteUrl: config.siteUrl, forge: config.forge.kind }));
+  // ---------------------------------------------------------------- accesso (senza autenticazione)
+  // registrate prima del controllo di accesso: rispondono e non lo attraversano
+
+  app.get('/auth/status', (c) => c.json({ open: !!config.dashboardOpen, magicLink: magicLinkEnabled(config) }));
+
+  app.post('/auth/request', async (c) => {
+    const body = await c.req.json().catch(() => null);
+    const email = typeof body?.email === 'string' ? body.email : '';
+    if (!/^[^\s@]+@[^\s@]+$/.test(email.trim()) || email.length > 254) return c.json({ error: 'indirizzo email non valido' }, 400);
+    const r = await requestLink(sql, config, { email, ip: clientIp(c, config) });
+    if (r.status === 'disabled') return c.json({ error: 'accesso con email non configurato su questa istanza' }, 503);
+    if (r.status === 'limited') return c.json({ error: 'troppe richieste: riprova tra qualche minuto' }, 429);
+    // stessa risposta per email autorizzate e non
+    return c.json({ ok: true, message: "Se l'indirizzo è autorizzato, riceverai un'email con il link per entrare." });
+  });
+
+  app.post('/auth/session', async (c) => {
+    const body = await c.req.json().catch(() => null);
+    const s = await openSession(sql, config, { token: typeof body?.token === 'string' ? body.token : '', ip: clientIp(c, config) });
+    if (!s) return c.json({ error: 'link non valido: è già stato usato, è scaduto o l’indirizzo non è più autorizzato' }, 401);
+    setSessionCookie(c, config, s.token);
+    await audit(s.email, 'login', null, {});
+    return c.json({ ok: true, email: s.email });
+  });
+
+  app.post('/auth/logout', async (c) => {
+    await closeSession(sql, c);
+    return c.json({ ok: true });
+  });
+
+  // ---------------------------------------------------------------- controllo di accesso
+
+  app.use('*', async (c, next) => {
+    if (config.dashboardOpen) {
+      c.set('actor', OPEN_ACTOR);
+      c.set('via', 'open');
+      return next();
+    }
+    const token = c.req.header('authorization')?.replace(/^Bearer /, '');
+    if (token) {
+      if (!config.adminToken || token.length !== config.adminToken.length || !timingSafeEqual(Buffer.from(token), Buffer.from(config.adminToken))) {
+        return c.json({ error: 'non autorizzato' }, 401);
+      }
+      c.set('actor', 'admin-token');
+      c.set('via', 'token');
+      return next();
+    }
+    const email = await sessionEmail(sql, config, c);
+    if (!email) return c.json({ error: 'non autorizzato' }, 401);
+    c.set('actor', email);
+    c.set('via', 'session');
+    return next();
+  });
+
+
+  app.get('/whoami', (c) => c.json({ actor: c.get('actor'), via: c.get('via'), open: !!config.dashboardOpen, siteUrl: config.siteUrl, forge: config.forge.kind }));
 
   // ------------------------------------------------------------------ visione d'insieme
   app.get('/overview', async (c) => {

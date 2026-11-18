@@ -264,6 +264,88 @@ describe.skipIf(!available)('server', () => {
       expect(() => checkDashboardOpen({ dashboardOpen: true, host: '127.0.0.1' })).not.toThrow();
     });
 
+    describe('magic link', () => {
+      const sent: Array<{ to: string; text: string }> = [];
+      const mailer = { kind: 'smtp' as const, describe: 'prova', send: async (e: { to: string; text: string }) => void sent.push(e), verify: async () => {} };
+      const cfg = () => ({ ...config, adminEmails: ['admin@example.gov.it'], mailer, dashboardUrl: 'https://admin.example.test/dashboard/' }) as Config;
+      let ml: ReturnType<typeof createApp>;
+      const post = (path: string, body: object, headers: Record<string, string> = {}) =>
+        ml.request(`/api/admin${path}`, { method: 'POST', body: JSON.stringify(body), headers: { 'content-type': 'application/json', ...headers } });
+      const linkToken = () => sent.at(-1)!.text.match(/#\/accesso\?token=([\w-]+)/)![1]!;
+      const cookieOf = (res: Response) => res.headers.get('set-cookie')!.split(';')[0]!;
+
+      beforeAll(async () => {
+        await sql`delete from admin_login_request`;
+        ml = createApp({ sql, config: cfg(), oidc: async () => ({}) as any });
+      });
+
+      test('stessa risposta per email autorizzate e non; il link arriva solo a quelle autorizzate', async () => {
+        const a = await post('/auth/request', { email: '  Admin@Example.gov.it ' });
+        const b = await post('/auth/request', { email: 'altro@example.gov.it' });
+        expect(a.status).toBe(200);
+        expect(await a.json()).toEqual(await b.json());
+        await Bun.sleep(10);
+        expect(sent.map((e) => e.to)).toEqual(['admin@example.gov.it']);
+        expect(sent[0]!.text).toContain('https://admin.example.test/dashboard/#/accesso?token=');
+        expect((await post('/auth/request', { email: 'non-email' })).status).toBe(400);
+      });
+
+      test('il link vale una volta; la sessione è in un cookie HttpOnly, Secure, SameSite=Strict', async () => {
+        const token = linkToken();
+        const [row] = await sql`select token_hash from admin_login_request where token_hash is not null order by id desc limit 1`;
+        expect(row.token_hash).not.toBe(token); // nel database solo l'hash
+        const res = await post('/auth/session', { token });
+        expect(res.status).toBe(200);
+        const set = res.headers.get('set-cookie')!;
+        expect(set).toContain('HttpOnly');
+        expect(set).toContain('Secure');
+        expect(set).toContain('SameSite=Strict');
+        expect(set).toContain('Path=/api/admin');
+        expect((await post('/auth/session', { token })).status).toBe(401);
+        const who = await (await ml.request('/api/admin/whoami', { headers: { cookie: cookieOf(res) } })).json();
+        expect(who).toMatchObject({ actor: 'admin@example.gov.it', via: 'session' });
+        const [log] = await sql`select actor, action from audit_log where action = 'login' order by id desc limit 1`;
+        expect(log.actor).toBe('admin@example.gov.it');
+      });
+
+      test('link scaduto rifiutato; email tolta dall’elenco: fuori anche con la sessione aperta', async () => {
+        await post('/auth/request', { email: 'admin@example.gov.it' });
+        await Bun.sleep(10);
+        await sql`update admin_login_request set expires_at = now() - interval '1 minute' where token_hash is not null and used_at is null`;
+        expect((await post('/auth/session', { token: linkToken() })).status).toBe(401);
+
+        await post('/auth/request', { email: 'admin@example.gov.it' });
+        await Bun.sleep(10);
+        const cookie = cookieOf(await post('/auth/session', { token: linkToken() }));
+        expect((await ml.request('/api/admin/whoami', { headers: { cookie } })).status).toBe(200);
+        const removed = createApp({ sql, config: { ...cfg(), adminEmails: ['altra@example.gov.it'] }, oidc: async () => ({}) as any });
+        expect((await removed.request('/api/admin/whoami', { headers: { cookie } })).status).toBe(401);
+      });
+
+      test('uscita: la sessione non vale più', async () => {
+        await post('/auth/request', { email: 'admin@example.gov.it' });
+        await Bun.sleep(10);
+        const cookie = cookieOf(await post('/auth/session', { token: linkToken() }));
+        expect((await post('/auth/logout', {}, { cookie })).status).toBe(200);
+        expect((await ml.request('/api/admin/whoami', { headers: { cookie } })).status).toBe(401);
+      });
+
+      test('limite di frequenza per email, uguale per autorizzate e non', async () => {
+        await sql`delete from admin_login_request`;
+        for (const email of ['admin@example.gov.it', 'altro@example.gov.it']) {
+          for (let i = 0; i < 5; i++) expect((await post('/auth/request', { email })).status).toBe(200);
+          expect((await post('/auth/request', { email })).status).toBe(429);
+        }
+      });
+
+      test('senza email o senza SMTP il magic link è spento', async () => {
+        const off = createApp({ sql, config: { ...config, adminEmails: [], mailer: undefined }, oidc: async () => ({}) as any });
+        expect(await (await off.request('/api/admin/auth/status')).json()).toEqual({ open: false, magicLink: false });
+        const res = await off.request('/api/admin/auth/request', { method: 'POST', body: JSON.stringify({ email: 'admin@example.gov.it' }), headers: { 'content-type': 'application/json' } });
+        expect(res.status).toBe(503);
+      });
+    });
+
     test('documenti e dettaglio', async () => {
       const docs = await (await call('/documents')).json();
       const d = docs.find((x: any) => x.id === docId);

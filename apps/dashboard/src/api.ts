@@ -1,9 +1,9 @@
 /**
  * Chiamate all'API di amministrazione del server (/api/admin).
  *
- * Con il server in DASHBOARD_OPEN=1 non serve nulla; altrimenti si usa il
- * token di amministrazione, tenuto solo nella sessione del browser, finché non
- * c'è l'accesso con magic link (todo.md, 6.6).
+ * Accesso (todo.md, 6.6): la sessione del magic link sta in un cookie HttpOnly
+ * che il browser manda da sé. In alternativa il token di amministrazione,
+ * tenuto solo nella scheda del browser. Con DASHBOARD_OPEN=1 non serve nulla.
  */
 import { useCallback, useEffect, useState } from 'react';
 
@@ -88,6 +88,7 @@ export interface ChecksResult {
 
 export interface Whoami {
   actor: string;
+  via: 'open' | 'token' | 'session';
   open: boolean;
   siteUrl: string;
   forge: string;

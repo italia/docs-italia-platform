@@ -55,7 +55,13 @@ bun src/main.ts                  # API + worker su http://127.0.0.1:8080
 | `STORAGE_DIR` | Storage su file system (predefinito `./.docs-italia/storage`) |
 | `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` | Object storage S3-compatibile (SeaweedFS nel compose dell'istanza) |
 | `OIDC_AUDIENCE` | Audience attesa nei token delle Actions (predefinita: `PUBLIC_URL`) |
-| `ADMIN_TOKEN` | Operazioni di amministrazione, finché non c'è la dashboard |
+| `ADMIN_TOKEN` | Operazioni di amministrazione da script (`Authorization: Bearer …`) |
+| `DASHBOARD_ADMIN_EMAILS` | Email ammesse alla dashboard con il magic link, separate da virgole |
+| `DASHBOARD_URL` | Indirizzo della dashboard nei link (predefinito `PUBLIC_URL/dashboard/`) |
+| `SMTP_URL`, `SMTP_FROM` | Invio dei magic link (`smtps://utente:password@host:465`). Senza, e solo con `HOST` locale, i link vanno nel log del server |
+| `MAGIC_LINK_TTL_MINUTES`, `ADMIN_SESSION_TTL_HOURS` | Durata del link (15) e della sessione (8) |
+| `TRUST_PROXY=1` | L'indirizzo del client da `X-Forwarded-For` (server dietro un proxy), per il limite di frequenza |
+| `DASHBOARD_OPEN=1` | Dashboard senza autenticazione: ammessa solo con `HOST` locale |
 | `BUILD_PDF=0` | Build senza PDF (sviluppo, test) |
 | `WORKER=0` | Solo API, senza worker |
 | `DOCS_ITALIA_PYTHON` | Python con Sphinx per i documenti RST |
@@ -71,7 +77,8 @@ bun src/main.ts                  # API + worker su http://127.0.0.1:8080
 | `GET /api/search?q=…&publisher=…&document=…` | Ricerca full-text in italiano sulla versione predefinita |
 | `POST /api/webhooks/github` | Webhook GitHub (firma `X-Hub-Signature-256`) |
 | `POST /api/bundles` | Pacchetto (zip) da una GitHub Action, con token OIDC; il repository deve essere in `italia-conf` |
-| `POST /api/admin/sync/:org` · `POST /api/admin/seed` · `POST /api/admin/builds` · `GET /api/admin/builds` · `GET /api/admin/jobs` | Amministrazione (`Authorization: Bearer $ADMIN_TOKEN`) |
+| `POST /api/admin/auth/request` · `POST /api/admin/auth/session` · `POST /api/admin/auth/logout` · `GET /api/admin/auth/status` | Accesso alla dashboard con magic link (richiesta del link, apertura e chiusura della sessione) |
+| `POST /api/admin/sync/:org` · `POST /api/admin/seed` · `POST /api/admin/builds` · `GET /api/admin/builds` · `GET /api/admin/jobs` | Amministrazione (sessione della dashboard o `Authorization: Bearer $ADMIN_TOKEN`) |
 
 ## Test
 
