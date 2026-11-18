@@ -17,6 +17,8 @@ Comandi:
   build             produce sito HTML, PDF, EPUB, HTML compresso e pacchetto
                     --html --pdf --epub --zip --bundle per produrne solo alcuni
                     --pdf-engine pagedjs|chrome (predefinito pagedjs)
+                    --files-url <url> indirizzo pubblico dei file del documento:
+                    nel PDF e nell'EPUB gli allegati si linkano lì (senza, diventano testo)
   dev               anteprima locale con ricaricamento automatico (--port, predefinita 4321)
   studio            editor locale (--port, predefinita 4322)
 
@@ -40,6 +42,7 @@ async function main() {
       open: { type: 'boolean' },
       'pdf-engine': { type: 'string' },
       out: { type: 'string' },
+      'files-url': { type: 'string' },
     },
   });
   const root = resolve(values.dir ?? positionals[0] ?? '.');
@@ -57,7 +60,13 @@ async function main() {
       const started = performance.now();
       const engine = values['pdf-engine'];
       if (engine && engine !== 'chrome' && engine !== 'pagedjs') throw new Error('--pdf-engine vale chrome o pagedjs');
-      const r = await build(root, { ...sel, pdfEngine: engine as 'chrome' | 'pagedjs' | undefined, log: (m) => console.log(`  ${m}`) });
+      const filesUrl = values['files-url'];
+      if (filesUrl && !/^https?:\/\//.test(filesUrl)) throw new Error('--files-url deve essere un indirizzo http o https');
+      const r = await build(root, {
+        ...sel,
+        pdfEngine: engine as 'chrome' | 'pagedjs' | undefined,
+        filesUrl: filesUrl && !filesUrl.endsWith('/') ? `${filesUrl}/` : filesUrl,
+        log: (m) => console.log(`  ${m}`) });
       console.log(`\nTempi (ms): ${Object.entries(r.timings).map(([k, v]) => `${k} ${v}`).join(' · ')} · totale ${Math.round(performance.now() - started)}`);
       if (r.problems.length) console.log(`\n${formatProblems(r.problems)}`);
       process.exitCode = r.problems.some((p) => p.level === 'errore') ? 1 : 0;

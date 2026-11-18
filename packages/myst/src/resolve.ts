@@ -65,6 +65,8 @@ const lineOf = (n: GenericNode) => n.position?.start?.line as number | undefined
 const SAFE_SCHEME = /^(https?|mailto|tel):/i;
 /** Come normalizeIdentifier di myst-common: i riferimenti arrivano già in questa forma. */
 export const labelKey = (s: string) => s.replace(/[\t\n\r ]+/g, ' ').trim().toLowerCase();
+/** Ancora di un'etichetta: un id non può contenere spazi ("nome con spazi" → "nome-con-spazi"). */
+const anchorOf = (label: string) => label.replace(/\s+/g, '-');
 
 /**
  * Sostituisce mystDirective e mystRole con i nodi che producono. Il primo nodo
@@ -223,11 +225,11 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
       }
       // la stessa etichetta può arrivare sia da :name: sia da un'etichetta (label)= prima del blocco
       const labels = [...new Set([...(n.label ? [n.label] : []), ...(pendingLabels.get(n) ?? [])].map(labelKey))];
-      if (labels.length) n.anchor = unique(labels[0]);
+      if (labels.length) n.anchor = unique(anchorOf(labels[0]!));
       for (const label of labels) register(label, { page: info.slug, anchor: n.anchor, title: toPlain(cap).trim() || label, number: n.number, kind: n.kind === 'table' ? 'table' : 'figure' }, n);
     } else if (n.type !== 'heading' && pendingLabels.has(n)) {
       const labels = [...new Set(pendingLabels.get(n)!.map(labelKey))];
-      n.anchor = unique(labels[0]!);
+      n.anchor = unique(anchorOf(labels[0]!));
       for (const label of labels) register(label, { page: info.slug, anchor: n.anchor, title: toPlain(n).trim().slice(0, 80) || label, kind: 'target' }, n);
     }
   });
@@ -247,10 +249,14 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
   };
   strip(tree);
   const order = new Map<string, number>();
+  const cited = new Map<string, number>();
   walk(tree, (n) => {
     if (n.type !== 'footnoteReference') return;
     if (!order.has(n.identifier)) order.set(n.identifier, order.size + 1);
     n.enumerator = order.get(n.identifier);
+    // quante volte la nota è già stata citata: serve a dare un id diverso a ogni citazione
+    cited.set(n.identifier, (cited.get(n.identifier) ?? 0) + 1);
+    n.refIndex = cited.get(n.identifier);
     if (!footnotes.some((f) => f.identifier === n.identifier)) problems.push({ level: 'errore', file, line: lineOf(n), code: 'footnote', message: `nota "${n.label}" senza definizione` });
   });
   for (const f of footnotes) {

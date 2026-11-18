@@ -115,3 +115,39 @@ test('celle di tabella: un paragrafo senza <p>, più blocchi tutti chiusi (XHTML
   assert.match(html, /<td><p>Occorre verificare:<\/p>/);
   assert.equal((html.match(/<p>/g) ?? []).length, (html.match(/<\/p>/g) ?? []).length);
 });
+
+test('ancora su un blocco qualunque (elenco, codice): id sul primo elemento, una volta sola', () => {
+  const list = { type: 'list', anchor: 'eidas', children: [{ type: 'listItem', children: [{ type: 'paragraph', children: [t('voce')] }] }] };
+  assert.match(renderNodes([list], ctx), /^<ul id="eidas">/);
+  assert.match(renderNodes([{ type: 'code', anchor: 'esempio', value: 'x' }], ctx), /^<pre id="esempio" class="di-code">/);
+  assert.equal((renderNodes([{ type: 'paragraph', anchor: 'p', children: [t('x')] }], ctx).match(/id=/g) ?? []).length, 1);
+});
+
+test('nota citata più volte: un id per citazione, il ritorno alla prima', () => {
+  const ref = (i: number) => ({ type: 'footnoteReference', identifier: '3', enumerator: 1, refIndex: i });
+  const html = renderNodes([{ type: 'paragraph', children: [ref(1), ref(2)] }], ctx);
+  assert.deepEqual([...html.matchAll(/id="(fnref-[^"]+)"/g)].map((m) => m[1]), ['fnref-3', 'fnref-3-2']);
+});
+
+test('allegati nel PDF e nell’EPUB: link al sito con filesUrl, altrimenti testo; le immagini restano nell’EPUB', async () => {
+  const { renderPrint, renderEpubChapter } = await import('../src/index.ts');
+  const page = {
+    slug: 'index', title: 'D', depth: 0, sections: [], footnotes: [],
+    tree: { type: 'root', children: [{ type: 'paragraph', children: [
+      { type: 'link', asset: 'allegati/All 1.pdf', children: [t('allegato')] },
+      { type: 'link', asset: 'img/schema.png', children: [t('schema')] },
+    ] }] },
+  };
+  const doc = { name: 'D', description: 'd', tags: [], language: 'it', version: { name: 'x' }, downloads: {}, pages: [page] };
+  assert.match(renderPrint(doc, { css: 'x.css', date: 'oggi' }), /<span>allegato<\/span>/);
+  const withUrl = { ...doc, filesUrl: 'https://docs.example.it/a/b/c/it/1.0/_assets/' };
+  assert.match(renderPrint(withUrl, { css: 'x.css', date: 'oggi' }), /href="https:\/\/docs\.example\.it\/a\/b\/c\/it\/1\.0\/_assets\/allegati\/All%201\.pdf"/);
+  const epub = renderEpubChapter(withUrl, page);
+  assert.match(epub, /href="https:\/\/docs\.example\.it\/.*All%201\.pdf"/);
+  assert.match(epub, /href="img\/schema\.png"/);
+});
+
+test('elenco compatto: un paragrafo con etichetta conserva l’id', () => {
+  const li = { type: 'listItem', children: [{ type: 'paragraph', anchor: 'wia-time-to-live', children: [t('Durata')] }] };
+  assert.match(renderNodes([{ type: 'list', spread: false, children: [li] }], ctx), /<li><span id="wia-time-to-live">Durata<\/span><\/li>/);
+});

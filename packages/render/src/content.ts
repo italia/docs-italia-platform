@@ -26,6 +26,11 @@ export interface RenderContext {
   idFor(page: string, anchor: string): string;
   /** URL di una risorsa (immagine, file scaricabile) relativa alla radice della sorgente */
   assetHref(path: string): string;
+  /**
+   * URL di un file linkato nel testo (allegato), se diverso da assetHref: nel PDF
+   * e nell'EPUB gli allegati non ci sono e il link va al sito. null: il link diventa testo.
+   */
+  fileHref?(path: string): string | null;
   /** quanto spostare i livelli dei titoli (pagina singola: i capitoli diventano h2) */
   headingOffset?: number;
 }
@@ -76,7 +81,22 @@ function svgIcon(name: string, cls: string): string {
   }
 }
 
+/** Nodi che emettono da soli l'id della loro ancora. */
+const OWN_ID = new Set(['paragraph', 'heading', 'container']);
+
+/**
+ * Un'etichetta (nome)= si può mettere prima di qualunque blocco (elenco,
+ * codice, citazione, avviso): l'id va sul primo elemento prodotto, altrimenti
+ * i link che la usano non portano da nessuna parte.
+ */
 export function renderNode(node: GenericNode, ctx: RenderContext): string {
+  const html = renderBlock(node, ctx);
+  if (!node.anchor || OWN_ID.has(node.type)) return html;
+  const id = ctx.idFor(ctx.page, node.anchor);
+  return html.replace(/^(\s*<[a-zA-Z][a-zA-Z0-9]*)(?=[\s>\/])(?![^>]*\sid=")/, `$1 id="${escapeAttr(id)}"`);
+}
+
+function renderBlock(node: GenericNode, ctx: RenderContext): string {
   const kids = () => renderNodes(node.children, ctx);
   switch (node.type) {
     case 'root':
@@ -131,7 +151,11 @@ export function renderNode(node: GenericNode, ctx: RenderContext): string {
       const items = (node.children ?? [])
         .map((li) => {
           const inner = (li.children ?? [])
-            .map((c) => (!node.spread && c.type === 'paragraph' ? renderNodes(c.children, ctx) : renderNode(c, ctx)))
+            .map((c) => {
+              if (node.spread || c.type !== 'paragraph') return renderNode(c, ctx);
+              // senza <p> l'ancora di un'etichetta resterebbe senza elemento
+              return c.anchor ? `<span${attrs({ id: ctx.idFor(ctx.page, c.anchor) })}>${renderNodes(c.children, ctx)}</span>` : renderNodes(c.children, ctx);
+            })
             .join('');
           return `<li>${inner}</li>\n`;
         })
@@ -166,7 +190,8 @@ export function renderNode(node: GenericNode, ctx: RenderContext): string {
     case 'footnoteReference': {
       const n = node.enumerator ?? node.label;
       const id = ctx.idFor(ctx.page, `fn-${node.identifier}`);
-      const back = ctx.idFor(ctx.page, `fnref-${node.identifier}`);
+      // la stessa nota citata più volte: ogni citazione ha il suo id, il ritorno va alla prima
+      const back = ctx.idFor(ctx.page, `fnref-${node.identifier}${node.refIndex > 1 ? `-${node.refIndex}` : ''}`);
       return `<sup class="di-fnref"><a${attrs({ id: back, href: `#${id}`, role: 'doc-noteref' })}>${escapeHtml(String(n))}</a></sup>`;
     }
     case 'footnoteDefinition':
@@ -203,7 +228,8 @@ function renderLink(node: GenericNode, ctx: RenderContext): string {
     return href === null ? `<span>${body}</span>` : `<a${attrs({ href })}>${body}</a>`;
   }
   if (node.asset) {
-    return `<a${attrs({ href: ctx.assetHref(node.asset) })}>${body}</a>`;
+    const href = ctx.fileHref ? ctx.fileHref(node.asset) : ctx.assetHref(node.asset);
+    return href === null ? `<span>${body}</span>` : `<a${attrs({ href, class: /^https?:/.test(href) ? 'di-external' : undefined })}>${body}</a>`;
   }
   // difesa ulteriore oltre al controllo in risoluzione: niente javascript:, data:, vbscript:…
   // Un indirizzo relativo (pagina, ancora, file) che la risoluzione non ha trovato
@@ -362,7 +388,8 @@ export function renderFootnotes(definitions: GenericNode[], ctx: RenderContext):
       const back = ctx.idFor(ctx.page, `fnref-${d.identifier}`);
       // su carta il ritorno al testo non serve
       const backlink = ctx.mode === 'print' ? '' : ` <a${attrs({ href: `#${back}`, role: 'doc-backlink', 'aria-label': 'Torna al testo' })}>↩</a>`;
-      return `<li${attrs({ id, role: 'doc-endnote' })}>${renderNodes(d.children, ctx).trim()}${backlink}</li>`;
+      // il ruolo doc-endnote è deprecato (DPUB-ARIA 1.1): basta la sezione doc-endnotes
+      return `<li${attrs({ id })}>${renderNodes(d.children, ctx).trim()}${backlink}</li>`;
     })
     .join('\n');
   return `<section class="di-footnotes" role="doc-endnotes" aria-label="Note"><ol>\n${items}\n</ol></section>\n`;

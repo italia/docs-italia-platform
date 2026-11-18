@@ -32,6 +32,8 @@ export interface BuildOptions {
   outDir?: string;
   /** testo del banner sopra il contenuto */
   banner?: string;
+  /** indirizzo pubblico dei file del documento, con la "/" finale: dal PDF e dall'EPUB gli allegati si linkano qui */
+  filesUrl?: string;
   /** HTML aggiunto in fondo a ogni pagina (anteprima: ricaricamento automatico) */
   bodyEnd?: string;
   minifyCss?: boolean;
@@ -132,7 +134,7 @@ export async function build(root: string, opts: BuildOptions = {}): Promise<Buil
   if (want.pdf && settingsDownloads.has('pdf')) downloads.pdf = `downloads/${slug}.pdf`;
   if (want.epub && settingsDownloads.has('epub')) downloads.epub = `downloads/${slug}.epub`;
   if (want.zip && settingsDownloads.has('html')) downloads.html = `downloads/${slug}-html.zip`;
-  const view = toDocView(doc, git, downloads, opts.banner);
+  const view = { ...toDocView(doc, git, downloads, opts.banner), filesUrl: opts.filesUrl };
 
   if (want.html) {
     await t('html', () => {

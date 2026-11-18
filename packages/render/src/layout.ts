@@ -29,6 +29,12 @@ export interface DocView {
   downloads: { pdf?: string; epub?: string; html?: string };
   /** testo del banner sopra il contenuto (es. "anteprima locale") */
   banner?: string;
+  /**
+   * Indirizzo pubblico dei file del documento sul sito, con la "/" finale
+   * (es. https://docs.italia.it/agid/…/it/1.0/_assets/). Nel PDF e nell'EPUB
+   * gli allegati linkati non ci sono: il link va qui, o senza indirizzo diventa testo.
+   */
+  filesUrl?: string;
   theme?: string;
 }
 
@@ -37,6 +43,10 @@ const THEME = 'italia-original';
 // ---------------------------------------------------------------------------
 // Percorsi
 // ---------------------------------------------------------------------------
+
+/** Link a un allegato da un documento che non lo contiene (PDF, EPUB): al sito, o testo. */
+const remoteFile = (doc: DocView) => (path: string) => (doc.filesUrl ? doc.filesUrl + encodeURI(path) : null);
+const EPUB_IMAGE = /\.(png|jpe?g|gif|svg|webp)$/i;
 
 /** Le pagine dell'indice: senza quelle nascoste, che si raggiungono solo dai link. */
 export const tocPages = (doc: DocView) => doc.pages.filter((p) => !p.hidden);
@@ -96,6 +106,7 @@ function singleContext(doc: DocView, page: PageView, mode: 'single' | 'print', p
     },
     idFor: (p, a) => anchorId(p, a),
     assetHref: (path) => path,
+    fileHref: mode === 'print' ? remoteFile(doc) : undefined,
     headingOffset: page === doc.pages[0] ? 0 : 1,
   };
 }
@@ -383,6 +394,8 @@ export function renderEpubChapter(doc: DocView, page: PageView): string {
     idFor: (_p, a) => a,
     // spazi e lettere accentate nei percorsi: nell'EPUB l'URL deve essere codificato
     assetHref: (path) => encodeURI(path),
+    // nell'EPUB ci sono solo le immagini
+    fileHref: (path) => (EPUB_IMAGE.test(path) ? encodeURI(path) : remoteFile(doc)(path)),
   };
   return `<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>

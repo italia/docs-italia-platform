@@ -35,8 +35,11 @@ function readDir(dir: string): BundleFiles {
 export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
   const { sql, config } = ctx;
   const [v] = await sql`
-    select v.id, v.ref, v.slug, d.id as document_id, d.repo_owner, d.repo_name, d.format
-    from version v join document d on d.id = v.document_id where v.id = ${versionId}`;
+    select v.id, v.ref, v.slug, d.id as document_id, d.repo_owner, d.repo_name, d.format,
+      d.slug as doc_slug, d.language, pr.slug as project_slug, p.slug as publisher_slug
+    from version v join document d on d.id = v.document_id
+      left join project pr on pr.id = d.project_id left join publisher p on p.id = pr.publisher_id
+    where v.id = ${versionId}`;
   if (!v) throw new Error(`versione ${versionId} inesistente`);
   const [b] = await sql`insert into build (document_id, version_id, ref, status, started_at) values (${v.document_id}, ${v.id}, ${v.ref}, 'running', now()) returning id`;
   const log: string[] = [];
@@ -63,6 +66,10 @@ export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
       html: config.buildPdf,
       pdf: config.buildPdf,
       epub: true,
+      // gli allegati linkati dal PDF e dall'EPUB: i file della versione sul sito
+      filesUrl: v.project_slug && config.siteUrl
+        ? `${config.siteUrl.replace(/\/$/, '')}/${v.publisher_slug}/${v.project_slug}/${v.doc_slug}/${v.language}/${v.slug}/_assets/`
+        : undefined,
       zip: config.buildPdf, // l'HTML compresso richiede il sito HTML, costruito insieme al PDF
       bundle: true,
       log: (m) => log.push(m),

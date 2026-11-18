@@ -149,3 +149,12 @@ test('una pagina sia nell\'indice sia tra le nascoste: errore', () => {
   writeFileSync(join(dir, 'toc.json'), JSON.stringify({ root: 'index.md', chapters: [{ file: 'a.md' }], hidden: ['a.md'] }));
   assert.ok(check(dir).some((p) => p.code === 'toc-duplicate'));
 });
+
+test('nome con spazi (":name: logo cie" dalla conversione RST): ancora senza spazi, i riferimenti la trovano', () => {
+  const dir = project({ 'index.md': '# Doc\n```{figure} logo.png\n:name: logo cie\n:alt: logo\n\nIl logo\n```\n\nVedi {numref}`logo cie`.\n', 'logo.png': 'x' }, []);
+  const doc = resolveDir(dir);
+  assert.deepEqual(doc.problems.filter((p) => p.level === 'errore'), []);
+  const fig = doc.pages[0].tree.children!.find((n) => n.type === 'container');
+  assert.equal(fig?.anchor, 'logo-cie');
+  assert.equal(doc.inventory['logo cie']?.anchor, 'logo-cie');
+});
