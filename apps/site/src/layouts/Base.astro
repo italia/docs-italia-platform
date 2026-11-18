@@ -6,14 +6,19 @@
  */
 import '../styles/global.css';
 import { icon, skiplinks, backToTop } from '@italia-tailwind/recipes';
+import { siteOrigin } from '../lib/api';
 
 interface Props {
   title: string;
   description?: string;
   /** testo della ricerca, da riportare nel campo */
   query?: string;
+  /** percorso canonico, se diverso da quello richiesto (es. alias "stabile" → versione vera) */
+  canonical?: string;
+  /** pagine da non indicizzare (versione ritirata, errori) */
+  noindex?: boolean;
 }
-const { title, description = 'Documentazione tecnica della Pubblica Amministrazione italiana', query = '' } = Astro.props;
+const { title, description = 'Documentazione tecnica della Pubblica Amministrazione italiana', query = '', canonical, noindex = false } = Astro.props;
 const instance = 'Docs Italia';
 const path = Astro.url.pathname;
 const nav = [
@@ -30,7 +35,7 @@ const ic = (name: string, cls = 'size-5') => icon(name as any, `${cls} shrink-0 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title === instance ? title : `${title} — ${instance}`}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(path, Astro.site ?? Astro.url).href} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={`${siteOrigin(Astro.url)}${canonical ?? path}`} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>

@@ -18,6 +18,7 @@ export const GET: APIRoute = async ({ params }) => {
   try {
     const where = await api.lookup(doc);
     const info = await api.document(where.publisher, where.project, where.document);
+    if (info.withdrawn?.some((w) => w.slug === ver)) return new Response('Versione ritirata: non è più disponibile', { status: 410 });
     const manifest = await api.file(where.publisher, where.project, where.document, info.language, ver, 'manifest.json');
     const path: string | undefined = manifest.downloads?.[format.key];
     if (!path) return new Response('Formato non disponibile per questa versione', { status: 404 });

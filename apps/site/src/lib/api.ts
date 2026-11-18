@@ -53,7 +53,16 @@ export interface DocumentInfo {
   declaredDefault: string | null;
   aliases: { stabile: string | null; bozza: string | null };
   versions: Array<{ slug: string; kind: string; ref: string; commit: string; build: number; published_at: string }>;
+  /** versioni ritirate dalla dashboard: i loro URL rispondono con la pagina "versione ritirata" (410) */
+  withdrawn?: Array<{ slug: string; at: string }>;
 }
+
+export interface SitemapData {
+  documents: Array<{ publisher: string; project: string; document: string; language: string; version: string; lastmod: string; pages: string[] }>;
+}
+
+/** Indirizzo pubblico del sito, per URL canonici e sitemap (SITE_URL; altrimenti quello della richiesta). */
+export const siteOrigin = (url: URL) => (process.env.SITE_URL ?? url.origin).replace(/\/$/, '');
 
 export const api = {
   publishers: (): Promise<Publisher[]> => get('/api/publishers', 30_000),
@@ -62,6 +71,7 @@ export const api = {
   /** file di un pacchetto pubblicato; `build` (se noto) rende la cache sicura più a lungo */
   file: (pub: string, proj: string, doc: string, lang: string, ver: string, path: string, build?: number, as: 'json' | 'bytes' = 'json') =>
     get(`${docPath(pub, proj, doc)}/${enc(lang)}/${enc(ver)}/${path.split('/').map(enc).join('/')}${build ? `?b=${build}` : ''}`, build ? 600_000 : 15_000, as),
+  sitemap: (): Promise<SitemapData> => get('/api/sitemap', 300_000),
   lookup: (doc: string): Promise<{ publisher: string; project: string; document: string }> => get(`/api/lookup/${enc(doc)}`, 60_000),
   search: (q: string, opts: { publisher?: string; document?: string } = {}) =>
     get(`/api/search?q=${enc(q)}${opts.publisher ? `&publisher=${enc(opts.publisher)}` : ''}${opts.document ? `&document=${enc(opts.document)}` : ''}&limit=30`, 10_000),

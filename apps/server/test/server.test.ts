@@ -223,6 +223,15 @@ describe.skipIf(!available)('server', () => {
     });
   });
 
+  test('sitemap: pagine della versione predefinita di ogni documento', async () => {
+    const { documents } = await (await app.request('/api/sitemap')).json();
+    const d = documents.find((x: any) => x.document === 'documento-prova');
+    expect(d).toMatchObject({ publisher: 'esempio', project: 'prova', language: 'it' });
+    expect(d.version).toBe((await (await app.request('/api/documents/esempio/prova/documento-prova')).json()).defaultVersion);
+    expect(d.pages[0]).toBe('index');
+    expect(d.pages.length).toBeGreaterThan(1);
+  });
+
   test('versione predefinita dichiarata con il nome del branch: API e ricerca usano quella versione', async () => {
     await sql`update document set default_version = 'main' where repo_name = 'documento-prova'`;
     try {
@@ -380,6 +389,9 @@ describe.skipIf(!available)('server', () => {
       const doc = await publicDoc();
       expect(doc.versions.map((v: any) => v.slug)).not.toContain('2.0');
       expect(doc.defaultVersion).toBe('1.0');
+      // il sito mostra "versione ritirata": solo slug e data, non la motivazione
+      expect(doc.withdrawn.map((w: any) => w.slug)).toEqual(['2.0']);
+      expect(JSON.stringify(doc.withdrawn)).not.toContain('per errore');
       expect((await app.request('/api/documents/esempio/prova/documento-prova/it/2.0/toc.json')).status).toBe(404);
       // un nuovo push del tag non la ripubblica
       const res = await hook('push', { ...repoPayload('documento-prova'), ref: 'refs/tags/2.0' });
@@ -388,6 +400,7 @@ describe.skipIf(!available)('server', () => {
       expect(overview.overrides.map((o: any) => o.action)).toEqual(['withdraw']);
       expect((await act(ids['2.0']!, 'restore', 'corretta')).status).toBe(200);
       expect((await publicDoc()).defaultVersion).toBe('2.0');
+      expect((await publicDoc()).withdrawn).toEqual([]);
       const log = await (await call('/audit')).json();
       expect(log.find((e: any) => e.action === 'version.withdraw')).toMatchObject({ actor: 'admin-token', target: 'esempio/documento-prova@2.0', detail: { reason: 'pubblicata per errore' } });
     });

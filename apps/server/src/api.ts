@@ -83,6 +83,12 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       from version v join build b on b.id = v.published_build_id
       where v.document_id = ${d.id} and v.active order by v.kind, v.slug`;
     const def = await defaultVersion(sql, d.id);
+    // ritirate dalla dashboard: il sito risponde con la pagina "versione ritirata".
+    // Solo slug e data: la motivazione resta nella dashboard
+    const withdrawn = await sql`
+      select v.slug, max(o.created_at) as at from version v join version_override o on o.version_id = v.id
+      where v.document_id = ${d.id} and not v.active and o.action = 'withdraw' and o.revoked_at is null
+      group by v.slug order by v.slug`;
     return c.json({
       slug: d.slug,
       name: d.name,
@@ -103,6 +109,7 @@ export function createApp({ sql, config, oidc }: AppDeps) {
           : null,
       aliases: { stabile: def?.slug ?? null, bozza: versions.some((v: any) => v.slug === 'bozza') ? 'bozza' : null },
       versions,
+      withdrawn,
     });
   });
 
@@ -132,6 +139,23 @@ export function createApp({ sql, config, oidc }: AppDeps) {
       join project pr on pr.id = d.project_id join publisher p on p.id = pr.publisher_id
       where d.slug = ${c.req.param('doc').toLowerCase()} and d.active`;
     return d ? c.json(d) : c.json({ error: 'documento non trovato' }, 404);
+  });
+
+  // pagine delle versioni predefinite, per la sitemap del sito
+  app.get('/api/sitemap', async (c) => {
+    const rows = await sql`
+      select p.slug as publisher, pr.slug as project, d.slug as document, d.language, v.slug as version, b.bundle_prefix, b.finished_at
+      from document d join project pr on pr.id = d.project_id join publisher p on p.id = pr.publisher_id
+      join version v on v.id = default_version_id(d.id) join build b on b.id = v.published_build_id
+      where d.active and pr.active and p.active order by p.slug, pr.slug, d.slug`;
+    const documents = await Promise.all(
+      rows.map(async ({ bundle_prefix, finished_at, ...r }: any) => {
+        const data = await config.storage.get(`${bundle_prefix}/toc.json`).catch(() => null);
+        const pages: Array<{ slug: string }> = data ? JSON.parse(new TextDecoder().decode(data)).pages ?? [] : [];
+        return { ...r, lastmod: finished_at, pages: pages.map((pg) => pg.slug) };
+      }),
+    );
+    return c.json({ documents });
   });
 
   app.get('/api/search', async (c) =>

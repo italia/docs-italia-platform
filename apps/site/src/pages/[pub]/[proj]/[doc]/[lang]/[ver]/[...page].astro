@@ -25,7 +25,15 @@ if (!info || lang !== info.language) return notFound();
 const ALIAS: Record<string, keyof typeof info.aliases> = { stabile: 'stabile', stable: 'stabile', bozza: 'bozza', draft: 'bozza' };
 const resolved = ALIAS[ver] ? info.aliases[ALIAS[ver]] : ver;
 const version = info.versions.find((v) => v.slug === resolved);
-if (!version) return notFound();
+if (!version) {
+  // versione ritirata dalla dashboard: 410 e link alla versione predefinita
+  if (info.withdrawn?.some((w) => w.slug === resolved)) {
+    Astro.response.status = 410;
+    const q = new URLSearchParams({ pub, proj, doc, lang, ver: resolved!, page: pageParam });
+    return Astro.rewrite(`/versione-ritirata?${q}`);
+  }
+  return notFound();
+}
 
 // Astro toglie ".html" dal parametro (e "index.html" in fondo): "pagina.html" e il
 // vecchio stile "pagina/" arrivano uguali
@@ -111,9 +119,11 @@ const onThisPage = sub.length
     })
   : '';
 const isDraft = version.kind === 'draft';
+// URL canonico con il nome vero della versione: "stabile" e "1.0" sono la stessa pagina
+const canonical = Astro.url.pathname.split('/').map((seg, i) => (i === 5 ? version.slug : seg)).join('/');
 const title = single ? `${info.name} — pagina singola` : current === root ? info.name : `${current!.title} — ${info.name}`;
 ---
-<Base title={title} description={info.description}>
+<Base title={title} description={info.description} canonical={canonical}>
   {isDraft && (
     <div slot="banner" class="di-banner" role="status"><Fragment set:html={ic('it-info-circle')} /><p>Bozza: versione in lavorazione, non ancora rilasciata.</p></div>
   )}

@@ -1,0 +1,48 @@
+---
+/**
+ * Pagina di una versione ritirata dalla dashboard (todo.md, 6.6): ci arriva la
+ * pagina del documento con Astro.rewrite, risponde 410 e porta alla stessa
+ * pagina della versione predefinita. Aperta direttamente con parametri che non
+ * corrispondono a una versione ritirata, è una pagina non trovata.
+ */
+import Base from '../layouts/Base.astro';
+import Notice from '../components/Notice.astro';
+import { api } from '../lib/api';
+
+const q = Astro.url.searchParams;
+const [pub, proj, doc, lang, ver, page] = ['pub', 'proj', 'doc', 'lang', 'ver', 'page'].map((k) => q.get(k) ?? '');
+const info = pub && proj && doc ? await api.document(pub, proj, doc).catch(() => null) : null;
+const withdrawn = info?.withdrawn?.find((w) => w.slug === ver);
+if (!info || !withdrawn) {
+  Astro.response.status = 404;
+  return Astro.rewrite('/404');
+}
+Astro.response.status = 410;
+const base = `/${pub}/${proj}/${doc}/${lang}/`;
+const def = info.defaultVersion;
+// i nomi arrivano dai parametri: si usano solo dentro URL costruiti qui, con encodeURIComponent
+const enc = (s: string) => s.split('/').map(encodeURIComponent).join('/');
+// Astro toglie ".html" dal parametro della pagina (e "index.html" in fondo)
+const name = page.replace(/\.html$/, '').replace(/\/$/, '');
+// il link alla stessa pagina solo se nella versione predefinita c'è
+const toc = def && name && name !== 'index' ? await api.file(pub, proj, doc, lang, def, 'toc.json').catch(() => null) : null;
+const exists = !!toc?.pages?.some((p: { slug: string }) => p.slug === name || p.slug === `${name}/index`);
+const samePage = exists ? `${base}${encodeURIComponent(def!)}/${enc(name)}.html` : null;
+const home = def ? `${base}${encodeURIComponent(def)}/` : `/${pub}/${proj}/`;
+const date = new Date(withdrawn.at).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`Versione ritirata — ${info.name}`} description={info.description} noindex>
+  <main id="main">
+    <Notice title="Versione ritirata">
+      <p>La versione <strong>{ver}</strong> di <strong>{info.name}</strong> è stata ritirata il {date} e non è più consultabile.</p>
+      {def ? (
+        <ul>
+          {samePage && <li><a href={samePage}>Apri questa pagina nella versione {def}</a></li>}
+          <li><a href={home}>Vai alla versione {def} del documento</a></li>
+        </ul>
+      ) : (
+        <p><a href={home}>Vai al progetto {info.project.name}</a></p>
+      )}
+    </Notice>
+  </main>
+</Base>
