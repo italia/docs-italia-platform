@@ -125,9 +125,37 @@ body {
   border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
 }
 .studio-path {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.8rem;
+}
+.studio-path code {
   opacity: 0.7;
+}
+.studio-modes {
+  display: inline-flex;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 25%, transparent);
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+.studio-modes button {
+  padding: 0.15rem 0.6rem;
+  cursor: pointer;
+}
+.studio-modes button.on {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+}
+.studio-source {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.studio-source[hidden] {
+  display: none;
 }
 .studio-state {
   font-size: 0.82rem;
@@ -241,4 +269,265 @@ body {
 }
 .studio-diff .del {
   color: var(--color-error);
+}
+
+/* ------------------------------------------------------------------ editor visuale */
+.vis {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem 0.75rem 3rem;
+}
+.vis-busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.vis-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.vis-hint {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+.vis-warn {
+  font-size: 0.8rem;
+  color: var(--color-warning);
+}
+.vis-empty {
+  padding: 1rem;
+  opacity: 0.8;
+}
+.vis-block {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+.vis-block:hover,
+.vis-block:focus-within {
+  border-color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+}
+.vis-block-open {
+  border-color: var(--color-primary) !important;
+  background: color-mix(in oklab, var(--color-primary) 4%, var(--color-base-100));
+}
+.vis-block-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  min-height: 1.4rem;
+  opacity: 0;
+}
+.vis-block:hover .vis-block-bar,
+.vis-block:focus-within .vis-block-bar,
+.vis-block-open .vis-block-bar {
+  opacity: 1;
+}
+.vis-block-kind {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.7rem;
+  color: var(--color-primary);
+}
+.vis-block-lines {
+  opacity: 0.6;
+}
+.vis-view {
+  cursor: text;
+  border-radius: 0.25rem;
+}
+.vis-view[aria-disabled] {
+  cursor: default;
+}
+.vis-view:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.vis-view > :first-child {
+  margin-top: 0;
+}
+.vis-view > :last-child {
+  margin-bottom: 0;
+}
+.vis-raw {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+.vis-add {
+  display: block;
+  width: 100%;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.2rem 0;
+  color: var(--color-primary);
+  opacity: 0;
+  cursor: pointer;
+}
+.vis-add:hover,
+.vis-add:focus-visible,
+.vis-add[aria-expanded='true'] {
+  opacity: 1;
+}
+.vis-insert {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem 0.6rem;
+}
+.vis-tool {
+  font-size: 0.78rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+  border-radius: 0.25rem;
+  background: var(--color-base-100);
+  cursor: pointer;
+}
+.vis-tool:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.vis-tool-on {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border-color: var(--color-primary);
+}
+.vis-toolbar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-bottom: 0.35rem;
+}
+.vis-popover {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  width: min(28rem, 100%);
+  padding: 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 25%, transparent);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.15);
+}
+.vis-refs {
+  max-height: 14rem;
+  overflow-y: auto;
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+}
+.vis-refs button {
+  text-align: left;
+  width: 100%;
+  padding: 0.15rem 0.25rem;
+  cursor: pointer;
+}
+.vis-refs button:hover {
+  background: color-mix(in oklab, var(--color-primary) 10%, transparent);
+}
+.vis-richbox .ProseMirror {
+  min-height: 2.2rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 25%, transparent);
+  border-radius: 0.25rem;
+  background: var(--color-base-100);
+  outline: none;
+}
+.vis-richbox .ProseMirror:focus {
+  border-color: var(--color-primary);
+}
+.vis-rich-inline {
+  min-height: 1.8rem !important;
+}
+.vis-rich-inline p {
+  margin: 0;
+}
+.vis-chip {
+  display: inline-block;
+  padding: 0 0.35rem;
+  margin: 0 0.1rem;
+  border-radius: 0.75rem;
+  font-size: 0.85em;
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
+  white-space: nowrap;
+}
+.vis-chip.ProseMirror-selectednode {
+  outline: 2px solid var(--color-primary);
+}
+.vis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.vis-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.vis-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.vis-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+.vis-code {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 25%, transparent);
+  border-radius: 0.25rem;
+  background: var(--color-base-100);
+}
+.vis-figure-preview {
+  max-height: 12rem;
+  max-width: 100%;
+  object-fit: contain;
+  align-self: flex-start;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
+}
+.vis-table-wrap {
+  overflow-x: auto;
+}
+.vis-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.vis-table td {
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+  padding: 0.15rem;
+  min-width: 8rem;
+  vertical-align: top;
+}
+.vis-table .vis-toolbar {
+  display: none;
+}
+.vis-table td:focus-within .vis-toolbar {
+  display: flex;
+}
+.vis-table-head td {
+  background: color-mix(in oklab, var(--color-base-content) 6%, transparent);
+  font-weight: 600;
+}
+.vis-problems {
+  margin-top: 1rem;
+  border-top: 2px solid var(--color-warning);
+  padding-top: 0.4rem;
+  font-size: 0.85rem;
+}
+.vis-target {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin: 0;
 }

@@ -26,7 +26,8 @@ export function escapeText(s: string, atLineStart = false): string {
   const out = s
     .replace(/\\/g, '\\\\')
     .replace(/([*`[\]$])/g, '\\$1')
-    .replace(/(^|[^\p{L}\p{N}])_|_(?=$|[^\p{L}\p{N}])/gu, (m) => m.replace('_', '\\_'))
+    // ogni "_" che non sta tra due lettere o cifre: in "______" vanno protetti tutti
+    .replace(/(?<![\p{L}\p{N}])_|_(?![\p{L}\p{N}])/gu, '\\_')
     .replace(/<(?=[a-zA-Z/!?])/g, '\\<')
     .replace(/&(?=#?[a-zA-Z0-9]+;)/g, '\\&');
   // inizio di riga: il primo solo se il testo apre il blocco, gli altri sempre
@@ -55,9 +56,40 @@ function roleText(o: GenericNode['origin']): string {
   return `{${o.name}}${ticks}${value}${ticks}`;
 }
 
+/**
+ * Due grassetti (o corsivi) di fila: "**a**" + "**b**" darebbe "**a****b**",
+ * che MyST legge in un altro modo. Si scrivono come uno solo.
+ */
+function mergeAdjacent(nodes: GenericNode[]): GenericNode[] {
+  const out: GenericNode[] = [];
+  // un testo vuoto tra due grassetti (dallo spazio protetto "\\ " dell'RST) non li separa
+  for (const n of nodes.filter((x) => !(x.type === 'text' && !x.value))) {
+    const last = out[out.length - 1];
+    if (last && (n.type === 'strong' || n.type === 'emphasis') && last.type === n.type && !n.origin && !last.origin) {
+      out[out.length - 1] = { ...last, children: [...(last.children ?? []), ...(n.children ?? [])] };
+    } else out.push(n);
+  }
+  return out;
+}
+
+/**
+ * Indirizzo di un link o di un'immagine come lo si scrive: il parser codifica
+ * le lettere accentate ("attivit%C3%A0"); se l'indirizzo decodificato non ha
+ * caratteri che cambierebbero la lettura del link, si scrive decodificato.
+ */
+function urlText(url: string): string {
+  if (!/%[0-9A-Fa-f]{2}/.test(url)) return url;
+  try {
+    const dec = decodeURI(url);
+    return /[\s()<>%]/.test(dec) || /[\x00-\x1f]/.test(dec) ? url : dec;
+  } catch {
+    return url;
+  }
+}
+
 export function serializeInline(nodes: GenericNode[] | undefined, atLineStart = true): string {
   let out = '';
-  for (const n of nodes ?? []) {
+  for (const n of mergeAdjacent(nodes ?? [])) {
     out += inline(n, atLineStart && out === '');
   }
   return out;
@@ -83,10 +115,11 @@ function inline(n: GenericNode, atLineStart: boolean): string {
       const only = n.children?.length === 1 && n.children[0].type === 'text' ? n.children[0].value : undefined;
       if (n.url && only === n.url && /^(https?|mailto):/i.test(n.url)) return `<${n.url}>`;
       if (!n.url) return text;
-      return `[${text}](${n.url.includes(' ') ? `<${n.url}>` : n.url}${n.title ? ` "${n.title.replace(/"/g, '\\"')}"` : ''})`;
+      const url = urlText(n.url);
+      return `[${text}](${url.includes(' ') ? `<${url}>` : url}${n.title ? ` "${n.title.replace(/"/g, '\\"')}"` : ''})`;
     }
     case 'image':
-      return `![${escapeText(n.alt ?? '')}](${n.url ?? ''}${n.title ? ` "${n.title.replace(/"/g, '\\"')}"` : ''})`;
+      return `![${escapeText(n.alt ?? '')}](${urlText(n.url ?? '')}${n.title ? ` "${n.title.replace(/"/g, '\\"')}"` : ''})`;
     case 'break':
       return '\\\n';
     case 'footnoteReference':
@@ -363,6 +396,27 @@ function footnoteRange(lines: string[], label: string): [number, number] | undef
   return [start + 1, end + 1];
 }
 
+/**
+ * Elenchi compatti o distanziati: myst-parser imposta sempre lo stesso
+ * `spread`, quindi si ricava dal sorgente (riga vuota prima di una voce),
+ * come fa la risoluzione. Senza, l'editor renderebbe compatto un elenco distanziato.
+ */
+function fixSpread(nodes: GenericNode[], lines: string[]) {
+  const walk = (n: GenericNode) => {
+    if (n.type === 'list' && n.children?.length) {
+      const loose = n.children.slice(1).some((li) => {
+        const start = li.position?.start?.line;
+        return start && start >= 2 && lines[start - 2]?.trim() === '';
+      });
+      n.spread = loose;
+      for (const li of n.children) li.spread = loose;
+    }
+    n.children?.forEach(walk);
+  };
+  nodes.forEach(walk);
+  return nodes;
+}
+
 /** Divide un file MyST nei suoi blocchi di primo livello, con le righe di origine. */
 export function sourceBlocks(source: string, file = 'file.md'): SourceBlock[] {
   const lines = source.split('\n');
@@ -379,7 +433,7 @@ export function sourceBlocks(source: string, file = 'file.md'): SourceBlock[] {
         else editable = false;
       }
       while (end > start && !lines[end - 1]?.trim()) end--;
-      return { start, end, text: lines.slice(start - 1, end).join('\n'), nodes: liftDirectives([structuredClone(n)]), editable };
+      return { start, end, text: lines.slice(start - 1, end).join('\n'), nodes: fixSpread(liftDirectives([structuredClone(n)]), lines), editable };
     })
     .sort((a, b) => a.start - b.start);
   // righe sovrapposte: posizioni non affidabili, nessuno dei due blocchi si riscrive
@@ -404,6 +458,95 @@ export function replaceBlocks(source: string, blocks: SourceBlock[], changes: Ma
     if (!b) throw new Error(`blocco ${i} inesistente`);
     if (!b.editable) throw new Error(`il blocco alle righe ${b.start}-${b.end} non ha posizioni affidabili e non si può riscrivere`);
     lines.splice(b.start - 1, b.end - b.start + 1, ...serializeBlocks(nodes).split('\n'));
+  }
+  return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Modifiche dell'editor visuale
+// ---------------------------------------------------------------------------
+
+/** Contenuto di un blocco: nodi dell'AST da serializzare, oppure sorgente MyST scritto a mano. */
+export type BlockContent = { nodes: GenericNode[] } | { text: string };
+
+/**
+ * Una modifica, riferita ai blocchi di sourceBlocks del sorgente di partenza.
+ * `after: -1` inserisce in testa al file.
+ */
+export type BlockEdit =
+  | ({ op: 'replace'; index: number } & BlockContent)
+  | { op: 'delete'; index: number }
+  | ({ op: 'insert'; after: number } & BlockContent)
+  | { op: 'move'; index: number; after: number };
+
+const contentText = (c: BlockContent) => ('text' in c ? c.text.replace(/\s+$/, '') : serializeBlocks(c.nodes));
+
+/**
+ * Applica le modifiche dell'editor visuale. Valgono le regole di replaceBlocks:
+ * si toccano solo le righe dei blocchi modificati; i blocchi spostati
+ * conservano il loro testo originale; un blocco nuovo è separato dagli altri
+ * da una riga vuota.
+ */
+export function applyEdits(source: string, blocks: SourceBlock[], edits: BlockEdit[]): string {
+  const lines = source.split('\n');
+  // per blocco: cosa va dopo di lui (inserimenti, blocchi spostati) e cosa ne resta
+  const after = new Map<number, string[]>();
+  const replaced = new Map<number, string | null>();
+  const push = (i: number, text: string) => after.set(i, [...(after.get(i) ?? []), text]);
+  const block = (i: number) => {
+    const b = blocks[i];
+    if (!b) throw new Error(`blocco ${i} inesistente`);
+    return b;
+  };
+  for (const e of edits) {
+    if (e.op === 'insert') {
+      if (e.after !== -1) block(e.after);
+      push(e.after, contentText(e));
+    } else if (e.op === 'move') {
+      if (e.after !== -1) block(e.after);
+      if (e.after === e.index) continue;
+      push(e.after, block(e.index).text);
+      replaced.set(e.index, null);
+    } else {
+      const b = block(e.index);
+      if (replaced.has(e.index)) throw new Error(`blocco ${e.index} modificato due volte`);
+      if (e.op === 'replace' && 'nodes' in e && !b.editable) {
+        throw new Error(`il blocco alle righe ${b.start}-${b.end} non ha posizioni affidabili e non si può riscrivere`);
+      }
+      replaced.set(e.index, e.op === 'delete' ? null : contentText(e));
+    }
+  }
+  // dal fondo, così le righe dei blocchi precedenti restano valide
+  const touched = [...new Set([...after.keys(), ...replaced.keys()])].sort((a, b) => b - a);
+  for (const i of touched) {
+    const extra = (after.get(i) ?? []).flatMap((t) => ['', ...t.split('\n')]);
+    if (i === -1) {
+      // in testa: il testo nuovo, poi una riga vuota prima del primo blocco
+      if (!blocks.length) {
+        const rest = lines.join('\n').trim() ? lines : [''];
+        lines.splice(0, lines.length, ...extra.slice(1), ...(rest.length === 1 && rest[0] === '' ? [''] : ['', ...rest]));
+      } else lines.splice(blocks[0]!.start - 1, 0, ...extra.slice(1), '');
+      continue;
+    }
+    const b = blocks[i];
+    if (!replaced.has(i)) {
+      if (extra.length) lines.splice(b.end, 0, ...extra);
+      continue;
+    }
+    const text = replaced.get(i) ?? null;
+    const span = b.end - b.start + 1;
+    if (text !== null) {
+      lines.splice(b.start - 1, span, ...text.split('\n'), ...extra);
+    } else if (extra.length) {
+      // al posto del blocco tolto, ciò che andava dopo di lui (senza la riga vuota iniziale)
+      lines.splice(b.start - 1, span, ...extra.slice(1));
+    } else {
+      // il blocco sparisce con la riga vuota che lo separava dal successivo (o dal precedente, se è l'ultimo)
+      const more = lines.slice(b.end).some((l) => l.trim() !== '');
+      const blankAfter = more && lines[b.end]?.trim() === '' ? 1 : 0;
+      const blankBefore = !blankAfter && b.start > 1 && lines[b.start - 2]?.trim() === '' ? 1 : 0;
+      lines.splice(b.start - 1 - blankBefore, span + blankAfter + blankBefore);
+    }
   }
   return lines.join('\n');
 }

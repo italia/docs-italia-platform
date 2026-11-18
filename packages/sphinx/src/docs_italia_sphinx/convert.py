@@ -52,12 +52,24 @@ SAFE_SCHEMES = ("http://", "https://", "mailto:", "tel:")
 LOOKS_LIKE_DIRECTIVE = re.compile(r"^[A-Za-z][\w-]*::\S")
 
 
+MAX_LABEL = 100  # oltre, MyST legge "(etichetta)=" come testo
+
+
 def safe_label(name: str) -> str:
-    """Etichetta valida per MyST: `(§4.4)=` non è un'etichetta, `(sez-4.4)=` sì."""
+    """Etichetta valida per MyST: `(§4.4)=` non è un'etichetta, `(sez-4.4)=` sì.
+
+    Le etichette lunghe (autosectionlabel su titoli lunghi) si accorciano con
+    un'impronta del nome intero: restano uniche e riferimenti ed etichette,
+    passando dalla stessa funzione, coincidono.
+    """
+    import hashlib
     import re
 
-    out = re.sub(r"[^A-Za-z0-9_.:-]+", "-", name.strip()).strip("-")
-    return out or "etichetta"
+    out = re.sub(r"[^A-Za-z0-9_.:-]+", "-", name.strip()).strip("-") or "etichetta"
+    if len(out) > MAX_LABEL:
+        digest = hashlib.sha1(out.lower().encode()).hexdigest()[:8]
+        out = f"{out[: MAX_LABEL - 9].rstrip('-')}-{digest}"
+    return out
 
 
 @dataclass
@@ -261,11 +273,21 @@ class Converter:
         if isinstance(n, nodes.rubric):
             return [{"type": "paragraph", "children": [{"type": "strong", "children": self.inline_children(n)}]}]
         if isinstance(n, nodes.line_block):
+            lines = [self.inline_children(line) for line in n.traverse(nodes.line)]
+            # righe vuote in testa e in coda: nell'RST servivano solo a spaziare
+            while lines and not lines[0]:
+                lines.pop(0)
+            while lines and not lines[-1]:
+                lines.pop()
+            if not lines:
+                # un blocco di sole righe vuote ("|" da solo): in MyST sarebbe una "\" visibile
+                self.report.note("riga vuota usata per spaziare (|)", self.docname, n, "dropped")
+                return []
             kids: list[Node] = []
-            for i, line in enumerate(n.traverse(nodes.line)):
+            for i, line in enumerate(lines):
                 if i:
                     kids.append({"type": "break"})
-                kids.extend(self.inline_children(line))
+                kids.extend(line)
             return [{"type": "paragraph", "children": kids}]
         if isinstance(n, nodes.compound):
             if any(isinstance(c, addnodes.toctree) for c in n.children):

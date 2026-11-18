@@ -10,17 +10,17 @@
  *   può inviarla senza un preflight CORS, che qui non è consentito).
  */
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, watch, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, watch, writeFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { join, relative } from 'node:path';
 import { Database } from 'bun:sqlite';
 import { fileURLToPath } from 'node:url';
 import { parseDocument } from 'yaml';
-import { renderPreview } from '@docs-italia/render';
+import { renderFootnotes, renderNodes, renderPreview, type GenericNode, type RenderContext } from '@docs-italia/render';
 import { DocumentSettingsSchema, parseToc, type Problem } from '@docs-italia/schema';
 import { build } from './build.ts';
 import { gitCheckout, gitCommit, gitDiff, gitInfo, gitLog, gitStatus } from '@docs-italia/forge';
-import { loadProject, ProjectError, resolveProject, slugify } from '@docs-italia/myst';
+import { applyEdits, loadProject, ProjectError, resolveProject, slugify, sourceBlocks, type BlockEdit } from '@docs-italia/myst';
 import { isIgnored, json, readBody, safeJoin, sendFile } from './serve.ts';
 
 const EDITOR_DIST = fileURLToPath(new URL('../../../apps/editor/dist/', import.meta.url));
@@ -32,6 +32,20 @@ class HttpError extends Error {
     super(message);
     this.status = status;
   }
+}
+
+const IMAGE = /\.(png|jpe?g|gif|svg|webp)$/i;
+const SKIP = new Set(['node_modules', 'dist', '.git', '.docs-italia']);
+
+/** Immagini della sorgente, per il selettore delle figure. */
+function imageFiles(dir: string, base = dir, out: string[] = []): string[] {
+  for (const name of readdirSync(dir)) {
+    if (SKIP.has(name) || name.startsWith('.')) continue;
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) imageFiles(full, base, out);
+    else if (IMAGE.test(name)) out.push(relative(base, full).split('\\').join('/'));
+  }
+  return out.sort();
 }
 
 export async function studio(root: string, opts: { port: number }) {
@@ -127,6 +141,56 @@ export async function studio(root: string, opts: { port: number }) {
         problems: doc.problems.filter((x) => x.file === path),
         outline: page?.sections ?? [],
       };
+    },
+    // editor visuale: i blocchi della pagina, ognuno con il suo HTML risolto
+    'POST /api/blocks': async (req) => {
+      const { path, content } = await readBody(req);
+      const p = project();
+      srcPath(p, path);
+      const doc = resolveProject(p, readerWith(p, { path, content }));
+      const page = doc.pages.find((x) => x.file === path);
+      const ctx: RenderContext = {
+        mode: 'preview',
+        page: page?.slug ?? '',
+        hrefFor: (pg, a) => `#di:${pg}${a ? `:${a}` : ''}`,
+        idFor: (_p, a) => a,
+        assetHref: (file) => `/files/${file}`,
+      };
+      // i nodi risolti si ritrovano dalla riga di inizio (la sostituzione delle direttive la conserva)
+      const byLine = new Map<number, GenericNode>();
+      for (const n of page?.tree.children ?? []) if (n.position?.start?.line) byLine.set(n.position.start.line, n);
+      const blocks = sourceBlocks(content, path).map((b, index) => {
+        const first = b.nodes[0];
+        let html = '';
+        if (first?.type === 'footnoteDefinition') {
+          const fn = page?.footnotes.find((f) => f.identifier === first.identifier);
+          html = fn ? renderFootnotes([fn], ctx) : '';
+        } else {
+          const n = byLine.get(b.start);
+          html = n ? renderNodes([n], ctx) : '';
+        }
+        return { index, start: b.start, end: b.end, text: b.text, nodes: b.nodes, editable: b.editable, html };
+      });
+      return {
+        blocks,
+        problems: doc.problems.filter((x) => x.file === path),
+        // per i selettori: etichette, pagine e immagini del documento
+        labels: Object.entries(doc.inventory)
+          .filter(([key]) => !key.startsWith('doc:'))
+          .map(([key, e]) => ({ key, title: e.title, number: e.number, kind: e.kind, page: e.page })),
+        pages: doc.pages.map((x) => ({ file: x.file, title: x.title, number: x.number })),
+        images: imageFiles(p.sourceDir),
+      };
+    },
+    'POST /api/blocks/apply': async (req) => {
+      const { path, content, edits } = await readBody(req);
+      srcPath(project(), path);
+      if (typeof content !== 'string' || !Array.isArray(edits)) throw new HttpError(400, 'servono content ed edits');
+      try {
+        return { content: applyEdits(content, sourceBlocks(content, path), edits as BlockEdit[]) };
+      } catch (e) {
+        throw new HttpError(400, (e as Error).message);
+      }
     },
     'GET /api/check': () => safeProblems(() => {
       const p = project();

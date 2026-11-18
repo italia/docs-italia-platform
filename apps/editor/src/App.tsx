@@ -7,9 +7,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError, type GitData, type Problem, type ProjectData, type TocEntry } from './api';
 import { SourceEditor, type SourceEditorHandle } from './SourceEditor';
+import { VisualEditor } from './visual/VisualEditor';
 
 type Tab = 'anteprima' | 'problemi' | 'git' | 'metadati' | 'genera';
 type SaveState = 'salvato' | 'modificato' | 'bozza' | 'salvataggio' | 'conflitto';
+type Mode = 'sorgente' | 'visuale';
+
+const MODE_KEY = 'docs-italia-studio-mode';
+const savedMode = (): Mode => {
+  try {
+    return localStorage.getItem(MODE_KEY) === 'visuale' ? 'visuale' : 'sorgente';
+  } catch {
+    return 'sorgente';
+  }
+};
 
 function useDebounced<T extends unknown[]>(fn: (...a: T) => void, ms: number) {
   const t = useRef<number | undefined>(undefined);
@@ -35,6 +46,13 @@ export function App() {
   const [pageProblems, setPageProblems] = useState<Problem[]>([]);
   const [allProblems, setAllProblems] = useState<Problem[]>([]);
   const [tab, setTab] = useState<Tab>('anteprima');
+  const [mode, setModeState] = useState<Mode>(savedMode);
+  const setMode = (m: Mode) => {
+    setModeState(m);
+    try {
+      localStorage.setItem(MODE_KEY, m);
+    } catch {}
+  };
   const [notice, setNotice] = useState<string | null>(null);
   const editor = useRef<SourceEditorHandle>(null);
   const previewBox = useRef<HTMLDivElement>(null);
@@ -106,6 +124,11 @@ export function App() {
     setState('modificato');
     renderPreview(path, text);
     saveDraft(path, text, baseHash);
+  };
+  // modifica dall'editor visuale: il sorgente si aggiorna senza rimandare l'evento
+  const onVisualContent = (text: string) => {
+    editor.current?.setContent(text);
+    onChange(text);
   };
 
   const save = async (force = false) => {
@@ -210,15 +233,28 @@ export function App() {
             Salva <kbd className="opacity-70 ml-1">⌘S</kbd>
           </button>
         </div>
-        <p className="studio-path"><code>{path}</code></p>
+        <div className="studio-path">
+          <code className="truncate">{path}</code>
+          <span className="flex-1" />
+          <div role="radiogroup" aria-label="Modo di modifica" className="studio-modes">
+            {(['sorgente', 'visuale'] as Mode[]).map((m) => (
+              <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? 'on' : ''} onClick={() => setMode(m)}>
+                {m === 'sorgente' ? 'Sorgente' : 'Visuale'}
+              </button>
+            ))}
+          </div>
+        </div>
         {notice && (
           <div className="studio-notice" role="alert">
             <span>{notice}</span>
             <button className="ita-btn ita-btn-xs ita-btn-ghost" onClick={() => setNotice(null)} aria-label="Chiudi avviso">×</button>
           </div>
         )}
-        <SourceEditor ref={editor} label="Sorgente MyST della pagina" onChange={onChange} onSave={() => void save()} />
-        {pageProblems.length > 0 && (
+        <div className="studio-source" hidden={mode === 'visuale'}>
+          <SourceEditor ref={editor} label="Sorgente MyST della pagina" onChange={onChange} onSave={() => void save()} />
+        </div>
+        {mode === 'visuale' && path && <VisualEditor path={path} content={content} onContent={onVisualContent} />}
+        {mode === 'sorgente' && pageProblems.length > 0 && (
           <ul className="studio-page-problems" aria-label="Problemi di questa pagina">
             {pageProblems.map((p, i) => (
               <li key={i}>

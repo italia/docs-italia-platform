@@ -228,6 +228,8 @@ docs-italia studio    # studio nel browser su http://127.0.0.1:4322: editor, ant
 docs-italia check     # controlli: metadati, indice, link, immagini, riferimenti, accessibilità
 ```
 
+Nello studio puoi scrivere nel **sorgente** o nella vista **visuale**: la pagina si vede come nel sito, un clic su un blocco lo apre (testo, avvisi, figure, tabelle, codice) e solo quel blocco viene riscritto nel file. Il resto resta com'era, quindi le modifiche fatte a mano e quelle visuali convivono.
+
 `check` divide i problemi in **errori** (✖) e **avvisi** (⚠), con file e riga. Un errore non blocca la pubblicazione, ma va corretto: è quello che vedrebbe chi legge.
 
 | Problema | Cosa vuol dire |

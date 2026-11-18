@@ -12,6 +12,8 @@
 - Tabelle a griglia e `list-table` diventano `list-table`. Le celle unite perdono l'unione e sono segnalate.
 - `:download:` diventa un link al file, che viene copiato.
 - `only:: format_html` resta; `only:: format_latex` e `raw:: latex` vengono scartati e segnalati.
+- Le etichette più lunghe di 100 caratteri (il massimo di MyST) si accorciano con un'impronta del nome intero; riferimenti ed etichette restano allineati.
+- I blocchi di righe vuote (`|` da solo), usati per spaziare, vengono scartati e segnalati.
 
 ## Rapporto
 

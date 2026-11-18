@@ -49,6 +49,32 @@ export interface GitData {
   log: Array<{ commit: string; date: string; author: string; subject: string }>;
 }
 
+/** Un blocco di primo livello della pagina, per l'editor visuale. */
+export interface BlockData {
+  index: number;
+  start: number;
+  end: number;
+  text: string;
+  nodes: Array<{ type: string; [key: string]: any }>;
+  editable: boolean;
+  html: string;
+}
+
+export interface BlocksData {
+  blocks: BlockData[];
+  problems: Problem[];
+  labels: Array<{ key: string; title: string; number?: string; kind: string; page: string }>;
+  pages: Array<{ file: string; title: string; number?: string }>;
+  images: string[];
+}
+
+type BlockContent = { nodes: Array<{ type: string; [key: string]: any }> } | { text: string };
+export type BlockEditRequest =
+  | ({ op: 'replace'; index: number } & BlockContent)
+  | { op: 'delete'; index: number }
+  | ({ op: 'insert'; after: number } & BlockContent)
+  | { op: 'move'; index: number; after: number };
+
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {
@@ -79,6 +105,8 @@ export const api = {
   preview: (path: string, content: string) =>
     call<{ html: string; problems: Problem[]; outline: Array<{ anchor: string; title: string; number?: string; depth: number }> }>('POST', '/api/preview', { path, content }),
   check: () => call<Problem[]>('GET', '/api/check'),
+  blocks: (path: string, content: string) => call<BlocksData>('POST', '/api/blocks', { path, content }),
+  applyBlocks: (path: string, content: string, edits: BlockEditRequest[]) => call<{ content: string }>('POST', '/api/blocks/apply', { path, content, edits }),
   newChapter: (title: string) => call<{ file: string }>('POST', '/api/chapter', { title }),
   saveToc: (chapters: TocEntry[]) => call('PUT', '/api/toc', { chapters }),
   saveSettings: (s: { name: string; description: string; tags: string[] }) => call('PUT', '/api/settings', s),
