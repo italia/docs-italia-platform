@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+const GUIDE = 'https://github.com/italia/docs-italia-platform/blob/main/docs';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Notice from '../components/Notice.astro';
 ---
@@ -11,9 +12,15 @@ import Notice from '../components/Notice.astro';
       <ol>
         <li>il documento sta in un repository dell'organizzazione GitHub dell'amministrazione, con un file <code>document_settings.yml</code>;</li>
         <li>il repository è elencato nel file <code>projects_settings.yml</code> del repository di configurazione <code>italia-conf</code> dell'organizzazione;</li>
-        <li>la piattaforma importa il documento e pubblica la bozza a ogni modifica del branch principale, e una versione a ogni tag o release.</li>
+        <li>la piattaforma importa il documento e pubblica la bozza a ogni modifica del branch principale, e una versione a ogni tag.</li>
       </ol>
       <p>I documenti si scrivono in MyST (Markdown con direttive) o in reStructuredText. Il toolkit <code>docs-italia</code> permette di controllarli, vederne l'anteprima e costruirli in locale.</p>
+      <p>Le guide, passo per passo:</p>
+      <ul>
+        <li><a href={`${GUIDE}/nuovo-documento-myst.md`}>Creare un nuovo documento in MyST</a>: dal repository vuoto alla prima versione pubblicata;</li>
+        <li><a href={`${GUIDE}/convertire-documento-rst.md`}>Portare in MyST un documento RST</a>: conversione, controllo e passaggio, senza toccare le versioni già pubblicate;</li>
+        <li><a href={`${GUIDE}/collegare-organizzazioni.md`}>Collegare un'organizzazione GitHub</a>: per chi amministra l'istanza.</li>
+      </ul>
     </Notice>
   </main>
 </Base>

@@ -148,6 +148,20 @@ describe.skipIf(!available)('server', () => {
     if (hasPython) expect(ok('documento-rst', 'bozza')).toBe('ok');
   });
 
+  test('formato dal commit costruito: un tag RST si costruisce anche se il documento ora è MyST', async () => {
+    if (!existsSync(process.env.DOCS_ITALIA_PYTHON!)) return; // serve Sphinx
+    await sql`update document set format = 'myst' where repo_name = 'documento-rst'`;
+    try {
+      const [v] = await sql`select v.id from version v join document d on d.id = v.document_id where d.repo_name = 'documento-rst' and v.slug = 'bozza'`;
+      await sql`insert into job (kind, payload) values ('build', ${{ versionId: v.id }})`;
+      await drain();
+      const [b] = await sql`select status, error from build where version_id = ${v.id} order by id desc limit 1`;
+      expect(b).toEqual({ status: 'ok', error: null });
+    } finally {
+      await sql`update document set format = 'rst' where repo_name = 'documento-rst'`;
+    }
+  });
+
   test('API: documento, alias "stabile", file del pacchetto, ricerca', async () => {
     const pubs = await (await app.request('/api/publishers')).json();
     expect(pubs[0].slug).toBe('esempio');
@@ -495,6 +509,23 @@ describe.skipIf(!available)('server', () => {
     const [d] = await sql`select language from document where repo_name = 'documento-rst'`;
     expect(d.language).toBe('en');
     await sql`update document set language = 'it' where repo_name = 'documento-rst'`;
+  });
+
+  test('versione predefinita da document_settings.yml (versions.default); senza, resta quella che c\'è', async () => {
+    makeRepo(root, '../versioni/italia-conf', {
+      'publisher_settings.yml': 'publisher:\n  name: Versioni\n  description: Prova\n',
+      'projects_settings.yml': 'projects:\n  - name: Progetto\n    description: Progetto\n    documents:\n      - con-default\n      - senza-default\n',
+    });
+    const settings = (extra: string) => `document:\n  name: Doc\n  description: Prova\n  tags: [prova]\n  format: myst\n${extra}`;
+    makeRepo(root, '../versioni/con-default', { 'document_settings.yml': settings('  versions:\n    default: "2026.1"\n'), 'toc.json': '{"chapters":[]}', 'index.md': '# Doc\n' });
+    makeRepo(root, '../versioni/senza-default', { 'document_settings.yml': settings(''), 'toc.json': '{"chapters":[]}', 'index.md': '# Doc\n' });
+    await syncPublisher(sql, config.forge, 'versioni');
+    await sql`update document set default_version = 'dall-inventario' where repo_name = 'senza-default'`;
+    await syncPublisher(sql, config.forge, 'versioni');
+    const rows = await sql`select repo_name, default_version from document where repo_owner = 'versioni' order by repo_name`;
+    expect(rows.map((r: any) => [r.repo_name, r.default_version])).toEqual([['con-default', '2026.1'], ['senza-default', 'dall-inventario']]);
+    await sql`update publisher set active = false where slug = 'versioni'`;
+    await sql`update document set active = false where repo_owner = 'versioni'`;
   });
 
   test('documento tolto da italia-conf: disattivato', async () => {

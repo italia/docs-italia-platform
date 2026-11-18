@@ -10,6 +10,7 @@
  */
 import { parseDocumentSettings, parseProjectsSettings, parsePublisherSettings } from '@docs-italia/schema';
 import type { Forge } from '@docs-italia/forge';
+import { parse as parseYaml } from 'yaml';
 import type { Db } from './db.ts';
 import { enqueue } from './jobs.ts';
 
@@ -92,6 +93,7 @@ export async function syncPublisher(sql: Db, forge: Forge, owner: string, opts: 
         format: d.format,
         settings: d as object,
         draftBranch,
+        defaultVersion: declaredDefault(text ?? ''),
       });
       result.documents++;
       // la bozza esiste sempre: segue il branch indicato o quello predefinito
@@ -128,6 +130,23 @@ interface DocInput {
   format?: string;
   settings?: object;
   draftBranch?: string;
+  /** versions.default di document_settings.yml: stringa, null (= ultima release) o undefined (non dichiarata) */
+  defaultVersion?: string | null;
+}
+
+/**
+ * La versione predefinita scritta nel repository. Lo schema riempie i campi
+ * mancanti con i predefiniti, quindi si guarda il testo: solo una scelta
+ * esplicita prevale su quella dell'inventario o della dashboard.
+ */
+function declaredDefault(text: string): string | null | undefined {
+  try {
+    const v = parseYaml(text)?.document?.versions?.default;
+    if (v === undefined || v === null || v === '') return undefined;
+    return String(v) === 'latest-release' ? null : String(v);
+  } catch {
+    return undefined;
+  }
 }
 
 async function upsertDocument(sql: Db, d: DocInput): Promise<{ id: number }> {
@@ -142,7 +161,8 @@ async function upsertDocument(sql: Db, d: DocInput): Promise<{ id: number }> {
       language = case when excluded.sync_error is null and ${d.language ?? null}::text is not null then excluded.language else document.language end,
       format = case when excluded.sync_error is null then excluded.format else document.format end,
       settings = case when excluded.sync_error is null then excluded.settings else document.settings end,
-      draft_branch = coalesce(excluded.draft_branch, document.draft_branch)
+      draft_branch = coalesce(excluded.draft_branch, document.draft_branch),
+      default_version = case when excluded.sync_error is null and ${d.defaultVersion !== undefined} then ${d.defaultVersion ?? null} else document.default_version end
     returning id`;
   return row;
 }

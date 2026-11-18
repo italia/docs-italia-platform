@@ -153,6 +153,7 @@ Per `packages/sphinx` serve Python 3.12+: `pip install -e packages/sphinx`.
 | File | Contenuto |
 |---|---|
 | [`todo.md`](todo.md) | Piano di progetto: stato di partenza, formato dei documenti, toolkit, editor, piattaforma, RAG e MCP, riuso, fasi, rischi, decisioni, risultati del PoC |
+| [`docs/`](docs) | Guide: creare un documento in MyST, portare in MyST un documento RST, collegare un'organizzazione GitHub |
 | [`inventario/`](inventario) | Fotografia dei 105 documenti e delle 205 versioni pubblicate oggi (dall'API di Docs Italia), e scansione su GitHub dei repository dichiarati in `italia-conf` |
 
 Il PoC del toolkit è fuori da questo repository, in `../italia/_poc`.

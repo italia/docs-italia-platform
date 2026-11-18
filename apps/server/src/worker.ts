@@ -4,10 +4,11 @@
  * - build: estrae la sorgente al ref, converte l'RST se serve, costruisce il
  *   pacchetto con il toolkit e lo pubblica.
  */
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, relative, sep } from 'node:path';
 import { build, convert, findRstSource } from '@docs-italia/toolkit';
+import { parseDocumentSettings } from '@docs-italia/schema';
 import type { Config } from './config.ts';
 import type { Db } from './db.ts';
 import { claim, complete, fail } from './jobs.ts';
@@ -51,8 +52,13 @@ export async function runBuild(ctx: Ctx, versionId: number): Promise<number> {
     await sql`update build set commit = ${commit} where id = ${b.id}`;
     log.push(`sorgente: ${v.repo_owner}/${v.repo_name}@${v.ref} (${commit.slice(0, 12)})`);
 
+    // il formato è quello del commit che si costruisce, non quello attuale del
+    // documento: dopo il passaggio a MyST i tag vecchi restano RST
+    const settingsFile = join(src, 'document_settings.yml');
+    const settings = existsSync(settingsFile) ? parseDocumentSettings(readFileSync(settingsFile, 'utf8')) : null;
+    const format = settings?.ok ? settings.value.document.format : v.format;
     let docDir = src;
-    if (v.format !== 'myst') {
+    if (format !== 'myst') {
       const rst = findRstSource(src);
       if (!rst) throw new Error('nessun index.rst nella sorgente');
       docDir = join(tmp, 'myst');
