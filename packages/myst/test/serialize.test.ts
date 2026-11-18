@@ -73,3 +73,12 @@ test('liste di definizioni', () => {
   const src = 'Termine\n: Definizione.\n\nAltro termine\n: Prima definizione.\n: Seconda definizione.';
   assert.equal(roundtrip(src), src);
 });
+
+test('argomenti e opzioni su più righe (RST) tornano su una riga: MyST non accetta altro', () => {
+  const md = serializeBlocks([
+    { type: 'image', url: 'a.png', alt: 'Una descrizione\nsu due righe', origin: { kind: 'directive', name: 'image', args: 'a.png', options: {} } },
+  ]);
+  assert.match(md, /^:alt: Una descrizione su due righe$/m);
+  const reparsed = sourceBlocks(md);
+  assert.equal(reparsed.length, 1);
+});

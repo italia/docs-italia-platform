@@ -234,6 +234,18 @@ function firstPass(project: Project, info: PageInfo, read: SourceReader, problem
     }
   });
 
+  // glossario: ogni termine è un'etichetta "term-<termine>", come in Sphinx, che {term} raggiunge
+  walk(tree, (g) => {
+    if (g.type !== 'glossary') return;
+    walk(g, (n) => {
+      if (n.type !== 'definitionTerm') return;
+      const term = toPlain(n).trim();
+      if (!term) return;
+      n.anchor = unique(`term-${slugify(term)}`);
+      register(`term-${term}`, { page: info.slug, anchor: n.anchor, title: term, kind: 'target' }, n);
+    });
+  });
+
   // note a piè di pagina: definizioni tolte dal flusso, numerate per ordine di citazione
   const footnotes: GenericNode[] = [];
   const strip = (n: GenericNode) => {

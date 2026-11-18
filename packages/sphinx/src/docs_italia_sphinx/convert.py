@@ -237,7 +237,7 @@ class Converter:
         if isinstance(n, addnodes.seealso):
             return [{"type": "admonition", "kind": "seealso", "children": self.block_children(n, depth)}]
         if isinstance(n, addnodes.glossary):
-            return [self.glossary(n)]
+            return [self.glossary(n, depth)]
         if isinstance(n, nodes.container) and "literal-block-wrapper" in n.get("classes", []):
             return self.captioned_code(n)
         if isinstance(n, (nodes.admonition, nodes.topic, nodes.sidebar)):
@@ -290,6 +290,28 @@ class Converter:
             opts = {k: n[k] for k in ("topic_id", "scope") if n.get(k) is not None}
             return [{"type": "forum", "topicId": n.get("topic_id"), "scope": n.get("scope"),
                      "origin": {"kind": "directive", "name": "forum_italia", "options": opts, "value": ""}}]
+        if isinstance(n, nodes.field_list):
+            # ":Fonte: Istat": Sphinx lo rende come elenco di definizioni (dl.field-list)
+            children = []
+            for f in n.children:
+                name = f.next_node(nodes.field_name)
+                body = f.next_node(nodes.field_body)
+                if name is None:
+                    continue
+                children.append({"type": "definitionTerm", "children": self.inline_children(name)})
+                children.append({"type": "definitionDescription", "children": self.paragraphs(body, depth) if body is not None else []})
+            return [{"type": "definitionList", "children": children}]
+        if isinstance(n, addnodes.desc):
+            # descrizione di un oggetto di un dominio Sphinx (".. class:: dcatapit:Dataset",
+            # ".. function:: …"): la firma in grassetto come codice, poi il contenuto
+            out = []
+            for sig in n.children:
+                if isinstance(sig, addnodes.desc_signature):
+                    out.append({"type": "paragraph", "children": [{"type": "strong", "children": [{"type": "inlineCode", "value": sig.astext().strip()}]}]})
+            content = n.next_node(addnodes.desc_content)
+            if content is not None:
+                out.extend(self.block_children(content, depth))
+            return out
         if isinstance(n, nodes.container):
             return self.block_children(n, depth)
         # sconosciuto: si conserva il testo
@@ -331,17 +353,17 @@ class Converter:
             out.extend(self.block(c, depth))
         return out
 
-    def glossary(self, n: nodes.Element) -> Node:
-        """Glossario: direttiva MyST {glossary} con la stessa sintassi dell'RST."""
-        lines: list[str] = []
+    def glossary(self, n: nodes.Element, depth: int = 0) -> Node:
+        """Glossario: direttiva MyST {glossary} con un elenco di definizioni.
+        I termini diventano etichette "term-…", che i ruoli {term} raggiungono."""
+        children: list[Node] = []
         for item in n.traverse(nodes.definition_list_item):
             for t in item.traverse(nodes.term):
-                lines.append(t.astext())
+                children.append({"type": "definitionTerm", "children": self.inline_children(t)})
             for d in item.traverse(nodes.definition):
-                lines.extend("  " + l for l in d.astext().split("\n"))
-            lines.append("")
-        return {"type": "unsupported", "name": "glossary", "value": "\n".join(lines).strip(),
-                "origin": {"kind": "directive", "name": "glossary", "options": {}, "value": "\n".join(lines).strip()}}
+                children.append({"type": "definitionDescription", "children": self.paragraphs(d, depth)})
+        return {"type": "glossary", "children": [{"type": "definitionList", "children": children}],
+                "origin": {"kind": "directive", "name": "glossary", "options": {}}}
 
     def captioned_code(self, n: nodes.Element) -> list[Node]:
         cap = n.next_node(nodes.caption)

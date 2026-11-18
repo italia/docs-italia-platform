@@ -119,17 +119,25 @@ function fence(body: string, min = 3): string {
   return ':'.repeat(Math.max(min, ...runs.map((r) => r + 1)));
 }
 
+/**
+ * Argomenti e opzioni di una direttiva stanno su una riga: un testo alternativo
+ * o un titolo su più righe (frequenti nell'RST) diventerebbe il corpo della
+ * direttiva, e MyST lo rifiuta ("unexpected body", "must have one list").
+ */
+const oneLine = (v: unknown) => String(v).replace(/\s*\n\s*/g, ' ').trim();
+
 function optionLines(options: Record<string, unknown>): string {
   return Object.entries(options)
     .filter(([, v]) => v !== undefined && v !== null && v !== false && v !== '')
-    .map(([k, v]) => (v === true ? `:${k}:` : `:${k}: ${v}`))
+    .map(([k, v]) => (v === true ? `:${k}:` : `:${k}: ${oneLine(v)}`))
     .join('\n');
 }
 
 function directive(name: string, args: string | undefined, options: Record<string, unknown>, body: string): string {
   const opts = optionLines(options);
   const f = fence(body);
-  const parts = [`${f}{${name}}${args ? ` ${args}` : ''}`];
+  const a = args ? oneLine(args) : '';
+  const parts = [`${f}{${name}}${a ? ` ${a}` : ''}`];
   if (opts) parts.push(opts);
   if (body) parts.push(...(opts ? ['', body] : [body]));
   parts.push(f);
@@ -186,6 +194,8 @@ export function serializeBlock(n: GenericNode): string {
     }
     case 'definitionList':
       return serializeDefinitionList(n);
+    case 'glossary':
+      return directive('glossary', undefined, n.origin?.options ?? {}, serializeBlocks(n.children));
     case 'math':
       return `$$\n${n.value ?? ''}\n$$`;
     case 'html':

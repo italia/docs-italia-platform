@@ -158,3 +158,16 @@ test('nome con spazi (":name: logo cie" dalla conversione RST): ancora senza spa
   assert.equal(fig?.anchor, 'logo-cie');
   assert.equal(doc.inventory['logo cie']?.anchor, 'logo-cie');
 });
+
+test('glossario: i termini sono etichette "term-…" e {term} li raggiunge, anche da altre pagine', () => {
+  const dir = project(
+    {
+      'index.md': '# Doc\n:::{glossary}\nBene digitale\n: Un bene.\n\nAttore\n: Chi agisce.\n:::\n',
+      'a.md': '# A\nUn {term}`attore` usa un {term}`bene <Bene digitale>`.\n',
+    },
+    ['a.md'],
+  );
+  const doc = resolveDir(dir);
+  assert.deepEqual(doc.problems.filter((p) => p.level === 'errore'), []);
+  assert.deepEqual(doc.inventory['term-bene digitale'], { page: 'index', anchor: 'term-bene-digitale', title: 'Bene digitale', kind: 'target' });
+});
