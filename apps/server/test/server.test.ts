@@ -356,6 +356,50 @@ describe.skipIf(!available)('server', () => {
       });
     });
 
+    describe('organizzazioni', () => {
+      test('verifica: accesso, italia-conf, documenti trovati e mancanti', async () => {
+        const r = await (await call('/publishers/check/esempio')).json();
+        expect(r.ok).toBe(true);
+        expect(r.existing).toEqual({ slug: 'esempio', active: true });
+        expect(r.publisher.name).toBe('Ente di esempio');
+        expect(r.summary).toEqual({ projects: 1, documents: 3, found: 2, missing: 1 });
+        expect(r.projects[0].documents.find((d: any) => d.repo === 'repo-mancante').found).toBe(false);
+        expect(r.access.some((x: any) => x.name === 'Organizzazione esempio' && x.status === 'ok')).toBe(true);
+        const none = await (await call('/publishers/check/nessuna-org')).json();
+        expect(none.ok).toBe(false);
+        expect(none.conf.found).toBe(false);
+        expect((await call('/publishers/check/nome%20con%20spazi')).status).toBe(400);
+      });
+
+      test('aggiunta: accoda la sincronizzazione e la registra; italia-conf non valido rifiutato', async () => {
+        makeRepo(root, '../nuova-org/italia-conf', {
+          'publisher_settings.yml': 'publisher:\n  name: Nuova amministrazione\n  description: Prova\n',
+          'projects_settings.yml': 'projects:\n  - name: Progetto nuovo\n    description: Progetto\n    documents:\n      - non-ancora\n',
+        });
+        makeRepo(root, '../rotta/italia-conf', { 'publisher_settings.yml': 'publisher:\n  name: Senza descrizione\n', 'projects_settings.yml': 'projects: []\n' });
+        const res = await call('/publishers', { method: 'POST', body: JSON.stringify({ owner: 'nuova-org' }) });
+        expect(res.status).toBe(202);
+        const { job, existing } = await res.json();
+        expect(existing).toBe(false);
+        await workOnce({ sql, config });
+        const [j] = await sql`select status from job where id = ${job}`;
+        expect(j.status).toBe('done');
+        const [p] = await sql`select name, active from publisher where slug = 'nuova-org'`;
+        expect(p).toEqual({ name: 'Nuova amministrazione', active: true });
+        const [log] = await sql`select action, target from audit_log where action = 'publisher.add' order by id desc limit 1`;
+        expect(log.target).toBe('nuova-org');
+        const bad = await call('/publishers', { method: 'POST', body: JSON.stringify({ owner: 'rotta' }) });
+        expect(bad.status).toBe(422);
+        expect((await bad.json()).error).toContain('description');
+        await sql`update publisher set active = false where slug = 'nuova-org'`;
+      });
+
+      test('webhook con il nome dell’organizzazione in maiuscolo (come lo manda GitHub)', async () => {
+        const res = await hook('push', { repository: { name: 'Documento-Prova', owner: { login: 'ESEMPIO' } }, ref: 'refs/heads/nessun-branch' });
+        expect((await res.json()).ignored).toBe('ref non pubblicato'); // riconosciuti publisher e documento
+      });
+    });
+
     test('documenti e dettaglio', async () => {
       const docs = await (await call('/documents')).json();
       const d = docs.find((x: any) => x.id === docId);

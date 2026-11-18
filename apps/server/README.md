@@ -44,6 +44,9 @@ bun src/main.ts                  # API + worker su http://127.0.0.1:8080
 
 ## Variabili d'ambiente
 
+Come collegare le organizzazioni GitHub (App o token) e aggiungerle dalla dashboard: [`docs/collegare-organizzazioni.md`](../../docs/collegare-organizzazioni.md).
+
+
 | Variabile | Uso |
 |---|---|
 | `DATABASE_URL` | PostgreSQL |
@@ -51,6 +54,7 @@ bun src/main.ts                  # API + worker su http://127.0.0.1:8080
 | `FORGE_LOCAL_ROOT` | Repository da clone locali (`<radice>/<organizzazione>/<repository>`) |
 | `GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY` o `GITHUB_APP_PRIVATE_KEY_FILE` | GitHub App (consigliata) |
 | `GITHUB_TOKEN` | In alternativa all'App, token in lettura |
+| `ORGANIZATIONS` | Facoltativa: organizzazioni da controllare nello stato dei collegamenti anche prima di aggiungerle (`AgID,italia`) |
 | `GITHUB_WEBHOOK_SECRET` | Verifica dei webhook |
 | `STORAGE_DIR` | Storage su file system (predefinito `./.docs-italia/storage`) |
 | `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` | Object storage S3-compatibile (SeaweedFS nel compose dell'istanza) |

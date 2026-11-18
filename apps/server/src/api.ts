@@ -182,20 +182,22 @@ export function createApp({ sql, config, oidc }: AppDeps) {
     const expected = `sha256=${createHmac('sha256', config.webhookSecret).update(body).digest('hex')}`;
     if (sig.length !== expected.length || !timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return c.json({ error: 'firma non valida' }, 401);
     const payload = JSON.parse(body);
-    const owner: string = payload.repository?.owner?.login ?? payload.organization?.login ?? '';
+    let owner: string = payload.repository?.owner?.login ?? payload.organization?.login ?? '';
     const repo: string = payload.repository?.name ?? '';
     const record = (outcome: string, detail: object = {}) =>
       sql`insert into webhook_delivery (delivery_id, event, owner, repo, outcome, detail) values (${delivery}, ${event}, ${owner}, ${repo}, ${outcome}, ${detail})`;
 
     if (event === 'ping') return (await record('ping'), c.json({ ok: true }));
-    const [pub] = await sql`select conf_repo from publisher where slug = ${owner} and active`;
+    // GitHub manda il nome con le maiuscole originali ("AgID"): il confronto le ignora
+    const [pub] = await sql`select slug, conf_repo from publisher where lower(slug) = lower(${owner}) and active`;
     if (!pub) return (await record('publisher sconosciuto'), c.json({ ignored: 'publisher sconosciuto' }, 202));
+    owner = pub.slug;
 
-    if (event === 'push' && repo === pub.conf_repo) {
+    if (event === 'push' && repo.toLowerCase() === String(pub.conf_repo).toLowerCase()) {
       const job = await enqueue(sql, 'sync', { owner, queueBuilds: true });
       return (await record('sync', { job }), c.json({ job }, 202));
     }
-    const [doc] = await sql`select id, draft_branch, settings from document where repo_owner = ${owner} and repo_name = ${repo} and active`;
+    const [doc] = await sql`select id, draft_branch, settings from document where lower(repo_owner) = lower(${owner}) and lower(repo_name) = lower(${repo}) and active`;
     if (!doc) return (await record('documento sconosciuto'), c.json({ ignored: 'documento sconosciuto' }, 202));
 
     if (event === 'push' && typeof payload.ref === 'string') {

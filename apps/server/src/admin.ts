@@ -14,6 +14,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { Hono } from 'hono';
 import { clientIp, closeSession, magicLinkEnabled, openSession, requestLink, sessionEmail, setSessionCookie } from './auth.ts';
 import { runChecks, type ChecksResult } from './checks.ts';
+import { checkPublisher, OWNER_RE } from './publishers.ts';
 import type { Config } from './config.ts';
 import type { Db } from './db.ts';
 import { enqueue } from './jobs.ts';
@@ -140,6 +141,27 @@ export function adminApi({ sql, config }: { sql: Db; config: Config }) {
         from publisher p order by p.active desc, p.slug`,
     ),
   );
+
+  // verifica di un'organizzazione prima di aggiungerla: accesso, italia-conf, documenti
+  app.get('/publishers/check/:owner', async (c) => {
+    const owner = c.req.param('owner').trim();
+    if (!OWNER_RE.test(owner)) return c.json({ error: "nome non valido: è il nome dell'organizzazione su GitHub (lettere, cifre, trattini)" }, 400);
+    return c.json(await checkPublisher(sql, config.forge, owner));
+  });
+
+  // aggiunta: si ripete la verifica e si accoda la prima sincronizzazione
+  app.post('/publishers', async (c) => {
+    const body = await c.req.json().catch(() => null);
+    const owner = typeof body?.owner === 'string' ? body.owner.trim() : '';
+    if (!OWNER_RE.test(owner)) return c.json({ error: "nome non valido: è il nome dell'organizzazione su GitHub (lettere, cifre, trattini)" }, 400);
+    const check = await checkPublisher(sql, config.forge, owner);
+    if (!check.ok) return c.json({ error: `italia-conf non valido o non raggiungibile: ${check.conf.problems.join('; ')}`, check }, 422);
+    // con lo stesso nome già presente (anche con maiuscole diverse) si risincronizza quello
+    const slug = check.existing?.slug ?? owner;
+    const job = await enqueue(sql, 'sync', { owner: slug, queueBuilds: body?.build !== false });
+    await audit(c.get('actor'), check.existing ? 'sync' : 'publisher.add', slug, { job, projects: check.summary.projects, documents: check.summary.documents, missing: check.summary.missing });
+    return c.json({ job, slug, existing: !!check.existing, summary: check.summary }, 202);
+  });
 
   app.post('/sync/:owner', async (c) => {
     const owner = c.req.param('owner');

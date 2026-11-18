@@ -75,6 +75,21 @@ export function useApi<T>(path: string | null) {
 // ---------------------------------------------------------------- tipi delle risposte
 
 export type CheckStatus = 'ok' | 'avviso' | 'errore' | 'non configurato';
+
+/** Verifica di un'organizzazione prima di aggiungerla (GET /publishers/check/:owner). */
+export interface PublisherCheck {
+  owner: string;
+  ok: boolean;
+  existing: { slug: string; active: boolean } | null;
+  access: Check[];
+  conf: { repo: string; found: boolean; url?: string; problems: string[] };
+  publisher?: { name: string; description: string; website?: string };
+  projects: Array<{ name: string; slug: string; documents: Array<{ repo: string; found: boolean; archived?: boolean; settings?: boolean }> }>;
+  summary: { projects: number; documents: number; found: number; missing: number };
+}
+
+/** Guida al collegamento delle organizzazioni (GitHub App o token). */
+export const GUIDE_URL = 'https://github.com/italia/docs-italia-platform/blob/main/docs/collegare-organizzazioni.md';
 export interface Check {
   group: string;
   name: string;
