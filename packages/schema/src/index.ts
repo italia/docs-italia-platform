@@ -145,6 +145,12 @@ export const TocSchema = z
     /** numero visibile nelle didascalie di figure e tabelle ("Figura 2.1"), come numfig di Sphinx */
     numfig: z.boolean().default(false),
     chapters: z.array(TocEntrySchema),
+    /**
+     * Pagine pubblicate ma fuori dall'indice: niente navigazione, numerazione,
+     * pagina singola e PDF. Sono le pagine orfane di Sphinx (`:orphan:`), che i
+     * documenti linkano (es. istruzioni_consultazione.html).
+     */
+    hidden: z.array(z.string().regex(/\.md$/, 'le voci di "hidden" devono essere file .md')).optional(),
   })
   .strict();
 
@@ -227,6 +233,8 @@ export interface PageView {
   title: string;
   number?: string;
   depth: number;
+  /** pagina fuori dall'indice (toc.json, "hidden") */
+  hidden?: boolean;
   tree: GenericNode;
   sections: SectionView[];
   footnotes: GenericNode[];
@@ -246,6 +254,8 @@ export interface PageInfo {
   number?: string;
   depth: number;
   parent?: string;
+  /** pagina fuori dall'indice (toc.json, "hidden"): pubblicata, ma non in navigazione, pagina singola e PDF */
+  hidden?: boolean;
 }
 
 export interface InventoryEntry {

@@ -230,9 +230,9 @@ export async function build(root: string, opts: BuildOptions = {}): Promise<Buil
         writeFileSync(join(b, rel), JSON.stringify(data, null, 1) + '\n');
       };
       json('metadata.json', project.settings);
-      json('toc.json', { caption: project.toc.caption, numbered: project.toc.numbered, pages: doc.pages.map(({ file, slug, title, number, depth, parent }) => ({ file, slug, title, number, depth, parent })) });
+      json('toc.json', { caption: project.toc.caption, numbered: project.toc.numbered, pages: doc.pages.map(({ file, slug, title, number, depth, parent, hidden }) => ({ file, slug, title, number, depth, parent, hidden })) });
       json('inventory.json', doc.inventory);
-      for (const p of doc.pages) json(`pages/${p.slug}.json`, { slug: p.slug, file: p.file, title: p.title, number: p.number, sections: p.sections, footnotes: p.footnotes, tree: p.tree });
+      for (const p of doc.pages) json(`pages/${p.slug}.json`, { slug: p.slug, file: p.file, title: p.title, number: p.number, hidden: p.hidden, sections: p.sections, footnotes: p.footnotes, tree: p.tree });
       writeFileSync(join(b, 'search.jsonl'), searchRecords(doc).map((r) => JSON.stringify(r)).join('\n') + '\n');
       writeFileSync(join(b, 'chunks.jsonl'), chunks(doc, (p, a) => pageHref(doc, p, a)).map((r) => JSON.stringify(r)).join('\n') + '\n');
       for (const a of doc.assets) {
@@ -252,7 +252,7 @@ export async function build(root: string, opts: BuildOptions = {}): Promise<Buil
         format: 'myst',
         toolkit: TOOLKIT_VERSION,
         generatedAt: new Date().toISOString(),
-        pages: doc.pages.map(({ file, slug: s, title, number, depth, parent }) => ({ file, slug: s, title, number, depth, parent })),
+        pages: doc.pages.map(({ file, slug: s, title, number, depth, parent, hidden }) => ({ file, slug: s, title, number, depth, parent, hidden })),
         downloads: Object.fromEntries(Object.entries(downloads).map(([k, v]) => [k, v!])),
         files,
       };

@@ -128,3 +128,24 @@ test('file fuori dal progetto (../ o link simbolico): errore, non finiscono tra 
   assert.deepEqual([...doc.assets], ['allegato.pdf']);
   assert.equal(doc.problems.filter((p) => p.code === 'missing-image').length, 2);
 });
+
+test('pagine nascoste (hidden in toc.json): costruite e linkabili, senza numero, non segnalate come fuori indice', () => {
+  const dir = project(
+    { 'index.md': '# Doc\nVedi [istruzioni](istruzioni.md).\n', 'a.md': '# A\n', 'istruzioni.md': '# Istruzioni\n## Come commentare\n' },
+    ['a.md'],
+  );
+  writeFileSync(join(dir, 'toc.json'), JSON.stringify({ root: 'index.md', chapters: [{ file: 'a.md' }], hidden: ['istruzioni.md'] }));
+  const doc = resolveDir(dir);
+  assert.deepEqual(doc.problems, []);
+  const hidden = doc.pages.find((p) => p.slug === 'istruzioni')!;
+  assert.equal(hidden.hidden, true);
+  assert.equal(hidden.number, undefined);
+  assert.equal(hidden.sections[1].number, undefined, 'niente numeri nemmeno nelle sezioni');
+  assert.equal(doc.pages.at(-1), hidden, 'in fondo, dopo i capitoli');
+});
+
+test('una pagina sia nell\'indice sia tra le nascoste: errore', () => {
+  const dir = project({ 'index.md': '# Doc\n', 'a.md': '# A\n' }, ['a.md']);
+  writeFileSync(join(dir, 'toc.json'), JSON.stringify({ root: 'index.md', chapters: [{ file: 'a.md' }], hidden: ['a.md'] }));
+  assert.ok(check(dir).some((p) => p.code === 'toc-duplicate'));
+});

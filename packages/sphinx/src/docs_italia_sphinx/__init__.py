@@ -2,8 +2,9 @@
 
 - Direttiva RST ``forum_italia`` (con gli alias ``discourse``).
 - Builder ``docsitalia-ast``: per ogni pagina scrive l'AST MyST in
-  ``pages/<pagina>.json``, più ``toc.json`` (dai toctree) e ``report.json``
-  (nodi non convertiti, contenuto scartato, file da copiare).
+  ``pages/<pagina>.json``, più ``toc.json`` (dai toctree, con le pagine
+  orfane in ``hidden``) e ``report.json`` (nodi non convertiti, contenuto
+  scartato, file da copiare).
 
 Uso, senza eseguire il conf.py del repository:
 
@@ -25,6 +26,9 @@ from sphinx.builders import Builder
 from .convert import Converter, Labels, Report, forum_node, safe_label
 
 __version__ = "0.0.0"
+
+# file tipici di un repository: non sono pagine del documento (come in packages/myst/src/project.ts)
+REPO_FILES = {"readme", "changelog", "contributing", "license", "authors", "code_of_conduct", "security", "pull_request_template"}
 
 
 class ForumItalia(Directive):
@@ -51,6 +55,26 @@ class DocsItaliaAstBuilder(Builder):
     def get_outdated_docs(self):  # type: ignore[override]
         return self.env.found_docs
 
+    def pages(self) -> set[str]:
+        """Le pagine da convertire: quelle che il builder HTML pubblicherebbe.
+        Vale solo dopo la lettura di tutti i documenti (prepare_writing).
+
+        Restano fuori i frammenti usati con ``.. include::`` (Sphinx li trova
+        come documenti, ma non sono pagine) e i file tipici di un repository,
+        che il conf.py di solito esclude con exclude_patterns.
+        """
+        if getattr(self, "_pages", None) is None:
+            included: set[str] = set().union(*self.env.included.values())
+            in_toctree: set[str] = set().union(*self.env.toctree_includes.values())
+            self._pages = {
+                d
+                for d in self.env.found_docs
+                if d == self.config.master_doc
+                or d in in_toctree
+                or (d not in included and d.rsplit("/", 1)[-1].lower() not in REPO_FILES)
+            }
+        return self._pages
+
     def get_target_uri(self, docname: str, typ: str | None = None) -> str:
         return docname + ".md"
 
@@ -62,6 +86,7 @@ class DocsItaliaAstBuilder(Builder):
         """
         from sphinx import addnodes
 
+        self._pages = None
         std = self.env.get_domain("std")
         for docname in sorted(self.env.found_docs):
             for x in self.env.get_doctree(docname).findall(addnodes.pending_xref):
@@ -73,6 +98,9 @@ class DocsItaliaAstBuilder(Builder):
                     self.labels.add(found[0], found[1], safe_label(target))
 
     def write_doc(self, docname: str, doctree: nodes.document) -> None:
+        # Sphinx scrive anche i documenti appena letti, frammenti inclusi compresi
+        if docname not in self.pages():
+            return
         # doctree NON risolto: i riferimenti restano etichette
         raw = self.env.get_doctree(docname)
         tree = Converter(self.env, docname, self.report, self.labels).document(raw)
@@ -117,7 +145,16 @@ class DocsItaliaAstBuilder(Builder):
         caption = None
         for tt in self.env.get_doctree(root).findall(addnodes.toctree):
             caption = caption or tt.get("caption")
-        return {"root": root + ".md", **({"caption": caption} if caption else {}), "numbered": numbered_any, "chapters": chapters}
+        # pagine orfane (":orphan:" o dimenticate fuori da ogni toctree): Sphinx le
+        # pubblica e i documenti le linkano, quindi si costruiscono fuori dall'indice
+        hidden = sorted(d + ".md" for d in self.pages() - seen)
+        return {
+            "root": root + ".md",
+            **({"caption": caption} if caption else {}),
+            "numbered": numbered_any,
+            "chapters": chapters,
+            **({"hidden": hidden} if hidden else {}),
+        }
 
     def finish(self) -> None:
         with open(os.path.join(self.outdir, "toc.json"), "w", encoding="utf-8") as f:

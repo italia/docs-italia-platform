@@ -258,6 +258,7 @@ function Structure({ project, current, onOpen, onChanged }: { project: ProjectDa
   const [title, setTitle] = useState('');
   const inToc = new Set(project.pages.map((p) => p.file));
   const others = project.files.filter((f) => !inToc.has(f));
+  const hidden = project.pages.filter((p) => p.hidden);
   const drafts = new Set(project.drafts);
 
   const move = async (index: number, delta: number) => {
@@ -282,7 +283,7 @@ function Structure({ project, current, onOpen, onChanged }: { project: ProjectDa
     <>
       <p className="studio-caption">{project.toc.caption ?? 'Indice'}</p>
       <ol className="studio-toc">
-        {project.pages.map((p) => {
+        {project.pages.filter((p) => !p.hidden).map((p) => {
           const ci = chapterIndex(p.file);
           return (
             <li key={p.file} style={{ paddingLeft: `${p.depth * 0.75}rem` }}>
@@ -308,9 +309,19 @@ function Structure({ project, current, onOpen, onChanged }: { project: ProjectDa
           <button className="ita-btn ita-btn-xs ita-btn-primary">Aggiungi</button>
         </div>
       </form>
+      {hidden.length > 0 && (
+        <>
+          <p className="studio-caption mt-6">Pagine nascoste</p>
+          <ul className="studio-toc">
+            {hidden.map((p) => (
+              <li key={p.file}><button className="studio-toc-link" title="Pubblicata, ma fuori dall’indice (hidden in toc.json)" aria-current={p.file === current ? 'page' : undefined} onClick={() => onOpen(p.file)}>{p.title || p.file}</button></li>
+            ))}
+          </ul>
+        </>
+      )}
       {others.length > 0 && (
         <>
-          <p className="studio-caption mt-6">Fuori dall’indice</p>
+          <p className="studio-caption mt-6">Non pubblicati</p>
           <ul className="studio-toc">
             {others.map((f) => (
               <li key={f}><button className="studio-toc-link" aria-current={f === current ? 'page' : undefined} onClick={() => onOpen(f)}>{f}</button></li>

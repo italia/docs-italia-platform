@@ -20,8 +20,8 @@ export interface RenderContext {
   mode: RenderMode;
   /** slug della pagina che si sta rendendo */
   page: string;
-  /** href di una pagina (e ancora) nel contesto corrente */
-  hrefFor(page: string, anchor?: string): string;
+  /** href di una pagina (e ancora) nel contesto corrente; null se la pagina qui non c'è (pagina nascosta in stampa): il link diventa testo */
+  hrefFor(page: string, anchor?: string): string | null;
   /** id da emettere per un'ancora della pagina corrente (unico anche in pagina singola) */
   idFor(page: string, anchor: string): string;
   /** URL di una risorsa (immagine, file scaricabile) relativa alla radice della sorgente */
@@ -199,13 +199,16 @@ export function renderNode(node: GenericNode, ctx: RenderContext): string {
 function renderLink(node: GenericNode, ctx: RenderContext): string {
   const body = renderNodes(node.children, ctx);
   if (node.internal) {
-    return `<a${attrs({ href: ctx.hrefFor(node.internal.page, node.internal.anchor) })}>${body}</a>`;
+    const href = ctx.hrefFor(node.internal.page, node.internal.anchor);
+    return href === null ? `<span>${body}</span>` : `<a${attrs({ href })}>${body}</a>`;
   }
   if (node.asset) {
     return `<a${attrs({ href: ctx.assetHref(node.asset) })}>${body}</a>`;
   }
   // difesa ulteriore oltre al controllo in risoluzione: niente javascript:, data:, vbscript:…
-  if (!node.url || (/^[a-z][a-z0-9+.-]*:/i.test(node.url) && !/^(https?|mailto|tel):/i.test(node.url))) {
+  // Un indirizzo relativo (pagina, ancora, file) che la risoluzione non ha trovato
+  // è un link rotto, già segnalato dal controllo: non si emette (nell'EPUB non è valido)
+  if (!node.url || !/^[a-z][a-z0-9+.-]*:/i.test(node.url) || !/^(https?|mailto|tel):/i.test(node.url)) {
     return `<span class="di-broken-ref">${body}</span>`;
   }
   const external = /^https?:\/\//.test(node.url ?? '');
@@ -223,7 +226,8 @@ function renderCrossReference(node: GenericNode, ctx: RenderContext): string {
     return `<span class="di-broken-ref" title="Riferimento non risolto">${escapeHtml(node.label ?? node.identifier ?? '')}</span>`;
   }
   const body = node.children?.length ? renderNodes(node.children, ctx) : escapeHtml(node.resolved.text);
-  return `<a${attrs({ href: ctx.hrefFor(node.resolved.page, node.resolved.anchor) })}>${body}</a>`;
+  const href = ctx.hrefFor(node.resolved.page, node.resolved.anchor);
+  return href === null ? `<span>${body}</span>` : `<a${attrs({ href })}>${body}</a>`;
 }
 
 const SIZE = /^(\d+(?:\.\d+)?)\s*(px|cm|mm|in|pt|pc|em|rem|ex|ch|%|vw)?$/i;
@@ -272,7 +276,7 @@ function renderContainer(node: GenericNode, ctx: RenderContext): string {
     const num = node.number && node.showNumber ? `<span class="di-number">Figura ${escapeHtml(node.number)}</span> ` : '';
     const cap =
       caption || legend
-        ? `<figcaption>${caption ? num + stripParagraph(renderNodes(caption.children, ctx)) : ''}${
+        ? `<figcaption>${caption ? num + cellContent(caption.children, ctx) : ''}${
             legend ? `<div class="di-legend">${renderNodes(legend.children, ctx)}</div>` : ''
           }</figcaption>`
         : '';
@@ -290,8 +294,14 @@ function renderContainer(node: GenericNode, ctx: RenderContext): string {
   return `<div${attrs({ id, class: 'di-container' })}>${renderNodes(children, ctx)}</div>\n`;
 }
 
-function stripParagraph(html: string): string {
-  return html.replace(/^<p>/, '').replace(/<\/p>\n?$/, '');
+/**
+ * Contenuto di una cella o di una didascalia: un solo paragrafo si rende senza
+ * <p>; con più blocchi (paragrafo ed elenco…) restano tutti, altrimenti si
+ * toglierebbe il <p> di apertura del primo e non la sua chiusura.
+ */
+function cellContent(nodes: GenericNode[] | undefined, ctx: RenderContext): string {
+  if (nodes?.length === 1 && nodes[0].type === 'paragraph') return renderNodes(nodes[0].children, ctx).trim();
+  return renderNodes(nodes, ctx).trim();
 }
 
 function renderTable(node: GenericNode, ctx: RenderContext, caption?: GenericNode, id?: string, widths?: number[], number?: string): string {
@@ -302,7 +312,7 @@ function renderTable(node: GenericNode, ctx: RenderContext, caption?: GenericNod
     `<tr>${(r.children ?? [])
       .map((c) => {
         const tag = c.header ? 'th' : 'td';
-        const inner = stripParagraph(renderNodes(c.children, ctx).trim());
+        const inner = cellContent(c.children, ctx);
         return `<${tag}${attrs({ scope: c.header ? 'col' : undefined, colspan: c.colspan, rowspan: c.rowspan, class: c.align ? `text-${c.align}` : undefined })}>${inner}</${tag}>`;
       })
       .join('')}</tr>\n`;
@@ -312,7 +322,7 @@ function renderTable(node: GenericNode, ctx: RenderContext, caption?: GenericNod
       ? `<colgroup>${widths.map((w) => `<col style="width:${((w / total) * 100).toFixed(1)}%" />`).join('')}</colgroup>`
       : '';
   const num = number ? `<span class="di-number">Tabella ${escapeHtml(number)}</span> ` : '';
-  const cap = caption ? `<caption>${num}${stripParagraph(renderNodes(caption.children, ctx).trim())}</caption>` : '';
+  const cap = caption ? `<caption>${num}${cellContent(caption.children, ctx)}</caption>` : '';
   return `<div class="di-table-wrap"><table${attrs({ id, class: 'di-table' })}>${cap}${cols}${
     head.length ? `<thead>${head.map(row).join('')}</thead>` : ''
   }<tbody>${body.map(row).join('')}</tbody></table></div>\n`;

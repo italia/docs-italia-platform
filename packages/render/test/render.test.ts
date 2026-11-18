@@ -1,6 +1,6 @@
 import { test } from 'bun:test';
 import assert from 'node:assert/strict';
-import { imageSize, renderNodes, type RenderContext } from '../src/index.ts';
+import { imageSize, renderNodes, type GenericNode, type RenderContext } from '../src/index.ts';
 
 const ctx: RenderContext = {
   mode: 'site',
@@ -78,4 +78,40 @@ test('dimensioni delle immagini: pixel nell\'attributo, altre unità nello stile
   const html = renderNodes([{ type: 'image', url: 'a.png', asset: 'a.png', alt: 'A', width: '15 cm' }], ctx);
   assert.match(html, /style="width:15cm"/);
   assert.doesNotMatch(html, /width="/);
+});
+
+test('pagine nascoste: fuori da indice, pagina singola e stampa; i link portano al sito o diventano testo', async () => {
+  const { renderPrint, renderSinglePage, renderSitePage } = await import('../src/index.ts');
+  const link = { type: 'link', internal: { page: 'istruzioni' }, children: [t('istruzioni')] };
+  const page = (slug: string, title: string, extra: object = {}, body: GenericNode[] = []) => ({
+    slug, title, depth: 1, ...extra,
+    tree: { type: 'root', children: [{ type: 'heading', depth: 1, anchor: slug, children: [t(title)] }, { type: 'paragraph', children: body }] },
+    sections: [], footnotes: [],
+  });
+  const doc = {
+    name: 'D', description: 'd', tags: [], language: 'it', version: { name: 'x' }, downloads: {},
+    pages: [page('index', 'D', {}, [link]), page('a', 'Capitolo A'), page('istruzioni', 'Istruzioni', { hidden: true })],
+  };
+  const single = renderSinglePage(doc, { css: 'x.css' }).html;
+  assert.ok(!single.includes('>Istruzioni<'), 'la pagina nascosta non è nella pagina singola');
+  assert.match(single, /<a href="istruzioni\.html">istruzioni<\/a>/);
+  const print = renderPrint(doc, { css: 'x.css', date: 'oggi' });
+  assert.ok(!print.includes('Istruzioni'));
+  assert.match(print, /<span>istruzioni<\/span>/, 'in stampa il link diventa testo');
+  const site = renderSitePage(doc, doc.pages[2], { css: 'x.css' }).html;
+  assert.match(site, /<h1[^>]*>.*Istruzioni/, 'la pagina nascosta si costruisce');
+  assert.ok(!site.includes('di-pager-prev'), 'fuori dalla sequenza di lettura');
+  const index = renderSitePage(doc, doc.pages[0], { css: 'x.css' }).html;
+  assert.ok(!/class="di-toc-depth-1"><a href="istruzioni\.html"/.test(index), 'non è nell’indice');
+  assert.match(renderSitePage(doc, doc.pages[1], { css: 'x.css' }).html, /di-pager-prev/);
+});
+
+test('celle di tabella: un paragrafo senza <p>, più blocchi tutti chiusi (XHTML ben formato)', () => {
+  const cell = (children: GenericNode[]) => ({ type: 'tableCell', children });
+  const p = (s: string) => ({ type: 'paragraph', children: [t(s)] });
+  const list = { type: 'list', ordered: false, children: [{ type: 'listItem', children: [p('voce')] }] };
+  const html = renderNodes([{ type: 'table', children: [{ type: 'tableRow', children: [cell([p('uno')]), cell([p('Occorre verificare:'), list])] }] }], ctx);
+  assert.match(html, /<td>uno<\/td>/);
+  assert.match(html, /<td><p>Occorre verificare:<\/p>/);
+  assert.equal((html.match(/<p>/g) ?? []).length, (html.match(/<\/p>/g) ?? []).length);
 });

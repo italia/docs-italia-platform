@@ -26,6 +26,13 @@
       "items": {
         "$ref": "#/$defs/__schema0"
       }
+    },
+    "hidden": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "\\.md$"
+      }
     }
   },
   "required": [

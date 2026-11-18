@@ -82,7 +82,7 @@ export async function studio(root: string, opts: { port: number }) {
         root,
         settings: p.settings,
         toc: p.toc,
-        pages: doc.pages.map(({ file, slug, title, number, depth }) => ({ file, slug, title, number, depth })),
+        pages: doc.pages.map(({ file, slug, title, number, depth, hidden }) => ({ file, slug, title, number, depth, hidden })),
         files: p.markdownFiles,
         drafts,
         problems: doc.problems,

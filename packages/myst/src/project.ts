@@ -12,7 +12,7 @@ export interface Project {
   sourceDir: string;
   settings: DocumentSettings['document'];
   toc: Toc;
-  /** pagine in ordine di lettura: la radice, poi i capitoli in ordine di toc */
+  /** pagine in ordine di lettura: la radice, poi i capitoli in ordine di toc, in fondo le pagine nascoste */
   pages: PageInfo[];
   /** tutti i file .md della sorgente, relativi a sourceDir */
   markdownFiles: string[];
@@ -85,6 +85,14 @@ export function loadProject(root: string): Project {
     });
   };
   visit(toc.chapters, 1, '');
+  for (const file of toc.hidden ?? []) {
+    if (seen.has(file)) {
+      problems.push({ level: 'errore', file: tocRel, code: 'toc-duplicate', message: `"${file}" è sia nell'indice sia tra le pagine nascoste` });
+      continue;
+    }
+    seen.add(file);
+    pages.push({ file, slug: slugOf(file), title: '', depth: 1, hidden: true });
+  }
 
   for (const p of pages) {
     if (!existsSync(join(sourceDir, p.file))) problems.push({ level: 'errore', file: tocRel, code: 'toc-missing-file', message: `il file "${p.file}" elencato nell'indice non esiste` });

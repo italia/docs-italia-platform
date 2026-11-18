@@ -14,6 +14,8 @@ export interface PageItem {
   title: string;
   number?: string;
   depth: number;
+  /** pagina nascosta: pubblicata, ma fuori dall'indice */
+  hidden?: boolean;
 }
 
 export interface TocEntry {

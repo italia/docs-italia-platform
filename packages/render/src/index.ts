@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 export { escapeHtml, escapeAttr } from './escape.ts';
 export { imageSize, renderNode, renderNodes, renderFootnotes } from './content.ts';
 export type { GenericNode, RenderContext, RenderMode } from './content.ts';
-export { renderSitePage, renderSinglePage, renderAllChapters, renderPrint, renderEpubChapter, renderPreview, relative, pageId } from './layout.ts';
+export { renderSitePage, renderSinglePage, renderAllChapters, renderPrint, renderEpubChapter, renderPreview, relative, pageId, tocPages } from './layout.ts';
 export type { DocView, PageView, SectionView, SiteOptions } from './layout.ts';
 
 /** Percorso assoluto del foglio di stile Tailwind del sito (da compilare). */

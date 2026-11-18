@@ -5,7 +5,7 @@
 import { readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { strToU8, zipSync, type Zippable } from 'fflate';
-import { epubCss, escapeAttr, escapeHtml, renderEpubChapter, type DocView } from '@docs-italia/render';
+import { epubCss, escapeAttr, escapeHtml, renderEpubChapter, type DocView, type GenericNode, type PageView } from '@docs-italia/render';
 
 const MEDIA: Record<string, string> = {
   '.png': 'image/png',
@@ -16,9 +16,53 @@ const MEDIA: Record<string, string> = {
   '.webp': 'image/webp',
 };
 
+/** Pagine raggiunte dai link (e dai riferimenti) di una pagina. */
+function linkedPages(page: PageView): string[] {
+  const out: string[] = [];
+  const walk = (n: GenericNode) => {
+    if (n.internal?.page) out.push(n.internal.page);
+    if (n.resolved?.page) out.push(n.resolved.page);
+    n.children?.forEach(walk);
+  };
+  walk(page.tree);
+  page.footnotes.forEach(walk);
+  return out;
+}
+
+/**
+ * Le pagine dell'EPUB: quelle dell'indice, più le pagine nascoste raggiungibili
+ * con i link. Le nascoste vanno nello spine con linear="no", e un contenuto non
+ * lineare senza link che lo raggiunga non è un EPUB valido (OPF-096).
+ */
+export function epubPages(doc: DocView): PageView[] {
+  const bySlug = new Map(doc.pages.map((p) => [p.slug, p]));
+  const keep = new Set(doc.pages.filter((p) => !p.hidden).map((p) => p.slug));
+  const queue = [...keep];
+  while (queue.length) {
+    for (const slug of linkedPages(bySlug.get(queue.shift()!)!)) {
+      if (bySlug.has(slug) && !keep.has(slug)) {
+        keep.add(slug);
+        queue.push(slug);
+      }
+    }
+  }
+  return doc.pages.filter((p) => keep.has(p.slug));
+}
+
 export function buildEpub(doc: DocView, opts: { sourceDir: string; assets: string[]; identifier: string; modified: Date }): Uint8Array {
+  const pages = epubPages(doc);
   const id = (s: string) => 'x-' + s.replace(/[^a-zA-Z0-9]/g, '-');
-  const chapterFile = (slug: string) => `${slug.replace(/\//g, '__')}.xhtml`;
+  // nomi dei file in ASCII e senza spazi ("doc/00_LG IO/index" non è un URL valido), unici
+  const names = new Map<string, string>();
+  const used = new Set<string>();
+  for (const p of pages) {
+    const base = p.slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\//g, '__').replace(/[^A-Za-z0-9_.-]/g, '-');
+    let name = base;
+    for (let i = 2; used.has(name.toLowerCase()); i++) name = `${base}-${i}`;
+    used.add(name.toLowerCase());
+    names.set(p.slug, `${name}.xhtml`);
+  }
+  const chapterFile = (slug: string) => names.get(slug) ?? `${slug}.xhtml`;
   const images = opts.assets.filter((a) => MEDIA[extname(a).toLowerCase()]);
   const modified = opts.modified.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
@@ -36,11 +80,11 @@ ${doc.tags.map((t) => `<dc:subject>${escapeHtml(t)}</dc:subject>`).join('\n')}
 <manifest>
 <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
 <item id="css" href="epub.css" media-type="text/css"/>
-${doc.pages.map((p) => `<item id="${id(p.slug)}" href="${escapeAttr(chapterFile(p.slug))}" media-type="application/xhtml+xml"/>`).join('\n')}
-${images.map((a) => `<item id="${id(a)}" href="${escapeAttr(a)}" media-type="${MEDIA[extname(a).toLowerCase()]}"/>`).join('\n')}
+${pages.map((p) => `<item id="${id(p.slug)}" href="${escapeAttr(chapterFile(p.slug))}" media-type="application/xhtml+xml"/>`).join('\n')}
+${images.map((a) => `<item id="${id(a)}" href="${escapeAttr(encodeURI(a))}" media-type="${MEDIA[extname(a).toLowerCase()]}"/>`).join('\n')}
 </manifest>
 <spine>
-${doc.pages.map((p) => `<itemref idref="${id(p.slug)}"/>`).join('\n')}
+${pages.map((p) => `<itemref idref="${id(p.slug)}"${p.hidden ? ' linear="no"' : ''}/>`).join('\n')}
 </spine>
 </package>
 `;
@@ -52,7 +96,8 @@ ${doc.pages.map((p) => `<itemref idref="${id(p.slug)}"/>`).join('\n')}
 <body>
 <nav epub:type="toc" id="toc"><h1>${escapeHtml(doc.caption ?? 'Indice dei contenuti')}</h1>
 <ol>
-${doc.pages
+${pages
+  .filter((p) => !p.hidden)
   .map((p) => `<li><a href="${escapeAttr(chapterFile(p.slug))}">${p.number ? `${escapeHtml(p.number)}. ` : ''}${escapeHtml(p.title)}</a></li>`)
   .join('\n')}
 </ol>
@@ -74,7 +119,7 @@ ${doc.pages
     'OEBPS/nav.xhtml': strToU8(nav),
     'OEBPS/epub.css': readFileSync(epubCss),
   };
-  for (const p of doc.pages) {
+  for (const p of pages) {
     // in EPUB i link tra capitoli usano il nome del file XHTML
     files[`OEBPS/${chapterFile(p.slug)}`] = strToU8(renderEpubChapter(doc, p).replace(/href="([^"#]+)\.xhtml/g, (_m, s) => `href="${chapterFile(s)}`));
   }

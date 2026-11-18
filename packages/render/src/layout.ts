@@ -23,7 +23,7 @@ export interface DocView {
   language: string;
   version: { name: string; commit?: string; dirty?: boolean };
   caption?: string;
-  /** pagine in ordine di lettura: la prima è la radice */
+  /** pagine in ordine di lettura: la prima è la radice; le pagine nascoste (hidden) sono in fondo */
   pages: PageView[];
   /** nomi dei file scaricabili, relativi alla radice del sito */
   downloads: { pdf?: string; epub?: string; html?: string };
@@ -37,6 +37,9 @@ const THEME = 'italia-original';
 // ---------------------------------------------------------------------------
 // Percorsi
 // ---------------------------------------------------------------------------
+
+/** Le pagine dell'indice: senza quelle nascoste, che si raggiungono solo dai link. */
+export const tocPages = (doc: DocView) => doc.pages.filter((p) => !p.hidden);
 
 function pageFile(doc: DocView, slug: string): string {
   return slug === doc.pages[0].slug ? 'index.html' : `${slug}.html`;
@@ -76,11 +79,21 @@ const cssSafe = (s: string) => s.replace(/[^A-Za-z0-9_-]/g, '-');
 export const pageId = (slug: string) => `p-${cssSafe(slug)}`;
 const anchorId = (slug: string, anchor: string) => `${pageId(slug)}--${cssSafe(anchor)}`;
 
-function singleContext(doc: DocView, page: PageView, mode: 'single' | 'print'): RenderContext {
+/**
+ * Le pagine nascoste non stanno nella pagina singola né nella stampa: dalla
+ * pagina singola i link portano alla pagina del sito (`pageHref`), in stampa
+ * diventano testo.
+ */
+function singleContext(doc: DocView, page: PageView, mode: 'single' | 'print', pageHref?: (page: string, anchor?: string) => string): RenderContext {
+  const hidden = new Set(doc.pages.filter((p) => p.hidden).map((p) => p.slug));
   return {
     mode,
     page: page.slug,
-    hrefFor: (p, a) => `#${a ? anchorId(p, a) : pageId(p)}`,
+    hrefFor: (p, a) => {
+      if (!hidden.has(p)) return `#${a ? anchorId(p, a) : pageId(p)}`;
+      if (mode === 'print') return null;
+      return pageHref ? pageHref(p, a) : `${pageFile(doc, p)}${a ? `#${a}` : ''}`;
+    },
     idFor: (p, a) => anchorId(p, a),
     assetHref: (path) => path,
     headingOffset: page === doc.pages[0] ? 0 : 1,
@@ -140,7 +153,7 @@ function siteFooter(doc: DocView, homeHref: string): string {
 }
 
 function docToc(doc: DocView, current: PageView | null, hrefFor: (slug: string) => string): string {
-  const items = doc.pages
+  const items = tocPages(doc)
     .slice(1)
     .map((p) => {
       const cur = current && p.slug === current.slug;
@@ -165,9 +178,11 @@ function downloadsBox(doc: DocView, prefix: string): string {
 }
 
 function pager(doc: DocView, page: PageView, hrefFor: (slug: string) => string): string {
-  const i = doc.pages.findIndex((p) => p.slug === page.slug);
-  const prev = doc.pages[i - 1];
-  const next = doc.pages[i + 1];
+  const pages = tocPages(doc);
+  const i = pages.findIndex((p) => p.slug === page.slug);
+  if (i < 0) return ''; // pagina nascosta: fuori dalla sequenza di lettura
+  const prev = pages[i - 1];
+  const next = pages[i + 1];
   const label = (p: PageView) => `${p.number ? p.number + '. ' : ''}${p.title}`;
   return `<nav class="di-pager" aria-label="Pagine precedente e successiva">${
     prev ? `<a class="di-pager-prev" href="${escapeAttr(hrefFor(prev.slug))}" rel="prev">${ic('it-arrow-left')}<span><small>Precedente</small>${escapeHtml(label(prev))}</span></a>` : '<span></span>'
@@ -272,11 +287,19 @@ ${opts.bodyEnd ?? ''}
 // ---------------------------------------------------------------------------
 
 /** Tutti i capitoli in un solo documento (pagina singola e stampa). */
-/** `assetHref`: dove stanno i file del documento (predefinito: accanto alla pagina, come nel pacchetto). */
-export function renderAllChapters(doc: DocView, mode: 'single' | 'print', opts: { assetHref?: (path: string) => string } = {}): string {
+/**
+ * `assetHref`: dove stanno i file del documento (predefinito: accanto alla pagina, come nel pacchetto).
+ * `pageHref`: indirizzo delle pagine nascoste, che restano fuori (predefinito: il file del sito accanto).
+ */
+export function renderAllChapters(
+  doc: DocView,
+  mode: 'single' | 'print',
+  opts: { assetHref?: (path: string) => string; pageHref?: (page: string, anchor?: string) => string } = {},
+): string {
   return doc.pages
     .map((p, i) => {
-      const ctx = singleContext(doc, p, mode);
+      if (p.hidden) return '';
+      const ctx = singleContext(doc, p, mode, opts.pageHref);
       if (opts.assetHref) ctx.assetHref = opts.assetHref;
       const nodes = i === 0 ? p.tree.children?.filter((n) => !(n.type === 'heading' && n.depth === 1)) : p.tree.children;
       // data-title: titolo del capitolo per l'intestazione delle pagine stampate (string-set in paged.css)
@@ -335,7 +358,7 @@ export function renderPrint(doc: DocView, opts: { css: string; date: string; ext
 </section>
 <nav class="di-print-toc" aria-label="Indice">
 <h2>${escapeHtml(doc.caption ?? 'Indice dei contenuti')}</h2>
-<ol>${doc.pages
+<ol>${tocPages(doc)
     .slice(1)
     .map((p) => `<li><a href="#${escapeAttr(pageId(p.slug))}">${p.number ? `<span class="di-number">${escapeHtml(p.number)}</span> ` : ''}${escapeHtml(p.title)}</a></li>`)
     .join('')}</ol>
@@ -358,7 +381,8 @@ export function renderEpubChapter(doc: DocView, page: PageView): string {
     page: page.slug,
     hrefFor: (p, a) => `${p}.xhtml${a ? `#${a}` : ''}`,
     idFor: (_p, a) => a,
-    assetHref: (path) => path,
+    // spazi e lettere accentate nei percorsi: nell'EPUB l'URL deve essere codificato
+    assetHref: (path) => encodeURI(path),
   };
   return `<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
